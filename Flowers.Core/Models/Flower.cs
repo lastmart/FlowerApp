@@ -4,24 +4,31 @@ public enum LightLevel
     Medium,
     High
 }
+
 public class Flower
 {
-    public string scientificName { get; set; }
+    public string ScientificName { get; set; }
     public string Name { get; set; }
     public string DescriptionFlower { get; set; }
     public bool IsToxic { get; set; }
     public int WateringFrequency { get; set; } // В днях
     public LightLevel LightRequirements { get; set; }
-    public string TransplantingInfo { get; set; }
+    public int TransplantFrequency { get; set; } // В месяцах
+    public string DescriptionCare { get; set; }
+    public string PhotoUrl { get; set; }
 
-    public Flower(int id, string name, bool isToxic, int wateringFrequency, 
-        LightLevel lightRequirements, string transplantingInfo)
+    public Flower(string scientificName, string name, string descriptionFlower, bool isToxic, 
+        int wateringFrequency, LightLevel lightRequirements, int transplantFrequency, 
+        string descriptionCare, string photoUrl)
     {
-        Id = id;
+        ScientificName = scientificName;
         Name = name;
+        DescriptionFlower = descriptionFlower;
         IsToxic = isToxic;
         WateringFrequency = wateringFrequency;
         LightRequirements = lightRequirements;
-        TransplantingInfo = transplantingInfo;
+        TransplantFrequency = transplantFrequency;
+        DescriptionCare = descriptionCare;
+        PhotoUrl = photoUrl;
     }
 }

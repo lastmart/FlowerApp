@@ -1,0 +1,6 @@
+@FlowersCareAPI_HostAddress = http://localhost:5149
+
+GET {{FlowersCareAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

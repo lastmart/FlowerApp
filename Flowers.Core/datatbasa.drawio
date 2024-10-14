@@ -1,0 +1,112 @@
+<mxfile host="65bd71144e">
+    <diagram id="hsqttMbcgz1ENPTUDIOS" name="Page-1">
+        <mxGraphModel dx="949" dy="711" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="8" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="320" width="320" height="510" as="geometry"/>
+                </mxCell>
+                <mxCell id="4" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry width="320" height="510" as="geometry"/>
+                </mxCell>
+                <mxCell id="5" value="Flower" style="rounded=0;whiteSpace=wrap;html=1;fontSize=24;" vertex="1" parent="1">
+                    <mxGeometry width="640" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="6" value="&lt;div style=&quot;font-size: 14px;&quot;&gt;&lt;pre style=&quot;font-size: 14px;&quot;&gt;&lt;br&gt;&lt;/pre&gt;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;" vertex="1" parent="1">
+                    <mxGeometry y="330" width="320" height="180" as="geometry"/>
+                </mxCell>
+                <mxCell id="9" value="&lt;pre style=&quot;border-color: var(--border-color);&quot;&gt;&lt;font style=&quot;border-color: var(--border-color);&quot; face=&quot;Helvetica&quot;&gt;ScientificName TEXT&lt;/font&gt;&lt;/pre&gt;" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=none;fontFamily=Helvetica;fontSize=14;fontColor=#000000;align=center;" vertex="1" parent="1">
+                    <mxGeometry y="40" width="320" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="10" value="Научное название цветка" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=none;fontFamily=Helvetica;fontSize=14;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="320" y="40" width="320" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="11" value="&lt;pre style=&quot;border-color: var(--border-color);&quot;&gt;&lt;pre style=&quot;border-color: var(--border-color); text-align: left;&quot;&gt;&lt;font style=&quot;border-color: var(--border-color);&quot; face=&quot;Helvetica&quot;&gt;Name TEXT&lt;/font&gt;&lt;/pre&gt;&lt;/pre&gt;" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=none;fontFamily=Helvetica;fontSize=14;fontColor=#000000;align=center;" vertex="1" parent="1">
+                    <mxGeometry y="90" width="320" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="12" value="Бытовое название цветка" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=none;fontFamily=Helvetica;fontSize=14;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="320" y="90" width="320" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="13" value="&lt;pre style=&quot;border-color: var(--border-color);&quot;&gt;&lt;pre style=&quot;border-color: var(--border-color); text-align: left;&quot;&gt;&lt;font style=&quot;border-color: var(--border-color);&quot; face=&quot;Helvetica&quot;&gt;DescriptionFlower TEXT&lt;/font&gt;&lt;/pre&gt;&lt;/pre&gt;" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=none;fontFamily=Helvetica;fontSize=14;fontColor=#000000;align=center;" vertex="1" parent="1">
+                    <mxGeometry y="150" width="320" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="14" value="Описание внешнего вида цветка" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=none;fontFamily=Helvetica;fontSize=14;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="320" y="150" width="320" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="17" value="&lt;pre style=&quot;border-color: var(--border-color);&quot;&gt;&lt;pre style=&quot;border-color: var(--border-color); text-align: left;&quot;&gt;&lt;font style=&quot;border-color: var(--border-color);&quot; face=&quot;Helvetica&quot;&gt;WateringFrequency DATETIME&lt;span style=&quot;border-color: var(--border-color); font-style: italic;&quot;&gt;&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;&lt;/span&gt;&lt;/font&gt;&lt;/pre&gt;&lt;/pre&gt;" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=none;fontFamily=Helvetica;fontSize=14;fontColor=#000000;align=center;" vertex="1" parent="1">
+                    <mxGeometry y="210" width="320" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="18" value="Частота полива цветка.&lt;br&gt;Планируем в днях показывать" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=none;fontFamily=Helvetica;fontSize=14;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="320" y="210" width="320" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="21" value="&lt;pre style=&quot;border-color: var(--border-color);&quot;&gt;&lt;pre style=&quot;border-color: var(--border-color); text-align: left;&quot;&gt;&lt;font style=&quot;border-color: var(--border-color);&quot; face=&quot;Helvetica&quot;&gt;TransplantFrequency DATETIME&lt;/font&gt;&lt;/pre&gt;&lt;/pre&gt;" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=none;fontFamily=Helvetica;fontSize=14;fontColor=#000000;align=center;" vertex="1" parent="1">
+                    <mxGeometry y="270" width="320" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="22" value="Частота пересадки цветка.&lt;br&gt;Зависит от количества предыдущих персадок" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=none;fontFamily=Helvetica;fontSize=14;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="320" y="270" width="320" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="23" value="&lt;pre style=&quot;border-color: var(--border-color);&quot;&gt;&lt;pre style=&quot;border-color: var(--border-color); text-align: left;&quot;&gt;&lt;font style=&quot;border-color: var(--border-color);&quot; face=&quot;Helvetica&quot;&gt;DescriptionCare TEXT&lt;/font&gt;&lt;/pre&gt;&lt;/pre&gt;" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=none;fontFamily=Helvetica;fontSize=14;fontColor=#000000;align=center;" vertex="1" parent="1">
+                    <mxGeometry y="330" width="320" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="24" value="Описание ухода за цветком" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=none;fontFamily=Helvetica;fontSize=14;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="320" y="330" width="320" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="25" value="&lt;pre style=&quot;border-color: var(--border-color);&quot;&gt;&lt;pre style=&quot;border-color: var(--border-color); text-align: left;&quot;&gt;&lt;font style=&quot;border-color: var(--border-color);&quot; face=&quot;Helvetica&quot;&gt;PhotoUrl TEXT&lt;/font&gt;&lt;/pre&gt;&lt;/pre&gt;" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=none;fontFamily=Helvetica;fontSize=14;fontColor=#000000;align=center;" vertex="1" parent="1">
+                    <mxGeometry y="390" width="320" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="26" value="Ссылка на фотокарточку цветка.&lt;br&gt;Абсолютный путь до сервака с фотками" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=none;fontFamily=Helvetica;fontSize=14;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="320" y="390" width="320" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="27" value="&lt;pre style=&quot;border-color: var(--border-color);&quot;&gt;&lt;pre style=&quot;border-color: var(--border-color); text-align: left;&quot;&gt;&lt;font face=&quot;Helvetica&quot;&gt;FID AUTO INCREMENT&lt;/font&gt;&lt;/pre&gt;&lt;/pre&gt;" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=none;fontFamily=Helvetica;fontSize=14;fontColor=#000000;align=center;" vertex="1" parent="1">
+                    <mxGeometry y="450" width="320" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="28" value="Уникальный id для цветка&lt;br&gt;На него завяжется логика определения цветка" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=none;fontFamily=Helvetica;fontSize=14;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="320" y="450" width="320" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="53" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="1020" y="65" width="320" height="150" as="geometry"/>
+                </mxCell>
+                <mxCell id="54" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="700" y="65" width="320" height="150" as="geometry"/>
+                </mxCell>
+                <mxCell id="55" value="Flower_Toxic" style="rounded=0;whiteSpace=wrap;html=1;fontSize=24;" vertex="1" parent="1">
+                    <mxGeometry x="700" y="65" width="640" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="63" value="&lt;pre style=&quot;border-color: var(--border-color);&quot;&gt;&lt;pre style=&quot;border-color: var(--border-color); text-align: left;&quot;&gt;&lt;font style=&quot;border-color: var(--border-color);&quot; face=&quot;Helvetica&quot;&gt;IsToxic BOOLEAN&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;&lt;/font&gt;&lt;/pre&gt;&lt;/pre&gt;" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=none;fontFamily=Helvetica;fontSize=14;fontColor=#000000;align=center;" vertex="1" parent="1">
+                    <mxGeometry x="700" y="105" width="320" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="64" value="Флаг токсичности цветка" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=none;fontFamily=Helvetica;fontSize=14;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="1020" y="105" width="320" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="75" value="&lt;pre style=&quot;border-color: var(--border-color);&quot;&gt;&lt;pre style=&quot;border-color: var(--border-color); text-align: left;&quot;&gt;&lt;font face=&quot;Helvetica&quot;&gt;FID INT&lt;/font&gt;&lt;/pre&gt;&lt;/pre&gt;" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=none;fontFamily=Helvetica;fontSize=14;fontColor=#000000;align=center;" vertex="1" parent="1">
+                    <mxGeometry x="700" y="155" width="320" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="76" value="Уникальный id для цветка" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=none;fontFamily=Helvetica;fontSize=14;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="1020" y="155" width="320" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="77" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="1020" y="265" width="320" height="150" as="geometry"/>
+                </mxCell>
+                <mxCell id="78" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxGeometry x="700" y="265" width="320" height="150" as="geometry"/>
+                </mxCell>
+                <mxCell id="79" value="Flower_LightRequirements" style="rounded=0;whiteSpace=wrap;html=1;fontSize=24;" vertex="1" parent="1">
+                    <mxGeometry x="700" y="265" width="640" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="80" value="&lt;pre style=&quot;border-color: var(--border-color);&quot;&gt;&lt;pre style=&quot;border-color: var(--border-color); text-align: left;&quot;&gt;&lt;font style=&quot;border-color: var(--border-color);&quot; face=&quot;Helvetica&quot;&gt;LightRequirements LIGHT_LEVEL&lt;/font&gt;&lt;/pre&gt;&lt;/pre&gt;" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=none;fontFamily=Helvetica;fontSize=14;fontColor=#000000;align=center;" vertex="1" parent="1">
+                    <mxGeometry x="700" y="305" width="320" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="81" value="Светолюбивый ли цветок.&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;LIGHT_LEVEL: { low, medium, high }" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=none;fontFamily=Helvetica;fontSize=14;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="1020" y="305" width="320" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="82" value="&lt;pre style=&quot;border-color: var(--border-color);&quot;&gt;&lt;pre style=&quot;border-color: var(--border-color); text-align: left;&quot;&gt;&lt;font face=&quot;Helvetica&quot;&gt;FID INT&lt;/font&gt;&lt;/pre&gt;&lt;/pre&gt;" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=none;fontFamily=Helvetica;fontSize=14;fontColor=#000000;align=center;" vertex="1" parent="1">
+                    <mxGeometry x="700" y="355" width="320" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="83" value="Уникальный id для цветка" style="rounded=0;whiteSpace=wrap;html=1;labelBackgroundColor=none;fontFamily=Helvetica;fontSize=14;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="1020" y="355" width="320" height="60" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

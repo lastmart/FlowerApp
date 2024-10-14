@@ -1,4 +1,3 @@
-using FlowersCareAPI.Models;
 using FlowersCareAPI.Storages.FlowersStorage;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,25 +20,25 @@ public class FlowersController : ControllerBase
         return Ok(flowersStorage.GetAll());
     }
 
-    [HttpGet("byScientificName/{scientificName}")]
-    public ActionResult<Flower> GetFlowerByScientificName(string scientificName)
+    [HttpGet("byId/{fid}")]
+    public ActionResult<Flower> GetFlowerByScientificName(int fid)
     {
-        var flower = flowersStorage.GetByScientificName(scientificName);
+        var flower = flowersStorage.GetById(fid);
         return flower is null
             ? NotFound()
             : Ok(flower);
     }
-    
+
     [HttpGet("byName/{name}")]
     public ActionResult<Flower> GetFlowerByName(string name)
     {
         var flower = flowersStorage.GetAll()
             .FirstOrDefault(f => f.Name.Equals(name, StringComparison.OrdinalIgnoreCase) ||
                                  f.ScientificName.Equals(name, StringComparison.OrdinalIgnoreCase));
-    
+
         return flower is null ? NotFound() : Ok(flower);
     }
-    
+
     [HttpPost("filter")]
     public ActionResult<IEnumerable<Flower>> FilterFlowers([FromBody] FlowerFilter filter)
     {
@@ -59,7 +58,7 @@ public class FlowersController : ControllerBase
 
         return Ok(flowers.ToList());
     }
-    
+
     [HttpPost("sort")]
     public ActionResult<IEnumerable<Flower>> SortFlowers([FromBody] FlowerSortOptions sortOptions)
     {
@@ -90,10 +89,9 @@ public class FlowersController : ControllerBase
                 ? flowers.OrderByDescending(f => f.IsToxic)
                 : flowers.OrderBy(f => f.IsToxic),
 
-            _ => flowers 
+            _ => flowers
         };
 
         return Ok(flowers.ToList());
     }
-
 }

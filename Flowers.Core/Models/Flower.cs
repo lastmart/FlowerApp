@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 public enum LightLevel
 {
     Low,
@@ -7,8 +9,12 @@ public enum LightLevel
 
 public class Flower
 {
+    [Required]
     public string ScientificName { get; set; }
+    [Required]
     public string Name { get; set; }
+    [Required]
+    public int FId { get; set; }
     public string DescriptionFlower { get; set; }
     public bool IsToxic { get; set; }
     public int WateringFrequency { get; set; } // В днях

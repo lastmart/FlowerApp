@@ -15,11 +15,11 @@ public class FlowerTransfersController : ControllerBase
         this.flowersTransferStorage = flowersTransferStorage;
     }
 
-    [HttpPost("transfer/{userId}")]
-    public ActionResult<Flower> GetFlowerByScientificName(string userId, [FromBody] Page<Flower> givingFlowers,
-        [FromBody] Page<TransferFlower> acceptingFlowers)
-    {
-        flowersTransferStorage.SendTransferRequest(userId, givingFlowers, acceptingFlowers);
-        return Ok();
-    }
+    // [HttpPost("transfer/{userId}")]
+    // public ActionResult<Flower> GetFlowerByScientificName(string userId, [FromBody] Page<Flower> givingFlowers,
+    //     [FromBody] Page<TransferFlower> acceptingFlowers)
+    // {
+    //     flowersTransferStorage.SendTransferRequest(userId, givingFlowers, acceptingFlowers);
+    //     return Ok();
+    // }
 }

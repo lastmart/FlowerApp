@@ -2,8 +2,11 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Text.Json.Serialization;
+using FlowersCareAPI.Storages.FlowersStorage;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddScoped<IFlowersStorage, FlowersStorage>();
 
 builder.Services.AddControllers()
     .AddJsonOptions(options =>

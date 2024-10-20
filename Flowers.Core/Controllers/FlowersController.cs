@@ -47,11 +47,12 @@ public class FlowersController : ControllerBase
         if (filter.WateringFrequency.HasValue)
             flowers = flowers.Where(f => f.WateringFrequency == filter.WateringFrequency.Value);
 
-        if (filter.LightRequirements.HasValue)
-            flowers = flowers.Where(f => f.LightRequirements == filter.LightRequirements.Value);
+        if (filter.LightRequirements != null)
+            flowers = flowers.Where(f => f. == filter.LightRequirements.Value)
+        ;
 
         if (filter.IsToxic.HasValue)
-            flowers = flowers.Where(f => f.IsToxic == filter.IsToxic.Value);
+            flowers = flowers.Where(f => f.ToxicCategories == filter.IsToxic.Value);
 
         if (filter.TransplantFrequency.HasValue)
             flowers = flowers.Where(f => f.TransplantFrequency == filter.TransplantFrequency.Value);
@@ -78,16 +79,16 @@ public class FlowersController : ControllerBase
                 : flowers.OrderBy(f => f.ScientificName),
 
             "lightrequirements" => sortOptions.IsDescending
-                ? flowers.OrderByDescending(f => f.LightRequirements)
-                : flowers.OrderBy(f => f.LightRequirements),
+                ? flowers.OrderByDescending(f => f.LightParameters)
+                : flowers.OrderBy(f => f.LightParameters),
 
             "transplantfrequency" => sortOptions.IsDescending
                 ? flowers.OrderByDescending(f => f.TransplantFrequency)
                 : flowers.OrderBy(f => f.TransplantFrequency),
 
             "istoxic" => sortOptions.IsDescending
-                ? flowers.OrderByDescending(f => f.IsToxic)
-                : flowers.OrderBy(f => f.IsToxic),
+                ? flowers.OrderByDescending(f => f.ToxicCategories)
+                : flowers.OrderBy(f => f.ToxicCategories),
 
             _ => flowers
         };

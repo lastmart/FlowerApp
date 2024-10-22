@@ -1,10 +1,15 @@
 using System.ComponentModel.DataAnnotations;
-public class FlowerSortOptions
+public class SortOption
 {
     [Required(ErrorMessage = "SortBy is required.")]
-    [RegularExpression("^(wateringfrequency|name|scientificname|lightrequirements|transplantfrequency|istoxic)$",
-        ErrorMessage = "SortBy must be one of: wateringfrequency, name, scientificname, lightrequirements, " +
-                       "transplantfrequency, isToxic.")]
+    [RegularExpression("^(wateringFrequency|name|scientificname|illuminationInSuites|durationInHours|isShadeTolerant|transplantFrequency|isToxic)$",
+        ErrorMessage = "SortBy must be one of: wateringFrequency, name, scientificname, illuminationInSuites, " +
+                       "durationInHours, isShadeTolerant, transplantFrequency, isToxic.")]
     public string SortBy { get; set; }
     public bool IsDescending { get; set; }
+}
+
+public class FlowerSortOptions
+{
+    public List<SortOption> SortOptions { get; set; }
 }

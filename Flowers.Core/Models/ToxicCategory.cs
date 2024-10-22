@@ -5,5 +5,6 @@ public enum ToxicCategory
 {
     Baby,
     Cat,
-    Dog
+    Dog,
+    People
 }

@@ -1,12 +1,26 @@
+using System.Reflection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Text.Json.Serialization;
 using FlowersCareAPI.Storages.FlowersStorage;
+using Swashbuckle.AspNetCore.Annotations;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddScoped<IFlowersStorage, FlowersStorage>();
+// builder.Services.AddScoped<IFlowersStorage, FlowersStorage>();
+
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+    {
+        Title = "Flowers Care API",
+        Version = "v1",
+        Description = "API для управления цветами, включая фильтрацию и сортировку.",
+    });
+    
+    options.EnableAnnotations();
+});
 
 builder.Services.AddControllers()
     .AddJsonOptions(options =>

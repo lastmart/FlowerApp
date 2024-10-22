@@ -14,11 +14,19 @@ public class Flower
     public int TransplantFrequency { get; set; } // В месяцах
     public string DescriptionCare { get; set; }
     public string PhotoUrl { get; set; }
+    
+    public LightParameters LightParameters { get; set; }
 
-    public Flower(string scientificName, string name, string descriptionFlower, 
+    public ToxicCategory[]? ToxicCategories { get; set; }
+    
+    public bool IsToxic => ToxicCategories is { Length: > 0 };
+
+    public Flower(int fid, string scientificName, string name, string descriptionFlower, 
         int wateringFrequency, int transplantFrequency, 
-        string descriptionCare, string photoUrl)
+        string descriptionCare, string photoUrl, 
+        LightParameters lightParameters, ToxicCategory[]? toxicCategories = null)
     {
+        FId = fid;
         ScientificName = scientificName;
         Name = name;
         DescriptionFlower = descriptionFlower;
@@ -26,5 +34,7 @@ public class Flower
         TransplantFrequency = transplantFrequency;
         DescriptionCare = descriptionCare;
         PhotoUrl = photoUrl;
+        LightParameters = lightParameters;
+        ToxicCategories = toxicCategories;
     }
 }

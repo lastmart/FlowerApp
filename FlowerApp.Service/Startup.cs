@@ -1,14 +1,26 @@
-﻿using FlowerApp.Service.Extensions;
+﻿using FlowerApp.Data;
+using FlowerApp.Data.Storages;
+using FlowerApp.Domain.DbModels;
+using FlowerApp.Service.Extensions;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
 namespace FlowerApp.Service;
 
 public class Startup
 {
+    private readonly IConfiguration configuration;
+
+    public Startup(IConfiguration configuration)
+    {
+        this.configuration = configuration;
+    }
+
     public void ConfigureServices(IServiceCollection serviceCollection)
     {
-        serviceCollection.AddControllers();
+        ConfigureDatabase(serviceCollection);
         serviceCollection.ConfigureServices();
+        serviceCollection.AddControllers();
         serviceCollection.AddSwaggerGen(options =>
         {
             options.SwaggerDoc("v1", new OpenApiInfo
@@ -19,6 +31,14 @@ public class Startup
             });
             options.EnableAnnotations();
         });
+    }
+
+    private void ConfigureDatabase(IServiceCollection serviceCollection)
+    {
+        serviceCollection.AddDbContext<FlowerAppContext>(options =>
+            options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
+        serviceCollection.AddScoped<IStorageBase<Flower, int>, FlowerStorage>();
+        serviceCollection.AddScoped<IStorageBase<LightParameters, int>, LightParametersStorage>();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment environment)

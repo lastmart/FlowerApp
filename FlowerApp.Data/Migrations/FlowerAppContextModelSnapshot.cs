@@ -66,7 +66,7 @@ namespace FlowerApp.Data.Migrations
 
                     b.HasIndex("LightParametersId");
 
-                    b.ToTable("Flowers", (string)null);
+                    b.ToTable("Flowers");
                 });
 
             modelBuilder.Entity("FlowerApp.Domain.DbModels.LightParameters", b =>
@@ -85,7 +85,11 @@ namespace FlowerApp.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("LightParameters", (string)null);
+                    b.ToTable("LightParameters");
+
+                    b.HasCheckConstraint("CK_DurationInHours", "\"DurationInHours\" >= 0");
+
+                    b.HasCheckConstraint("CK_IlluminationInSuites", "\"IlluminationInSuites\" >= 0");
                 });
 
             modelBuilder.Entity("FlowerApp.Domain.DbModels.Flower", b =>

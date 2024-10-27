@@ -1,6 +1,7 @@
 ﻿namespace FlowerApp.Domain.DbModels;
 
 // Now create toxicCategory for little peoples and polular home pets
+[Flags]
 public enum ToxicCategory
 {
     None = 0,

@@ -4,28 +4,35 @@ namespace FlowerApp.Data.Storages;
 
 public class LightParametersStorage : IStorageBase<LightParameters, int>
 {
-    public LightParameters? Get(int id)
+    private readonly FlowerAppContext flowerAppContext;
+    
+    public LightParametersStorage(FlowerAppContext flowerAppContext)
     {
-        throw new NotImplementedException();
+        this.flowerAppContext = flowerAppContext;
+    }
+    public LightParameters? Get(int id) => flowerAppContext.LightParameters.Find(id);
+
+    public IEnumerable<LightParameters> Get(int[] ids) =>
+        flowerAppContext.LightParameters.Where(lp => ids.Contains(lp.Id)).ToList();
+
+    public async Task<bool> Create(LightParameters model)
+    {
+        await flowerAppContext.LightParameters.AddAsync(model);
+        return await flowerAppContext.SaveChangesAsync() > 0;
     }
 
-    public IEnumerable<LightParameters> Get(int[] ids)
+    public async Task<bool> Update(LightParameters model)
     {
-        throw new NotImplementedException();
+        flowerAppContext.LightParameters.Update(model);
+        return await flowerAppContext.SaveChangesAsync() > 0;
     }
 
-    public Task<bool> Create(LightParameters model)
+    public async Task<bool> Delete(int id)
     {
-        throw new NotImplementedException();
-    }
+        var lightParameter = await flowerAppContext.LightParameters.FindAsync(id);
+        if (lightParameter == null) return false;
 
-    public Task<bool> Update(LightParameters model)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<bool> Delete(int id)
-    {
-        throw new NotImplementedException();
+        flowerAppContext.LightParameters.Remove(lightParameter);
+        return await flowerAppContext.SaveChangesAsync() > 0;
     }
 }

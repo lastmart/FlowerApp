@@ -1,9 +1,12 @@
 ﻿using FlowerApp.Data;
 using FlowerApp.Data.Storages;
 using FlowerApp.Domain.DbModels;
+using FlowerApp.Service.Controllers;
 using FlowerApp.Service.Extensions;
+using FlowerApp.Service.Mappers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.Filters;
 
 namespace FlowerApp.Service;
 
@@ -30,18 +33,23 @@ public class Startup
                 Description = "API для управления цветами, включая фильтрацию и сортировку.",
             });
             options.EnableAnnotations();
+            options.ExampleFilters();
         });
+        serviceCollection.AddSwaggerExamplesFromAssemblyOf<FlowerSortOptionsExample>();
+        serviceCollection.AddSwaggerExamplesFromAssemblyOf<FlowerFilterExample>();
+        serviceCollection.AddScoped<DataSeeder>();
+        serviceCollection.AddAutoMapper(typeof(PagedResponseOffsetProfile), typeof(FlowerProfile));
     }
 
     private void ConfigureDatabase(IServiceCollection serviceCollection)
     {
         serviceCollection.AddDbContext<FlowerAppContext>(options =>
             options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
-        serviceCollection.AddScoped<IStorageBase<Flower, int>, FlowerStorage>();
+        serviceCollection.AddScoped<IFlowerStorage, FlowerStorage>();
         serviceCollection.AddScoped<IStorageBase<LightParameters, int>, LightParametersStorage>();
     }
 
-    public void Configure(IApplicationBuilder app, IWebHostEnvironment environment)
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment environment, DataSeeder dataSeeder)
     {
         if (environment.IsDevelopment())
         {
@@ -52,5 +60,6 @@ public class Startup
         app.UseCors();
         app.UseRouting();
         app.UseEndpoints(endpoints => endpoints.MapControllers());
+        dataSeeder.SeedDataAsync().Wait();
     }
 }

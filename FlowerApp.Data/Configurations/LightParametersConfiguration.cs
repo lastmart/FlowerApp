@@ -15,7 +15,7 @@ public class LightParametersConfiguration : IEntityTypeConfiguration<LightParame
         builder.HasCheckConstraint("CK_DurationInHours", "\"DurationInHours\" >= 0");
 
         builder.Property(lightParameters => lightParameters.IlluminationInSuites)
-            .HasColumnType("real")
+            .HasColumnType("double precision")
             .IsRequired();
         builder.HasCheckConstraint("CK_IlluminationInSuites", "\"IlluminationInSuites\" >= 0");
     }

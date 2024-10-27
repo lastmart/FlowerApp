@@ -38,8 +38,8 @@ public class FlowerController : ControllerBase
         [SwaggerParameter("Размер страницы (не более)")]
         int take = 50)
     {
-        if (skip <= 0 || take <= 0)
-            return BadRequest($"{nameof(skip)} and {nameof(take)} size must be greater than 0.");
+        if (skip < 0 || take < 0)
+            return BadRequest($"{nameof(skip)} and {nameof(take)} size must be no less than 0.");
 
         var flowersPage = await flowersService.GetFlowers(new Pagination(skip, take));
         return Ok(flowersPage);

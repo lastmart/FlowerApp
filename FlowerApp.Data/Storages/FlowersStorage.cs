@@ -74,7 +74,7 @@ public class FlowersStorage : IFlowersStorage
 
         var flowers = await flowerAppContext.Flowers
             .Include(f => f.LightParameters)
-            .OrderBy(flower => typeof(Flower).GetProperty(sortByProperty)!.GetValue(flower) ?? flower.Id)
+            .OrderBy(flower => flower.Id)
             .Skip(pagination.Skip)
             .Take(pagination.Take)
             .ToListAsync();

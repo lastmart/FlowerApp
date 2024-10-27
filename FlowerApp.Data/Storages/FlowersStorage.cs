@@ -1,27 +1,33 @@
 ﻿using System.Linq.Expressions;
+using FlowerApp.Domain.Common;
 using FlowerApp.Domain.DbModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace FlowerApp.Data.Storages;
 
-public class FlowerStorage : IFlowerStorage
+public class FlowersStorage : IFlowersStorage
 {
     private readonly FlowerAppContext flowerAppContext;
 
-    public FlowerStorage(FlowerAppContext flowerAppContext)
+    public FlowersStorage(FlowerAppContext flowerAppContext)
     {
         this.flowerAppContext = flowerAppContext;
     }
 
-    public Flower? Get(int id) => flowerAppContext.Flowers
-        .Include(f => f.LightParameters)
-        .FirstOrDefault(f => f.Id == id);
+    public Flower? Get(int id)
+    {
+        return flowerAppContext.Flowers
+            .Include(f => f.LightParameters)
+            .FirstOrDefault(f => f.Id == id);
+    }
 
-    public IEnumerable<Flower> Get(int[] ids) =>
-        flowerAppContext.Flowers
+    public IEnumerable<Flower> Get(int[] ids)
+    {
+        return flowerAppContext.Flowers
             .Where(f => ids.Contains(f.Id))
             .Include(f => f.LightParameters)
             .ToList();
+    }
 
     public async Task<bool> Create(Flower model)
     {
@@ -44,29 +50,37 @@ public class FlowerStorage : IFlowerStorage
         return await flowerAppContext.SaveChangesAsync() > 0;
     }
 
-    public Flower? GetByName(string name) =>
-        flowerAppContext.Flowers
+    public Flower? GetByName(string name)
+    {
+        return flowerAppContext.Flowers
             .Include(f => f.LightParameters)
             .FirstOrDefault(f => f.Name == name);
+    }
 
-    public Flower? GetByScientificName(string scientificName) =>
-        flowerAppContext.Flowers
+    public Flower? GetByScientificName(string scientificName)
+    {
+        return flowerAppContext.Flowers
             .Include(f => f.LightParameters)
             .FirstOrDefault(f => f.ScientificName == scientificName);
+    }
 
 
-    public async Task<PagedResponseOffset<Flower>> GetAll(int pageNumber, int pageSize)
+    public async Task<SearchFlowersResult<Flower>> GetAll(Pagination pagination, string? sortByProperty)
     {
+        if (string.IsNullOrEmpty(sortByProperty))
+        {
+            sortByProperty = nameof(Flower.Id);
+        }
+
         var flowers = await flowerAppContext.Flowers
             .Include(f => f.LightParameters)
-            .OrderBy(f => f.Id)
-            .Skip((pageNumber - 1) * pageSize)
-            .Take(pageSize)
+            .OrderBy(flower => typeof(Flower).GetProperty(sortByProperty)!.GetValue(flower) ?? flower.Id)
+            .Skip(pagination.Skip)
+            .Take(pagination.Take)
             .ToListAsync();
-
         var count = await flowerAppContext.Flowers.CountAsync();
 
-        return new PagedResponseOffset<Flower>(flowers, pageNumber, pageSize, count);
+        return new SearchFlowersResult<Flower>(count, flowers);
     }
 
     public async Task<IEnumerable<Flower>> FilterFlowers(FlowerFilter filter)
@@ -98,6 +112,7 @@ public class FlowerStorage : IFlowerStorage
 
         return await query.ToListAsync();
     }
+
     public async Task<IEnumerable<Flower>> SortFlowers(FlowerSortOptions sortOptions)
     {
         var query = flowerAppContext.Flowers.Include(f => f.LightParameters).AsQueryable();
@@ -107,24 +122,20 @@ public class FlowerStorage : IFlowerStorage
         foreach (var sortOption in sortOptions.SortOptions)
         {
             var propertySelector = GetPropertySelector(sortOption.SortBy);
-        
+
             if (orderedQuery == null)
-            {
-                orderedQuery = sortOption.IsDescending 
-                    ? query.OrderByDescending(propertySelector) 
+                orderedQuery = sortOption.IsDescending
+                    ? query.OrderByDescending(propertySelector)
                     : query.OrderBy(propertySelector);
-            }
             else
-            {
-                orderedQuery = sortOption.IsDescending 
-                    ? orderedQuery.ThenByDescending(propertySelector) 
+                orderedQuery = sortOption.IsDescending
+                    ? orderedQuery.ThenByDescending(propertySelector)
                     : orderedQuery.ThenBy(propertySelector);
-            }
         }
 
         return await orderedQuery.ToListAsync();
     }
-    
+
     private Expression<Func<Flower, object>> GetPropertySelector(string sortBy)
     {
         return sortBy.ToLower() switch
@@ -135,7 +146,7 @@ public class FlowerStorage : IFlowerStorage
             "transplantfrequency" => f => f.TransplantFrequency,
             "illuminationinsuites" => f => f.LightParameters.IlluminationInSuites,
             "durationinhours" => f => f.LightParameters.DurationInHours,
-            "istoxic" => f =>  f.ToxicCategory != ToxicCategory.None,
+            "istoxic" => f => f.ToxicCategory != ToxicCategory.None,
             _ => throw new ArgumentException("Invalid sort option.")
         };
     }

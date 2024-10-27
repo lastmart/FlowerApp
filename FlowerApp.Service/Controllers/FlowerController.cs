@@ -1,7 +1,9 @@
 using AutoMapper;
 using FlowerApp.Data.Storages;
+using FlowerApp.Domain.Common;
 using FlowerApp.Domain.DbModels;
 using FlowerApp.Domain.DTOModels;
+using FlowerApp.Service.Services;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Swashbuckle.AspNetCore.Filters;
@@ -10,38 +12,39 @@ namespace FlowerApp.Service.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class FlowerController: ControllerBase
+public class FlowerController : ControllerBase
 {
-    private readonly IFlowerStorage flowerStorage;
     private readonly IMapper _mapper;
-    
-    public FlowerController(IFlowerStorage flowerStorage, IMapper mapper)
+    private readonly IFlowersService flowersService;
+    private readonly IFlowersStorage flowerStorage;
+
+    public FlowerController(IFlowersStorage flowerStorage, IFlowersService flowersService, IMapper mapper)
     {
         this.flowerStorage = flowerStorage;
+        this.flowersService = flowersService;
         _mapper = mapper;
     }
-    
+
     [SwaggerOperation(
         Summary = "Получить постраничный список всех цветов",
-        Description = "Возвращает постраничный список цветов с основной информацией о каждом цветке и параметрами освещения",
+        Description =
+            "Возвращает постраничный список цветов с основной информацией о каждом цветке и параметрами освещения",
         OperationId = "GetFlowers"
     )]
     [HttpGet]
-    public async Task<ActionResult<PagedResponseOffsetDto<FlowerDto>>> GetFlowers(
-        [SwaggerParameter("Номер страницы (начиная с 1)")] int pageNumber = 1, 
-        [SwaggerParameter("Размер страницы (количество элементов на странице)")] int pageSize = 10)
+    public async Task<ActionResult<FlowersPage<FlowerDto>>> GetFlowers(
+        [SwaggerParameter("Сколько цветов пропустить")]
+        int skip = 0,
+        [SwaggerParameter("Размер страницы (не более)")]
+        int take = 50)
     {
-        if (pageNumber <= 0 || pageSize <= 0)
-            return BadRequest($"{nameof(pageNumber)} and {nameof(pageSize)} size must be greater than 0.");
+        if (skip <= 0 || take <= 0)
+            return BadRequest($"{nameof(skip)} and {nameof(take)} size must be greater than 0.");
 
-        var pagedFlowers = await flowerStorage.GetAll(pageNumber, pageSize);
-        var pagedFlowersDto = _mapper.Map<PagedResponseOffsetDto<FlowerDto>>(pagedFlowers);
-
-        return Ok(pagedFlowersDto);
+        var flowersPage = await flowersService.GetFlowers(new Pagination(skip, take));
+        return Ok(flowersPage);
     }
-    
-    
-    
+
     [SwaggerOperation(
         Summary = "Получить цветок по идентификатору",
         Description = "Возвращает детальную информацию о конкретном цветке по его ID, включая параметры освещения",
@@ -49,7 +52,8 @@ public class FlowerController: ControllerBase
     )]
     [HttpGet("{id:int}")]
     public ActionResult<Flower> GetFlowerById(
-        [SwaggerParameter("Уникальный идентификатор цветка")] int id)
+        [SwaggerParameter("Уникальный идентификатор цветка")]
+        int id)
     {
         var flower = flowerStorage.Get(id);
         if (flower == null) return NotFound();
@@ -57,9 +61,7 @@ public class FlowerController: ControllerBase
         var flowerDto = _mapper.Map<FlowerDto>(flower);
         return Ok(flowerDto);
     }
-    
-    
-    
+
     [SwaggerOperation(
         Summary = "Получить цветок по названию",
         Description = "Возвращает детальную информацию о цветке по его обычному названию",
@@ -74,11 +76,8 @@ public class FlowerController: ControllerBase
 
         var flowerDto = _mapper.Map<FlowerDto>(flower);
         return Ok(flowerDto);
-
     }
-    
-    
-    
+
     [SwaggerOperation(
         Summary = "Получить цветок по научному названию",
         Description = "Возвращает детальную информацию о цветке по его научному названию",
@@ -86,7 +85,8 @@ public class FlowerController: ControllerBase
     )]
     [HttpGet("scientificname/{scientificName}")]
     public ActionResult<FlowerDto> GetFlowerByScientificName(
-        [SwaggerParameter("Научное название цветка (латинское название)")] string scientificName)
+        [SwaggerParameter("Научное название цветка (латинское название)")]
+        string scientificName)
     {
         var flower = flowerStorage.GetByScientificName(scientificName);
         if (flower == null) return NotFound();
@@ -94,9 +94,8 @@ public class FlowerController: ControllerBase
         var flowerDto = _mapper.Map<FlowerDto>(flower);
         return Ok(flowerDto);
     }
-    
-    
-    
+
+
     [SwaggerOperation(
         Summary = "Фильтрация цветов по различным параметрам",
         Description = @"Позволяет фильтровать цветы по следующим параметрам:<br/>
@@ -110,9 +109,9 @@ public class FlowerController: ControllerBase
     [SwaggerRequestExample(typeof(FlowerFilterDto), typeof(FlowerFilterExample))]
     [HttpPost("filter")]
     public async Task<ActionResult<IEnumerable<FlowerDto>>> FilterFlowers(
-        [SwaggerParameter("Параметры фильтрации цветов")]  [FromBody] FlowerFilterDto filterDto)
+        [SwaggerParameter("Параметры фильтрации цветов")] [FromBody]
+        FlowerFilterDto filterDto)
     {
-        
         var filter = new FlowerFilter
         {
             WateringFrequency = filterDto.WateringFrequency,
@@ -127,10 +126,8 @@ public class FlowerController: ControllerBase
 
         return Ok(filteredFlowersDto);
     }
-    
-    
-    
-    
+
+
     [SwaggerOperation(
         Summary = "Сортировка цветов по различным параметрам",
         Description = @"Позволяет сортировать цветы по следующим параметрам:<br/>
@@ -146,12 +143,11 @@ public class FlowerController: ControllerBase
     [SwaggerRequestExample(typeof(FlowerSortOptions), typeof(FlowerSortOptionsExample))]
     [HttpPost("sort")]
     public async Task<ActionResult<IEnumerable<FlowerDto>>> SortFlowers(
-        [SwaggerParameter("Параметры сортировки цветов")] [FromBody] FlowerSortOptions sortOptions)
+        [SwaggerParameter("Параметры сортировки цветов")] [FromBody]
+        FlowerSortOptions sortOptions)
     {
         if (sortOptions?.SortOptions == null || !sortOptions.SortOptions.Any())
-        {
             return BadRequest("Sort options are required.");
-        }
 
         var sortedFlowers = await flowerStorage.SortFlowers(sortOptions);
         var sortedFlowersDto = _mapper.Map<IEnumerable<FlowerDto>>(sortedFlowers);

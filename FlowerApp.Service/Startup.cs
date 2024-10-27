@@ -30,7 +30,7 @@ public class Startup
             {
                 Title = "FlowerApp API",
                 Version = "v1",
-                Description = "API для управления цветами, включая фильтрацию и сортировку.",
+                Description = "API для управления цветами, включая фильтрацию и сортировку."
             });
             options.EnableAnnotations();
             options.ExampleFilters();
@@ -38,14 +38,14 @@ public class Startup
         serviceCollection.AddSwaggerExamplesFromAssemblyOf<FlowerSortOptionsExample>();
         serviceCollection.AddSwaggerExamplesFromAssemblyOf<FlowerFilterExample>();
         serviceCollection.AddScoped<DataSeeder>();
-        serviceCollection.AddAutoMapper(typeof(PagedResponseOffsetProfile), typeof(FlowerProfile));
+        serviceCollection.AddAutoMapper(typeof(PageResponseProfile), typeof(FlowerProfile));
     }
 
     private void ConfigureDatabase(IServiceCollection serviceCollection)
     {
         serviceCollection.AddDbContext<FlowerAppContext>(options =>
             options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
-        serviceCollection.AddScoped<IFlowerStorage, FlowerStorage>();
+        serviceCollection.AddScoped<IFlowersStorage, FlowersStorage>();
         serviceCollection.AddScoped<IStorageBase<LightParameters, int>, LightParametersStorage>();
     }
 

@@ -24,21 +24,6 @@ public class Startup
         ConfigureDatabase(serviceCollection);
         serviceCollection.ConfigureServices();
         serviceCollection.AddControllers();
-        serviceCollection.AddSwaggerGen(options =>
-        {
-            options.SwaggerDoc("v1", new OpenApiInfo
-            {
-                Title = "FlowerApp API",
-                Version = "v1",
-                Description = "API для управления цветами, включая фильтрацию и сортировку."
-            });
-            options.EnableAnnotations();
-            options.ExampleFilters();
-        });
-        serviceCollection.AddSwaggerExamplesFromAssemblyOf<FlowerSortOptionsExample>();
-        serviceCollection.AddSwaggerExamplesFromAssemblyOf<FlowerFilterExample>();
-        serviceCollection.AddScoped<DataSeeder>();
-        serviceCollection.AddAutoMapper(typeof(PageResponseProfile), typeof(FlowerProfile));
     }
 
     private void ConfigureDatabase(IServiceCollection serviceCollection)

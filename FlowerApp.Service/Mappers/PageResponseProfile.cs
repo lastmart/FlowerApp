@@ -8,6 +8,6 @@ public class PageResponseProfile : Profile
 {
     public PageResponseProfile()
     {
-        CreateMap(typeof(SearchFlowersResult<Flower>), typeof(FlowersPage<FlowerDto>));
+        CreateMap(typeof(SearchFlowersResult<Flower>), typeof(GetFlowerResponse));
     }
 }

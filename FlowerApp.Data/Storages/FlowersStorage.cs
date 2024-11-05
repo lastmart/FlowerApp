@@ -31,23 +31,55 @@ public class FlowersStorage : IFlowersStorage
 
     public async Task<bool> Create(Flower model)
     {
-        await flowerAppContext.Flowers.AddAsync(model);
-        return await flowerAppContext.SaveChangesAsync() > 0;
+        await using var transaction = await flowerAppContext.Database.BeginTransactionAsync();
+        try
+        {
+            await flowerAppContext.Flowers.AddAsync(model);
+            var result = await flowerAppContext.SaveChangesAsync() > 0;
+            await transaction.CommitAsync();
+            return result;
+        }
+        catch
+        {
+            await transaction.RollbackAsync();
+            throw;
+        }
     }
 
     public async Task<bool> Update(Flower model)
     {
-        flowerAppContext.Flowers.Update(model);
-        return await flowerAppContext.SaveChangesAsync() > 0;
+        await using var transaction = await flowerAppContext.Database.BeginTransactionAsync();
+        try
+        {
+            flowerAppContext.Flowers.Update(model);
+            var result = await flowerAppContext.SaveChangesAsync() > 0;
+            await transaction.CommitAsync();
+            return result;
+        }
+        catch
+        {
+            await transaction.RollbackAsync();
+            throw;
+        }
     }
 
     public async Task<bool> Delete(int id)
     {
-        var flower = await flowerAppContext.Flowers.FindAsync(id);
-        if (flower == null) return false;
-
-        flowerAppContext.Flowers.Remove(flower);
-        return await flowerAppContext.SaveChangesAsync() > 0;
+        await using var transaction = await flowerAppContext.Database.BeginTransactionAsync();
+        try
+        {
+            var flower = await flowerAppContext.Flowers.FindAsync(id);
+            if (flower == null) return false;
+            flowerAppContext.Flowers.Remove(flower);
+            var result = await flowerAppContext.SaveChangesAsync() > 0;
+            await transaction.CommitAsync();
+            return result;
+        }
+        catch
+        {
+            await transaction.RollbackAsync();
+            throw;
+        }
     }
 
     public Flower? GetByName(string name)

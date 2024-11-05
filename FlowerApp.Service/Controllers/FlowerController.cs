@@ -4,6 +4,8 @@ using FlowerApp.Domain.Common;
 using FlowerApp.Domain.DbModels;
 using FlowerApp.Domain.DTOModels;
 using FlowerApp.Service.Services;
+using FlowerApp.Service.Validators;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using Swashbuckle.AspNetCore.Filters;
@@ -17,12 +19,23 @@ public class FlowerController : ControllerBase
     private readonly IMapper _mapper;
     private readonly IFlowersService flowersService;
     private readonly IFlowersStorage flowerStorage;
+    private readonly IValidator<FlowersPaginationRequest> _paginationValidator;
+    private readonly IValidator<FlowerFilterDto> _filterValidator;
+    
 
-    public FlowerController(IFlowersStorage flowerStorage, IFlowersService flowersService, IMapper mapper)
+    public FlowerController(
+        IFlowersStorage flowerStorage, 
+        IFlowersService flowersService, 
+        IMapper mapper,
+        IValidator<FlowerFilterDto> filterValidator,
+        IValidator<FlowersPaginationRequest> paginationValidator
+        )
     {
         this.flowerStorage = flowerStorage;
         this.flowersService = flowersService;
         _mapper = mapper;
+        _filterValidator = filterValidator;
+        _paginationValidator = paginationValidator;
     }
 
     [SwaggerOperation(
@@ -32,15 +45,21 @@ public class FlowerController : ControllerBase
         OperationId = "GetFlowers"
     )]
     [HttpGet]
-    public async Task<ActionResult<FlowersPage<FlowerDto>>> GetFlowers(
+    public async Task<ActionResult<GetFlowerResponse>> GetFlowers(
         [SwaggerParameter("Сколько цветов пропустить")]
         int skip = 0,
         [SwaggerParameter("Размер страницы (не более)")]
         int take = 50)
     {
-        if (skip < 0 || take < 0)
-            return BadRequest($"{nameof(skip)} and {nameof(take)} size must be no less than 0.");
+        var paginationRequest = new FlowersPaginationRequest { Skip = skip, Take = take };
+        var validationResult = await _paginationValidator.ValidateAsync(paginationRequest);
 
+        if (!validationResult.IsValid)
+        {
+            return BadRequest(validationResult.Errors);
+        }
+
+        
         var flowersPage = await flowersService.GetFlowers(new Pagination(skip, take));
         return Ok(flowersPage);
     }
@@ -112,6 +131,13 @@ public class FlowerController : ControllerBase
         [SwaggerParameter("Параметры фильтрации цветов")] [FromBody]
         FlowerFilterDto filterDto)
     {
+        var validationResult = await _filterValidator.ValidateAsync(filterDto);
+
+        if (!validationResult.IsValid)
+        {
+            return BadRequest(validationResult.Errors);
+        }
+        
         var filter = new FlowerFilter
         {
             WateringFrequency = filterDto.WateringFrequency,

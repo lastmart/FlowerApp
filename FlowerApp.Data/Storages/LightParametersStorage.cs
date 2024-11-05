@@ -17,22 +17,55 @@ public class LightParametersStorage : IStorageBase<LightParameters, int>
 
     public async Task<bool> Create(LightParameters model)
     {
-        await flowerAppContext.LightParameters.AddAsync(model);
-        return await flowerAppContext.SaveChangesAsync() > 0;
+        await using var transaction = await flowerAppContext.Database.BeginTransactionAsync();
+        try
+        {
+            await flowerAppContext.LightParameters.AddAsync(model);
+            var result = await flowerAppContext.SaveChangesAsync() > 0;
+            await transaction.CommitAsync();
+            return result;
+        }
+        catch
+        {
+            await transaction.RollbackAsync();
+            throw;
+        }
     }
 
     public async Task<bool> Update(LightParameters model)
     {
-        flowerAppContext.LightParameters.Update(model);
-        return await flowerAppContext.SaveChangesAsync() > 0;
+        await using var transaction = await flowerAppContext.Database.BeginTransactionAsync();
+        try
+        {
+            flowerAppContext.LightParameters.Update(model);
+            var result = await flowerAppContext.SaveChangesAsync() > 0;
+            await transaction.CommitAsync();
+            return result;
+        }
+        catch
+        {
+            await transaction.RollbackAsync();
+            throw;
+        }
     }
 
     public async Task<bool> Delete(int id)
     {
-        var lightParameter = await flowerAppContext.LightParameters.FindAsync(id);
-        if (lightParameter == null) return false;
+        await using var transaction = await flowerAppContext.Database.BeginTransactionAsync();
+        try
+        {
+            var lightParameter = await flowerAppContext.LightParameters.FindAsync(id);
+            if (lightParameter == null) return false;
 
-        flowerAppContext.LightParameters.Remove(lightParameter);
-        return await flowerAppContext.SaveChangesAsync() > 0;
+            flowerAppContext.LightParameters.Remove(lightParameter);
+            var result = await flowerAppContext.SaveChangesAsync() > 0;
+            await transaction.CommitAsync();
+            return result;
+        }
+        catch
+        {
+            await transaction.RollbackAsync();
+            throw;
+        }
     }
 }

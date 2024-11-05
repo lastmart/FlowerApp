@@ -16,9 +16,9 @@ public class FlowersService : IFlowersService
         this.mapper = mapper;
     }
 
-    public async Task<FlowersPage<FlowerDto>> GetFlowers(Pagination pagination)
+    public async Task<GetFlowerResponse> GetFlowers(Pagination pagination)
     {
         var response = await flowersStorage.GetAll(pagination);
-        return mapper.Map<FlowersPage<FlowerDto>>(response);
+        return mapper.Map<GetFlowerResponse>(response);
     }
 }

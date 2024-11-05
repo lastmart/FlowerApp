@@ -5,5 +5,5 @@ namespace FlowerApp.Service.Services;
 
 public interface IFlowersService
 {
-    Task<FlowersPage<FlowerDto>> GetFlowers(Pagination pagination);
+    Task<GetFlowerResponse> GetFlowers(Pagination pagination);
 }

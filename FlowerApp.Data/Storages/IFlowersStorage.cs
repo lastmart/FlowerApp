@@ -1,13 +1,17 @@
+using FlowerApp.Domain.ApplicationModels.FlowerModels;
 using FlowerApp.Domain.Common;
 using FlowerApp.Domain.DbModels;
+using Flower = FlowerApp.Domain.DbModels.Flower;
 
 namespace FlowerApp.Data.Storages;
 
-public interface IFlowersStorage : IStorageBase<Flower, int>
+public interface IFlowersStorage : IStorage<Flower, int>
 {
-    Flower? GetByName(string name);
-    Flower? GetByScientificName(string scientificName);
-    Task<SearchFlowersResult<Flower>> GetAll(Pagination pagination, string? sortByProperty = null);
-    Task<IEnumerable<Flower>> FilterFlowers(FlowerFilter filter);
-    Task<IEnumerable<Flower>> SortFlowers(FlowerSortOptions sortOptions);
+    Task<SearchFlowersResult<Flower>> Get(
+        Pagination pagination,
+        FlowerFilterParams? filterParams = null,
+        FlowerSortOptions? sortByProperty = null
+    );
+
+    Task<Flower?> Get(string name);
 }

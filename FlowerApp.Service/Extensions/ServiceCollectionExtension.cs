@@ -1,29 +1,28 @@
-﻿using FlowerApp.Domain.DTOModels;
-using FlowerApp.Service.Controllers;
-using FlowerApp.Service.Mappers;
+﻿using FlowerApp.Domain.Common;
+using FlowerApp.Service.Common.Documentation;
+using FlowerApp.Service.Common.Mappers;
+using FlowerApp.Service.Database;
 using FlowerApp.Service.Services;
 using FlowerApp.Service.Validators;
 using FluentValidation;
 using Microsoft.OpenApi.Models;
-using Swashbuckle.AspNetCore.Filters;
 
 namespace FlowerApp.Service.Extensions;
 
 public static class ServiceCollectionExtension
 {
-    public static IServiceCollection ConfigureServices(this IServiceCollection serviceCollection)
+    public static IServiceCollection AddServices(this IServiceCollection serviceCollection)
     {
-        serviceCollection.AddScoped<IFlowersService, FlowersService>();
-        serviceCollection.AddScoped<DataSeeder>();
-        serviceCollection.AddTransient<IValidator<FlowerFilterDto>, FlowerFilterDtoValidator>();
-        serviceCollection.AddTransient<IValidator<FlowersPaginationRequest>, FlowersPaginationRequestValidator>();
-        serviceCollection.ConfigureSwagger();
-        serviceCollection.ConfigureAutoMapper();
-        
+        serviceCollection
+            .AddScoped<IFlowersService, FlowersService>()
+            .AddScoped<DataSeeder>()
+            .AddValidators()
+            .AddAutoMappers();
+
         return serviceCollection;
     }
 
-    private static IServiceCollection ConfigureSwagger(this IServiceCollection serviceCollection)
+    public static IServiceCollection AddSwagger(this IServiceCollection serviceCollection)
     {
         serviceCollection.AddSwaggerGen(options =>
         {
@@ -34,18 +33,24 @@ public static class ServiceCollectionExtension
                 Description = "API для управления цветами, включая фильтрацию и сортировку."
             });
             options.EnableAnnotations();
-            options.ExampleFilters();
+            options.SchemaFilter<EnumSchemaFilter>();
         });
-        
-        serviceCollection.AddSwaggerExamplesFromAssemblyOf<FlowerSortOptionsExample>();
-        serviceCollection.AddSwaggerExamplesFromAssemblyOf<FlowerFilterExample>();
-        
+
         return serviceCollection;
     }
 
-    private static IServiceCollection ConfigureAutoMapper(this IServiceCollection serviceCollection)
+    private static IServiceCollection AddAutoMappers(this IServiceCollection serviceCollection)
     {
         serviceCollection.AddAutoMapper(typeof(PageResponseProfile), typeof(FlowerProfile));
+
+        return serviceCollection;
+    }
+
+    private static IServiceCollection AddValidators(this IServiceCollection serviceCollection)
+    {
+        serviceCollection
+            .AddScoped<IValidator<Pagination>, PaginationValidator>();
+
         return serviceCollection;
     }
 }

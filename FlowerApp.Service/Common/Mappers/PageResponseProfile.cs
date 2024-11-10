@@ -1,8 +1,9 @@
 using AutoMapper;
+using FlowerApp.Domain.ApplicationModels.FlowerModels;
 using FlowerApp.Domain.DbModels;
-using FlowerApp.Domain.DTOModels;
+using Flower = FlowerApp.Domain.DbModels.Flower;
 
-namespace FlowerApp.Service.Mappers;
+namespace FlowerApp.Service.Common.Mappers;
 
 public class PageResponseProfile : Profile
 {

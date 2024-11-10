@@ -1,16 +1,18 @@
-namespace FlowerApp.Domain.DTOModels;
+using FlowerApp.Domain.DbModels;
 
-public class FlowerDto
+namespace FlowerApp.Domain.ApplicationModels.FlowerModels;
+
+public class Flower
 {
     public int Id { get; set; }
     public string Name { get; set; }
     public string ScientificName { get; set; }
     public string AppearanceDescription { get; set; }
     public string CareDescription { get; set; }
-    public string PhotoUrl { get; set; }
-    public DateTime WateringFrequency { get; set; }
-    public DateTime TransplantFrequency { get; set; }
+    public Uri PhotoUrl { get; set; }
+    public WateringFrequency WateringFrequency { get; set; }
+    public float Size { get; set; }
     public int LightParametersId { get; set; }
     public List<string> ToxicCategory { get; set; }
-    public LightParametersDto LightParameters { get; set; }
+    public Illumination Illumination { get; set; }
 }

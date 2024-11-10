@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using FlowerApp.Data.Storages;
+using FlowerApp.Domain.ApplicationModels.FlowerModels;
 using FlowerApp.Domain.Common;
-using FlowerApp.Domain.DTOModels;
 
 namespace FlowerApp.Service.Services;
 
@@ -16,9 +16,22 @@ public class FlowersService : IFlowersService
         this.mapper = mapper;
     }
 
-    public async Task<GetFlowerResponse> GetFlowers(Pagination pagination)
+    public async Task<GetFlowerResponse> Get(Pagination pagination, FlowerFilterParams filterParams,
+        FlowerSortOptions sortOptions)
     {
-        var response = await flowersStorage.GetAll(pagination);
+        var response = await flowersStorage.Get(pagination, filterParams, sortOptions);
         return mapper.Map<GetFlowerResponse>(response);
+    }
+
+    public async Task<Flower?> Get(int id)
+    {
+        var flower = await flowersStorage.Get(id);
+        return mapper.Map<Flower>(flower);
+    }
+
+    public async Task<Flower?> Get(string name)
+    {
+        var flower = await flowersStorage.Get(name);
+        return mapper.Map<Flower>(flower);
     }
 }

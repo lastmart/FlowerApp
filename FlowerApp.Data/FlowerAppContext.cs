@@ -7,7 +7,7 @@ namespace FlowerApp.Data;
 public class FlowerAppContext : DbContext
 {
     public DbSet<Flower> Flowers { get; set; }
-    public DbSet<LightParameters> LightParameters { get; set; }
+
     public FlowerAppContext(DbContextOptions<FlowerAppContext> options) : base(options)
     {
     }
@@ -18,6 +18,5 @@ public class FlowerAppContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new FlowerConfiguration());
-        modelBuilder.ApplyConfiguration(new LightParametersConfiguration());
     }
 }

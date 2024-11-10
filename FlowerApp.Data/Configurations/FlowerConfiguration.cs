@@ -1,6 +1,7 @@
-﻿using FlowerApp.Domain.DbModels;
+﻿using FlowerApp.Domain.ApplicationModels.FlowerModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Flower = FlowerApp.Domain.DbModels.Flower;
 
 namespace FlowerApp.Data.Configurations;
 
@@ -31,17 +32,17 @@ public class FlowerConfiguration : IEntityTypeConfiguration<Flower>
         builder.Property(flower => flower.WateringFrequency)
             .IsRequired();
         
-        builder.Property(flower => flower.TransplantFrequency)
+        builder.Property(flower => flower.Soil)
             .IsRequired();
+        
+        builder.Property(flower => flower.Size)
+            .IsRequired();
+        builder.HasCheckConstraint("CK_Size", "\"Size\" >= 0");
         
         builder.Property(flower => flower.ToxicCategory)
-            .HasColumnType("smallint")
             .IsRequired();
-        
-        builder.HasOne(flower => flower.LightParameters)
-            .WithMany(lightParameters => lightParameters.Flowers)
-            .HasForeignKey(flower => flower.LightParametersId)
-            .HasPrincipalKey(lightParameters => lightParameters.Id)
-            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.Property(flower => flower.Illumination)
+            .IsRequired();
     }
 }

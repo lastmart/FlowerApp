@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace FlowerApp.Domain.DbModels;
+namespace FlowerApp.Domain.ApplicationModels.FlowerModels;
 
 public class SortOption
 {
@@ -14,5 +14,5 @@ public class SortOption
 
 public class FlowerSortOptions
 {
-    public List<SortOption> SortOptions { get; set; }
+    public List<SortOption> SortOptions { get; set; } = new();
 }

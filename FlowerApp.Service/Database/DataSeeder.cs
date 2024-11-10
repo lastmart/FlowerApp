@@ -1,32 +1,27 @@
 using FlowerApp.Data;
+using FlowerApp.Domain.ApplicationModels.FlowerModels;
 using FlowerApp.Domain.DbModels;
-using Microsoft.EntityFrameworkCore;
+using Flower = FlowerApp.Domain.DbModels.Flower;
 
-namespace FlowerApp.Service;
+namespace FlowerApp.Service.Database;
 
 public class DataSeeder
 {
-    private readonly FlowerAppContext _context;
+    private readonly FlowerAppContext context;
 
     public DataSeeder(FlowerAppContext context)
     {
-        _context = context;
+        this.context = context;
     }
 
     public async Task SeedDataAsync()
     {
         
-        if (!_context.Flowers.Any() && !_context.LightParameters.Any())
+        if (!context.Flowers.Any())
         {
-            var lightParameters1 = new LightParameters { Id = 1, DurationInHours = 8, IlluminationInSuites = 500 };
-            var lightParameters2 = new LightParameters { Id = 2, DurationInHours = 10, IlluminationInSuites = 600 };
-            var lightParameters3 = new LightParameters { Id = 3, DurationInHours = 6, IlluminationInSuites = 400 };
-
-            _context.LightParameters.AddRange(lightParameters1, lightParameters2, lightParameters3);
-
             var flowers = new List<Flower>
             {
-                new Flower
+                new()
                 {
                     Id = 1,
                     Name = "Rose",
@@ -34,12 +29,11 @@ public class DataSeeder
                     AppearanceDescription = "Beautiful red flower",
                     CareDescription = "Needs regular watering and sunlight",
                     PhotoUrl = "https://example.com/rose.jpg",
-                    WateringFrequency = DateTime.UtcNow,
-                    TransplantFrequency = DateTime.UtcNow,
-                    LightParametersId = lightParameters1.Id,
-                    ToxicCategory = ToxicCategory.People | ToxicCategory.Baby
+                    WateringFrequency = WateringFrequency.OnceAWeek,
+                    Illumination = Illumination.Bright,
+                    ToxicCategory = ToxicCategory.People | ToxicCategory.Kids
                 },
-                new Flower
+                new()
                 {
                     Id = 2,
                     Name = "Lily",
@@ -47,12 +41,11 @@ public class DataSeeder
                     AppearanceDescription = "Elegant white flower",
                     CareDescription = "Needs moderate watering and indirect sunlight",
                     PhotoUrl = "https://example.com/lily.jpg",
-                    WateringFrequency = DateTime.UtcNow,
-                    TransplantFrequency = DateTime.UtcNow,
-                    LightParametersId = lightParameters2.Id,
-                    ToxicCategory = ToxicCategory.Cat | ToxicCategory.Dog
+                    WateringFrequency = WateringFrequency.OnceAWeek,
+                    Illumination = Illumination.Bright,
+                    ToxicCategory = ToxicCategory.Pets
                 },
-                new Flower
+                new()
                 {
                     Id = 3,
                     Name = "Tulip",
@@ -60,12 +53,11 @@ public class DataSeeder
                     AppearanceDescription = "Bright and colorful flower",
                     CareDescription = "Needs well-drained soil and moderate sunlight",
                     PhotoUrl = "https://example.com/tulip.jpg",
-                    WateringFrequency = DateTime.UtcNow,
-                    TransplantFrequency = DateTime.UtcNow,
-                    LightParametersId = lightParameters3.Id,
-                    ToxicCategory = ToxicCategory.People | ToxicCategory.Baby | ToxicCategory.Cat | ToxicCategory.Dog
+                    WateringFrequency = WateringFrequency.TwiceAWeek,
+                    Illumination = Illumination.PartialShade,
+                    ToxicCategory = ToxicCategory.People | ToxicCategory.Kids | ToxicCategory.Pets
                 },
-                new Flower
+                new()
                 {
                     Id = 4,
                     Name = "Sunflower",
@@ -73,12 +65,11 @@ public class DataSeeder
                     AppearanceDescription = "Large yellow flower",
                     CareDescription = "Needs full sunlight and regular watering",
                     PhotoUrl = "https://example.com/sunflower.jpg",
-                    WateringFrequency = DateTime.UtcNow,
-                    TransplantFrequency = DateTime.UtcNow,
-                    LightParametersId = lightParameters1.Id,
+                    WateringFrequency = WateringFrequency.OnceAMonth,
+                    Illumination = Illumination.AverageIllumination,
                     ToxicCategory = ToxicCategory.None
                 },
-                new Flower
+                new()
                 {
                     Id = 5,
                     Name = "Orchid",
@@ -86,12 +77,11 @@ public class DataSeeder
                     AppearanceDescription = "Exotic and colorful flower",
                     CareDescription = "Needs indirect sunlight and careful watering",
                     PhotoUrl = "https://example.com/orchid.jpg",
-                    WateringFrequency = DateTime.UtcNow,
-                    TransplantFrequency = DateTime.UtcNow,
-                    LightParametersId = lightParameters2.Id,
-                    ToxicCategory = ToxicCategory.People | ToxicCategory.Baby  | ToxicCategory.Dog
+                    WateringFrequency = WateringFrequency.TwiceAWeek,
+                    Illumination = Illumination.Bright,
+                    ToxicCategory = ToxicCategory.People | ToxicCategory.Kids  | ToxicCategory.Pets
                 },
-                new Flower
+                new()
                 {
                     Id = 6,
                     Name = "Daisy",
@@ -99,12 +89,11 @@ public class DataSeeder
                     AppearanceDescription = "Simple and cheerful flower",
                     CareDescription = "Needs moderate sunlight and regular watering",
                     PhotoUrl = "https://example.com/daisy.jpg",
-                    WateringFrequency = DateTime.UtcNow,
-                    TransplantFrequency = DateTime.UtcNow,
-                    LightParametersId = lightParameters3.Id,
+                    WateringFrequency = WateringFrequency.OnceAMonth,
+                    Illumination = Illumination.Bright,
                     ToxicCategory = ToxicCategory.None
                 },
-                new Flower
+                new()
                 {
                     Id = 7,
                     Name = "Carnation",
@@ -112,12 +101,11 @@ public class DataSeeder
                     AppearanceDescription = "Fragrant and colorful flower",
                     CareDescription = "Needs well-drained soil and moderate sunlight",
                     PhotoUrl = "https://example.com/carnation.jpg",
-                    WateringFrequency = DateTime.UtcNow,
-                    TransplantFrequency = DateTime.UtcNow,
-                    LightParametersId = lightParameters1.Id,
+                    WateringFrequency = WateringFrequency.OnceEveryTwoWeeks,
+                    Illumination = Illumination.Bright,
                     ToxicCategory = ToxicCategory.None
                 },
-                new Flower
+                new()
                 {
                     Id = 8,
                     Name = "Peony",
@@ -125,12 +113,11 @@ public class DataSeeder
                     AppearanceDescription = "Large and fragrant flower",
                     CareDescription = "Needs full sunlight and regular watering",
                     PhotoUrl = "https://example.com/peony.jpg",
-                    WateringFrequency = DateTime.UtcNow,
-                    TransplantFrequency = DateTime.UtcNow,
-                    LightParametersId = lightParameters2.Id,
+                    WateringFrequency = WateringFrequency.OnceAMonth,
+                    Illumination = Illumination.PartialShade,
                     ToxicCategory = ToxicCategory.None
                 },
-                new Flower
+                new()
                 {
                     Id = 9,
                     Name = "Marigold",
@@ -138,12 +125,11 @@ public class DataSeeder
                     AppearanceDescription = "Bright and cheerful flower",
                     CareDescription = "Needs full sunlight and regular watering",
                     PhotoUrl = "https://example.com/marigold.jpg",
-                    WateringFrequency = DateTime.UtcNow,
-                    TransplantFrequency = DateTime.UtcNow,
-                    LightParametersId = lightParameters3.Id,
+                    WateringFrequency = WateringFrequency.OnceEveryTwoWeeks,
+                    Illumination = Illumination.Bright,
                     ToxicCategory = ToxicCategory.None
                 },
-                new Flower
+                new()
                 {
                     Id = 10,
                     Name = "Lavender",
@@ -151,16 +137,15 @@ public class DataSeeder
                     AppearanceDescription = "Fragrant and purple flower",
                     CareDescription = "Needs full sunlight and well-drained soil",
                     PhotoUrl = "https://example.com/lavender.jpg",
-                    WateringFrequency = DateTime.UtcNow,
-                    TransplantFrequency = DateTime.UtcNow,
-                    LightParametersId = lightParameters1.Id,
+                    WateringFrequency = WateringFrequency.OnceAWeek,
+                    Illumination = Illumination.Bright,
                     ToxicCategory = ToxicCategory.None
                 }
             };
 
-            _context.Flowers.AddRange(flowers);
+            context.Flowers.AddRange(flowers);
 
-            await _context.SaveChangesAsync();
+            await context.SaveChangesAsync();
         }
     }
 }

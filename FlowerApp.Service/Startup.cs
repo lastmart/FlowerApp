@@ -1,12 +1,5 @@
-﻿using FlowerApp.Data;
-using FlowerApp.Data.Storages;
-using FlowerApp.Domain.DbModels;
-using FlowerApp.Service.Controllers;
+﻿using FlowerApp.Service.Database;
 using FlowerApp.Service.Extensions;
-using FlowerApp.Service.Mappers;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
-using Swashbuckle.AspNetCore.Filters;
 
 namespace FlowerApp.Service;
 
@@ -21,30 +14,27 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection serviceCollection)
     {
-        ConfigureDatabase(serviceCollection);
-        serviceCollection.ConfigureServices();
-        serviceCollection.AddControllers();
-    }
-
-    private void ConfigureDatabase(IServiceCollection serviceCollection)
-    {
-        serviceCollection.AddDbContext<FlowerAppContext>(options =>
-            options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
-        serviceCollection.AddScoped<IFlowersStorage, FlowersStorage>();
-        serviceCollection.AddScoped<IStorageBase<LightParameters, int>, LightParametersStorage>();
+        serviceCollection
+            .AddDatabase(configuration)
+            .AddServices()
+            .AddSwagger()
+            .AddControllers();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment environment, DataSeeder dataSeeder)
     {
         if (environment.IsDevelopment())
         {
-            app.UseSwagger();
-            app.UseSwaggerUI();
+            app
+                .UseCors()
+                .UseRouting()
+                .UseEndpoints(endpoints => endpoints.MapControllers());
         }
 
-        app.UseCors();
-        app.UseRouting();
-        app.UseEndpoints(endpoints => endpoints.MapControllers());
+        app
+            .UseSwagger()
+            .UseSwaggerUI();
+
         dataSeeder.SeedDataAsync().Wait();
     }
 }

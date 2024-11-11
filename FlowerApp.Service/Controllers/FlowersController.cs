@@ -27,12 +27,48 @@ public class FlowersController : ControllerBase
         this.paginationValidator = paginationValidator;
     }
 
-    [SwaggerOperation(
-        Summary = "Получение цветов",
-        Description =
-            "Возвращает постраничный список цветов с основной информацией о каждом цветке и параметрами освещения",
-        OperationId = "GetFlowers"
-    )]
+    /// <summary>
+    /// Получение списка цветов с фильтрацией, сортировкой и пагинацией
+    /// </summary>
+    /// <remarks>
+    /// Параметры пагинации:
+    /// - Skip: количество пропускаемых элементов
+    /// - Take: количество возвращаемых элементов (максимум 50)
+    ///
+    /// Параметры фильтрации:
+    /// - WateringFrequency: массив частоты полива
+    ///   * OnceAWeek - раз в неделю
+    ///   * TwiceAWeek - дважды в неделю
+    ///   * OnceEveryTwoWeeks - раз в две недели
+    ///   * OnceAMonth - раз в месяц
+    ///
+    /// - ToxicCategories: массив категорий токсичности (можно комбинировать)
+    ///   * None - не токсично
+    ///   * Kids - токсично для детей
+    ///   * Pets - токсично для домашних животных
+    ///   * People - токсично для взрослых людей
+    ///
+    /// - Illumination: массив типов освещения
+    ///   * Bright - яркое освещение
+    ///   * PartialShade - частичная тень
+    ///   * AverageIllumination - среднее освещение
+    ///
+    /// Параметры сортировки:
+    /// - SortBy: поле для сортировки
+    ///   * wateringFrequency - частота полива
+    ///   * name - название
+    ///   * scientificName - научное название
+    ///   * illuminationInSuites - освещенность
+    ///   * durationInHours - продолжительность в часах
+    ///   * isShadeTolerant - теневыносливость
+    ///   * transplantFrequency - частота пересадки
+    ///   * isToxic - токсичность
+    /// - IsDescending: направление сортировки (true - по убыванию, false - по возрастанию)
+    /// </remarks>
+    /// <param name="pagination">Параметры пагинации (Skip, Take)</param>
+    /// <param name="filterParams">Параметры фильтрации цветов</param>
+    /// <param name="sortOption">Параметры сортировки цветов</param>
+    /// <returns>Список цветов с основной информацией</returns>
     [HttpGet]
     public async Task<ActionResult<GetFlowerResponse>> Get(
         [FromQuery] Pagination pagination,
@@ -48,11 +84,11 @@ public class FlowersController : ControllerBase
         return Ok(getFlowerResponse);
     }
 
-    [SwaggerOperation(
-        Summary = "Получить цветок по идентификатору",
-        Description = "Возвращает детальную информацию о конкретном цветке по его ID, включая параметры освещения",
-        OperationId = "GetFlowerById"
-    )]
+    /// <summary>
+    /// Получить цветок по идентификатору
+    /// </summary>
+    /// <param name="id">Идентификатор цветка</param>
+    /// <returns>Детальная информация о цветке</returns>
     [HttpGet("{id:int}")]
     public async Task<IActionResult> Get(int id)
     {
@@ -60,11 +96,11 @@ public class FlowersController : ControllerBase
         return flower != null ? Ok(flower) : NotFound();
     }
 
-    [SwaggerOperation(
-        Summary = "Получить цветок по названию",
-        Description = "Возвращает детальную информацию о цветке по его названию",
-        OperationId = "GetFlowerByName"
-    )]
+    /// <summary>
+    /// Получить цветок по названию или научному названию 
+    /// </summary>
+    /// <param name="name">Название цветка</param>
+    /// <returns>Детальная информация о цветке</returns>
     [HttpGet("{name}")]
     public async Task<IActionResult> Get(string name)
     {

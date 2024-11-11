@@ -1,4 +1,5 @@
-﻿using FlowerApp.Domain.Common;
+﻿using System.Reflection;
+using FlowerApp.Domain.Common;
 using FlowerApp.Service.Common.Documentation;
 using FlowerApp.Service.Common.Mappers;
 using FlowerApp.Service.Database;
@@ -34,6 +35,10 @@ public static class ServiceCollectionExtension
             });
             options.EnableAnnotations();
             options.SchemaFilter<EnumSchemaFilter>();
+            
+            var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+            var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+            options.IncludeXmlComments(xmlPath);
         });
 
         return serviceCollection;

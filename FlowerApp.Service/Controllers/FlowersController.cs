@@ -59,9 +59,6 @@ public class FlowersController : ControllerBase
     ///   * name - название
     ///   * scientificName - научное название
     ///   * illuminationInSuites - освещенность
-    ///   * durationInHours - продолжительность в часах
-    ///   * isShadeTolerant - теневыносливость
-    ///   * transplantFrequency - частота пересадки
     ///   * isToxic - токсичность
     /// - IsDescending: направление сортировки (true - по убыванию, false - по возрастанию)
     /// </remarks>
@@ -69,13 +66,14 @@ public class FlowersController : ControllerBase
     /// <param name="filterParams">Параметры фильтрации цветов</param>
     /// <param name="sortOption">Параметры сортировки цветов</param>
     /// <returns>Список цветов с основной информацией</returns>
-    [HttpGet]
-    public async Task<ActionResult<GetFlowerResponse>> Get(
+    [HttpPost]
+    public async Task<ActionResult<GetFlowerResponse>> Post(
         [FromQuery] Pagination pagination,
         [FromQuery] FlowerFilterParams filterParams,
-        [FromQuery] FlowerSortOptions sortOption
+        [FromBody] FlowerSortOptions sortOption
     )
     {
+        Console.WriteLine($"sortOption {sortOption.SortOptions.Count}");
         var paginationValidationResult = await paginationValidator.ValidateAsync(pagination);
         if (!paginationValidationResult.IsValid)
             return BadRequest(paginationValidationResult.Errors);
@@ -83,7 +81,7 @@ public class FlowersController : ControllerBase
         var getFlowerResponse = await flowersService.Get(pagination, filterParams, sortOption);
         return Ok(getFlowerResponse);
     }
-
+    
     /// <summary>
     /// Получить цветок по идентификатору
     /// </summary>

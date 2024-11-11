@@ -1,7 +1,9 @@
 ﻿using System.Linq.Expressions;
+using FlowerApp.Domain.ApplicationModels.FlowerModels;
 using FlowerApp.Domain.Common;
 using FlowerApp.Domain.DbModels;
 using Microsoft.EntityFrameworkCore;
+using Flower = FlowerApp.Domain.DbModels.Flower;
 using FlowerFilterParams = FlowerApp.Domain.ApplicationModels.FlowerModels.FlowerFilterParams;
 using FlowerSortOptions = FlowerApp.Domain.ApplicationModels.FlowerModels.FlowerSortOptions;
 
@@ -94,7 +96,6 @@ public class FlowersStorage : IFlowersStorage
     )
     {
         var flowers = flowerAppContext.Flowers.AsQueryable();
-
         if (sortByProperty != null)
             flowers = SortFlowers(flowers, sortByProperty);
 
@@ -150,15 +151,15 @@ public class FlowersStorage : IFlowersStorage
         return orderedQuery ?? flowers;
     }
 
-    private static Expression<Func<Flower, object>> GetPropertySelector(string sortBy)
+    private static Expression<Func<Flower, object>> GetPropertySelector(SortByOption sortBy)
     {
-        return sortBy.ToLower() switch
+        return sortBy switch
         {
-            "name" => f => f.Name,
-            "scientificname" => f => f.ScientificName,
-            "wateringfrequency" => f => f.WateringFrequency,
-            "illumination" => f => f.Illumination,
-            "istoxic" => f => f.ToxicCategory != ToxicCategory.None,
+            SortByOption.Name => f => f.Name,
+            SortByOption.ScientificName => f => f.ScientificName,
+            SortByOption.WateringFrequency => f => f.WateringFrequency,
+            SortByOption.IlluminationInSuites => f => f.Illumination,
+            SortByOption.IsToxic=> f => f.ToxicCategory != ToxicCategory.None,
             _ => throw new ArgumentException("Invalid sort option.")
         };
     }

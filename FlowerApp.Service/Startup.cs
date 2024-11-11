@@ -1,4 +1,5 @@
-﻿using FlowerApp.Service.Database;
+﻿using System.Text.Json.Serialization;
+using FlowerApp.Service.Database;
 using FlowerApp.Service.Extensions;
 
 namespace FlowerApp.Service;
@@ -18,7 +19,12 @@ public class Startup
             .AddDatabase(configuration)
             .AddServices()
             .AddSwagger()
-            .AddControllers();
+            .AddControllers()
+            .AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            });
+        
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment environment, DataSeeder dataSeeder)

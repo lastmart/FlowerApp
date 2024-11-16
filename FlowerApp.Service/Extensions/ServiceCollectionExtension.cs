@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using FlowerApp.Domain.Common;
-using FlowerApp.Service.Common.Documentation;
 using FlowerApp.Service.Common.Mappers;
 using FlowerApp.Service.Database;
 using FlowerApp.Service.Services;
@@ -34,8 +33,7 @@ public static class ServiceCollectionExtension
                 Description = "API для управления цветами, включая фильтрацию и сортировку."
             });
             options.EnableAnnotations();
-            options.SchemaFilter<EnumSchemaFilter>();
-            
+
             var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
             var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
             options.IncludeXmlComments(xmlPath);

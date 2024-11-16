@@ -12,7 +12,6 @@ public class Flower
     public Uri PhotoUrl { get; set; }
     public WateringFrequency WateringFrequency { get; set; }
     public float Size { get; set; }
-    public int LightParametersId { get; set; }
-    public List<string> ToxicCategory { get; set; }
+    public List<ToxicCategory> ToxicCategory { get; set; }
     public Illumination Illumination { get; set; }
 }

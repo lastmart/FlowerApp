@@ -19,7 +19,7 @@ jobs:
       run: docker build -t flowerapp-service -f ./FlowerApp.Service/Dockerfile .
     
     - name: Save Docker image as tarball
-      run: docker save app -o app.tar
+      run: docker save flowerapp-service -o app.tar
 
     - name: Verify tarball exists
       run: ls -lh app.tar

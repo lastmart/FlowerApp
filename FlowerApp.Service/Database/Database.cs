@@ -10,6 +10,11 @@ public static class Database
         IConfiguration configuration)
     {
         var connectionString = configuration.GetConnectionString("DefaultConnection");
+        var environmentConnectionString = Environment.GetEnvironmentVariable("DefaultConnection");
+        if (!string.IsNullOrEmpty(environmentConnectionString))
+        {
+            connectionString = environmentConnectionString;
+        }
 
         serviceCollection
             .AddDbContext<FlowerAppContext>(options => options.UseNpgsql(connectionString))

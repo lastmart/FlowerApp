@@ -55,10 +55,10 @@ jobs:
         key: ${{ secrets.VPS_KEY }}
         script: |
           docker load -i /home/${{ secrets.VPS_USER }}/app.tar
-          if [ "$(docker ps -q -f name=app)" ]; then
+          if [ "$(docker ps -q -f name=flowerapp-container)" ]; then
             docker stop flowerapp-container
           fi
-          if [ "$(docker ps -a -q -f name=app)" ]; then
+          if [ "$(docker ps -a -q -f name=flowerapp-container)" ]; then
             docker rm flowerapp-container
           fi
           docker run -d -p 8888:80 --name flowerapp-container -e DefaultConnection="${{ secrets.DefaultConnection }}" flowerapp-service

@@ -1,0 +1,64 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
+    - name: Build Docker image
+      run: docker build -t flowerapp-service -f ./FlowerApp.Service/Dockerfile .
+    
+    - name: Save Docker image as tarball
+      run: docker save app -o app.tar
+
+    - name: Verify tarball exists
+      run: ls -lh app.tar
+      
+    - name: Change file permissions
+      run: chmod 644 app.tar
+      
+    - name: SSH to VPS and remove existing tarball
+      uses: appleboy/ssh-action@v0.1.7
+      with:
+        host: ${{ secrets.VPS_HOST }}
+        username: ${{ secrets.VPS_USER }}
+        key: ${{ secrets.VPS_KEY }}
+        script: |
+          if [ -f /home/${{ secrets.VPS_USER }}/app.tar ]; then
+            rm /home/${{ secrets.VPS_USER }}/app.tar
+          fi
+
+    - name: Copy Docker image to VPS
+      uses: appleboy/scp-action@v0.1.7
+      with:
+        host: ${{ secrets.VPS_HOST }}
+        username: ${{ secrets.VPS_USER }}
+        key: ${{ secrets.VPS_KEY }}
+        source: app.tar
+        target: /home/${{ secrets.VPS_USER }}/
+
+    - name: SSH to VPS and deploy
+      uses: appleboy/ssh-action@v0.1.7
+      with:
+        host: ${{ secrets.VPS_HOST }}
+        username: ${{ secrets.VPS_USER }}
+        key: ${{ secrets.VPS_KEY }}
+        script: |
+          docker load -i /home/${{ secrets.VPS_USER }}/app.tar
+          if [ "$(docker ps -q -f name=app)" ]; then
+            docker stop flowerapp-container
+          fi
+          if [ "$(docker ps -a -q -f name=app)" ]; then
+            docker rm flowerapp-container
+          fi
+          docker run -d -p 8888:80 --name flowerapp-container -e DefaultConnection="${{ secrets.DefaultConnection }}" flowerapp-service

@@ -17,6 +17,7 @@ public static class ServiceCollectionExtension
         serviceCollection
             .AddScoped<IFlowersService, FlowersService>()
             .AddScoped<IUserService, UserService>()
+            .AddScoped<ITradeService, TradeService>()
             .AddScoped<DataSeeder>()
             .AddValidators()
             .AddAutoMappers();
@@ -48,7 +49,8 @@ public static class ServiceCollectionExtension
     {
         serviceCollection
             .AddAutoMapper(typeof(PageResponseProfile), typeof(FlowerProfile))
-            .AddAutoMapper(typeof(UserProfile), typeof(FlowerProfile)); ;
+            .AddAutoMapper(typeof(UserProfile))
+            .AddAutoMapper(typeof(TradeProfile));
 
         return serviceCollection;
     }

@@ -36,7 +36,7 @@ public class TradesController : ControllerBase
         [FromQuery] bool excludeUserTrades = false)
     {
         var trades = await tradeService.GetAll(pagination, location, userId, excludeUserTrades);
-        return Ok(trades.ToList());
+        return Ok(trades);
     }
 
     [HttpPost]

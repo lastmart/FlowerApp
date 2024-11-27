@@ -73,7 +73,6 @@ public class FlowersController : ControllerBase
         [FromBody] FlowerSortOptions sortOption
     )
     {
-        Console.WriteLine($"sortOption {sortOption.SortOptions.Count}");
         var paginationValidationResult = await paginationValidator.ValidateAsync(pagination);
         if (!paginationValidationResult.IsValid)
             return BadRequest(paginationValidationResult.Errors);

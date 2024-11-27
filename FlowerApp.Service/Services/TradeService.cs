@@ -1,9 +1,8 @@
 using AutoMapper;
 using FlowerApp.Data.Storages;
+using FlowerApp.Domain.ApplicationModels.FlowerModels;
 using DbTrade = FlowerApp.Domain.DbModels.Trade; 
 using ApplicationTrade = FlowerApp.Domain.ApplicationModels.FlowerModels.Trade;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using FlowerApp.Domain.Common;
 
 namespace FlowerApp.Service.Services;
@@ -27,10 +26,13 @@ public class TradeService : ITradeService
         return dbTrade; 
     }
 
-    public async Task<IEnumerable<DbTrade>> GetAll(Pagination pagination, string? location, string? userId, bool excludeUserTrades)
+    public async Task<GetTradeResponse> GetAll(Pagination pagination, string? location, string? userId, bool excludeUserTrades)
     {
         var dbTrades = await tradeStorage.GetAll(pagination, location, userId, excludeUserTrades);
-        return dbTrades;
+        
+        var tradeCount = dbTrades.Count();
+        
+        return new GetTradeResponse(tradeCount, dbTrades);
     }
 
     public async Task<DbTrade?> Create(ApplicationTrade trade)

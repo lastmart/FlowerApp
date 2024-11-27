@@ -18,7 +18,8 @@ public static class Database
 
         serviceCollection
             .AddDbContext<FlowerAppContext>(options => options.UseNpgsql(connectionString))
-            .AddScoped<IFlowersStorage, FlowersStorage>();
+            .AddScoped<IFlowersStorage, FlowersStorage>()
+            .AddScoped<IUserStorage, UserStorage>();;
 
         return serviceCollection;
     }

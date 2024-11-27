@@ -1,7 +1,7 @@
 using AutoMapper;
 using FlowerApp.Data.Storages;
 using DbUser = FlowerApp.Domain.DbModels.User;
-using ApplicationUser = FlowerApp.Domain.ApplicationModels.FlowerModels.User;
+using ApplicationUser = FlowerApp.Domain.ApplicationModels.UserModels.User;
 
 namespace FlowerApp.Service.Services;
 

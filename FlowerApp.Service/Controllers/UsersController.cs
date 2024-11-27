@@ -1,4 +1,4 @@
-using ApplicationUser = FlowerApp.Domain.ApplicationModels.FlowerModels.User;
+using ApplicationUser = FlowerApp.Domain.ApplicationModels.UserModels.User;
 using FlowerApp.Service.Services;
 using Microsoft.AspNetCore.Mvc;
 

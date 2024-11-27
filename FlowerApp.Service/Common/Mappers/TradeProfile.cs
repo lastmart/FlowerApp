@@ -1,6 +1,6 @@
 using AutoMapper;
 using DbTrade = FlowerApp.Domain.DbModels.Trade; 
-using ApplicationTrade = FlowerApp.Domain.ApplicationModels.FlowerModels.Trade;
+using ApplicationTrade = FlowerApp.Domain.ApplicationModels.TradeModels.Trade;
 
 namespace FlowerApp.Service.Common.Mappers;
 

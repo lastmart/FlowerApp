@@ -1,4 +1,4 @@
-namespace FlowerApp.Domain.ApplicationModels.FlowerModels;
+namespace FlowerApp.Domain.ApplicationModels.UserModels;
 
 public class User
 {

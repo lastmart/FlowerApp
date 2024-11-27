@@ -18,7 +18,7 @@ public class TradeStorage : ITradeStorage
         return await context.Trades.FirstOrDefaultAsync(t => t.Id == id);
     }
 
-    public async Task<IEnumerable<Trade>> GetAll(Pagination pagination, string? location, string? userId, bool excludeUserTrades)
+    public async Task<IEnumerable<Trade>> GetAll(Pagination pagination, string? location, string? userId, bool includeUserTrades)
     {
         var query = context.Trades.AsQueryable();
         
@@ -29,12 +29,22 @@ public class TradeStorage : ITradeStorage
             query = query.Where(t => t.Location.Contains(location));
         }
 
-        if (excludeUserTrades && !string.IsNullOrEmpty(userId))
+        switch (includeUserTrades)
         {
-            var userGuid = Guid.Parse(userId);
-            query = query.Where(t => t.UserIdentifier != userGuid);
+            case true when !string.IsNullOrEmpty(userId):
+            {
+                var userGuid = Guid.Parse(userId);
+                query = query.Where(t => t.UserIdentifier == userGuid);
+                break;
+            }
+            case false when !string.IsNullOrEmpty(userId):
+            {
+                var userGuid = Guid.Parse(userId);
+                query = query.Where(t => t.UserIdentifier != userGuid);
+                break;
+            }
         }
-
+        
         return await query
             .Skip(pagination.Skip)
             .Take(pagination.Take)

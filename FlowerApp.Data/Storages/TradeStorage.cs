@@ -78,4 +78,13 @@ public class TradeStorage : ITradeStorage
         await context.SaveChangesAsync();
         return true;
     }
+    
+    public async Task<bool> DeactivateTrade(Guid id)
+    {
+        var trade = await context.Trades.FindAsync(id);
+        if (trade == null) return false;
+
+        trade.IsActive = false;
+        return await context.SaveChangesAsync() > 0;
+    }
 }

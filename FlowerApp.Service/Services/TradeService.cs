@@ -67,5 +67,15 @@ public class TradeService : ITradeService
         var isUpdated = await tradeStorage.Update(id, dbTrade); 
         return isUpdated ? dbTrade : null;
     }
+    
+    public async Task<bool> DeactivateTrade(Guid id)
+    {
+        var trade = await tradeStorage.Get(id);
+        if (trade == null)
+        {
+            return false;
+        }
 
+        return await tradeStorage.DeactivateTrade(id);
+    }
 }

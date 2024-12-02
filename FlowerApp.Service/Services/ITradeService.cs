@@ -11,4 +11,5 @@ public interface ITradeService
     Task<GetTradeResponse> GetAll(Pagination pagination, string? location, string? userId, bool includeUserTrades);
     Task<DbTrade?> Create(ApplicationTrade trade);
     Task<DbTrade?> Update(Guid id, ApplicationTrade trade);
+    Task<bool> DeactivateTrade(Guid id);
 }

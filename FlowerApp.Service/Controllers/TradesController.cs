@@ -91,6 +91,22 @@ public class TradesController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Деактивация трейда
+    /// </summary>
+    /// <param name="id">Идентификатор трейда</param>
+    /// <returns>Результат операции</returns>
+    [HttpPatch("{id}/deactivate")]
+    public async Task<IActionResult> DeactivateTrade(Guid id)
+    {
+        var result = await tradeService.DeactivateTrade(id);
+        if (!result)
+        {
+            return NotFound("Trade not found or already deactivated");
+        }
+
+        return Ok("Trade deactivated successfully");
+    }
 
     /// <summary>
     /// Обновление существующего трейда

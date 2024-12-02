@@ -9,4 +9,5 @@ public interface ITradeStorage
     Task<IEnumerable<Trade>> GetAll(Pagination pagination, string? location, string? userId, bool excludeUserTrades);
     Task<bool> Create(Trade trade);
     Task<bool> Update(Guid id, Trade trade);
+    Task<bool> DeactivateTrade(Guid id);
 }

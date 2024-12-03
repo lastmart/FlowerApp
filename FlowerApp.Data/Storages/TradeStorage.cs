@@ -15,12 +15,38 @@ public class TradeStorage : ITradeStorage
 
     public async Task<Trade?> Get(Guid id)
     {
-        return await context.Trades.FirstOrDefaultAsync(t => t.Id == id);
+        var trade = await context.Trades.FirstOrDefaultAsync(t => t.Id == id);
+
+        if (trade != null)
+        {
+            if (trade.ExpiresAt < DateTime.UtcNow && trade.IsActive)
+            {
+                trade.IsActive = false;
+                await context.SaveChangesAsync(); 
+            }
+            
+            if (!trade.IsActive)
+            {
+                return null;
+            }
+        }
+
+        return trade;
     }
+
+
 
     public async Task<IEnumerable<Trade>> GetAll(Pagination pagination, string? location, string? userId, bool includeUserTrades)
     {
         var query = context.Trades.AsQueryable();
+        
+        foreach (var trade in query)
+        {
+            if (trade.ExpiresAt < DateTime.UtcNow && trade.IsActive)
+            {
+                trade.IsActive = false;
+            }
+        }
         
         query = query.Where(t => t.IsActive);
 
@@ -45,10 +71,14 @@ public class TradeStorage : ITradeStorage
             }
         }
         
-        return await query
+        var result = await query
             .Skip(pagination.Skip)
             .Take(pagination.Take)
             .ToListAsync();
+
+        await context.SaveChangesAsync();
+        
+        return result;
     }
 
     public async Task<bool> Create(Trade trade)

@@ -3,6 +3,7 @@ using AutoMapper;
 using FlowerApp.Data.Storages;
 using FlowerApp.Domain.ApplicationModels.RecommendationsModels;
 using FlowerApp.Domain.DbModels;
+using FlowerApp.Service.Clients;
 using Flower = FlowerApp.Domain.ApplicationModels.FlowerModels.Flower;
 using Question = FlowerApp.Domain.ApplicationModels.RecommendationsModels.Question;
 
@@ -14,7 +15,7 @@ public class RecommendationService: IRecommendationService
     private readonly IUserAnswersStorage userAnswersStorage;
     private readonly IUserStorage usersStorage;
     private readonly IMapper mapper;
-    private readonly HttpClient httpClient;
+    private readonly IRecommendationSystemClient recommendationSystemClient;
     private readonly IFlowersStorage flowersStorage;
     
     public RecommendationService(
@@ -22,7 +23,7 @@ public class RecommendationService: IRecommendationService
         IUserAnswersStorage userAnswersStorage,
         IUserStorage usersStorage,
         IMapper mapper,
-        HttpClient httpClient,
+        IRecommendationSystemClient recommendationSystemClient,
         IFlowersStorage flowersStorage
         )
     {
@@ -30,7 +31,7 @@ public class RecommendationService: IRecommendationService
         this.userAnswersStorage = userAnswersStorage;
         this.usersStorage = usersStorage;
         this.mapper = mapper;
-        this.httpClient = httpClient;
+        this.recommendationSystemClient = recommendationSystemClient;
         this.flowersStorage = flowersStorage;
     }
     
@@ -41,32 +42,27 @@ public class RecommendationService: IRecommendationService
     }
     
 
-    public async Task<RecommendationResult> GetRecommendations(Guid? userId, string? name, int take, List<Answer> answers)
+    public async Task<RecommendationResult> GetRecommendations(Guid? userId, string? name, List<Answer> answers, int take)
     {
-        if (userId == null)
-        {
-            var user = await usersStorage.CreateUser(name ?? string.Empty);
-            userId = user.Id;
-        }
-    
+        userId ??= (await usersStorage.CreateUser(name ?? string.Empty)).Id;
+
         var errors = new List<string>();
-        
-        var existingQuestionIds = (await questionsStorage.GetAll()).Select(q => q.Id).ToHashSet();
-        
-        var invalidQuestionIds = answers
-            .Where(answer => !existingQuestionIds.Contains(answer.QuestionId))
-            .Select(answer => answer.QuestionId)
-            .Distinct()
-            .ToList();
-        
-        if (invalidQuestionIds.Any())
+        await SynchronizeAnswersForUser(answers, userId.Value, errors);
+
+        if (errors.Any())
         {
-            errors.Add($"Invalid question IDs: {string.Join(", ", invalidQuestionIds)}");
-            return new RecommendationResult(errors);
+            return new RecommendationResult(errors); 
         }
+
+        var recommendations = await recommendationSystemClient.GetRecommendations(userId.Value, take);
+        var flowerList = await flowersStorage.Get(recommendations.ToArray());
         
-        var userAnswersFromDb = await userAnswersStorage.GetByUser(userId.Value);
-        
+        return new RecommendationResult(mapper.Map<List<Flower>>(flowerList));
+    }
+
+    private async Task SynchronizeAnswersForUser(List<Answer> answers, Guid userId, IList<string> errors)
+    {
+        var userAnswersFromDb = await userAnswersStorage.GetByUser(userId);
         foreach (var answer in answers)
         {   
             var question = await questionsStorage.Get(answer.QuestionId);
@@ -86,7 +82,6 @@ public class RecommendationService: IRecommendationService
             }
             
             var answerMask = GetAnswerMask(answer.SelectedAnswers, question.AnswerOptions);
-            
             var existingAnswer = userAnswersFromDb
                 .FirstOrDefault(ua => ua.QuestionId == answer.QuestionId);
             
@@ -99,7 +94,7 @@ public class RecommendationService: IRecommendationService
             {
                 var userAnswer = new UserAnswer
                 {
-                    UserId = userId.Value,
+                    UserId = userId,
                     QuestionId = answer.QuestionId,
                     AnswerMask = answerMask,
                     AnswersSize = answer.SelectedAnswers.Count
@@ -107,36 +102,6 @@ public class RecommendationService: IRecommendationService
                 await userAnswersStorage.Create(userAnswer);
             }
         }
-        
-        if (errors.Any())
-        {
-            return new RecommendationResult(errors); 
-        }
-        
-        var recommendations = await GetRecommendationsFromPython(userId.Value, take);
-        var flowerList = await flowersStorage.Get(recommendations.ToArray());
-        
-        return new RecommendationResult(mapper.Map<List<Flower>>(flowerList));
-    }
-    
-    private async Task<List<int>> GetRecommendationsFromPython(Guid userId, int take)
-    {
-        var request = new
-        {
-            user_id = userId,
-            take = take
-        };
-        
-        var requestContent = new StringContent(
-            JsonSerializer.Serialize(request), 
-            System.Text.Encoding.UTF8, 
-            "application/json"
-        );
-        
-        var response = await httpClient.PostAsync("http://127.0.0.1:8000/recommendations", requestContent);
-        var result = await response.Content.ReadFromJsonAsync<RecommendationsResponse>();
-        
-        return response.IsSuccessStatusCode ? result?.FlowerIds ?? new List<int>() : new List<int>();
     }
     
     private int GetAnswerMask(List<string> selectedAnswers, List<string> allAnswerOptions)

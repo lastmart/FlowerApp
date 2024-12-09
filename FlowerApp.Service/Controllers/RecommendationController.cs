@@ -46,7 +46,7 @@ public class RecommendationController: ControllerBase
         [FromQuery] int take = 5
     )
     {
-        var result = await recommendationService.GetRecommendations(userId, name, take, answers);
+        var result = await recommendationService.GetRecommendations(userId, name, answers, take);
     
         if (result.HasErrors)
         {

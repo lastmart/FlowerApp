@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using FlowerApp.Data.Storages;
 using FlowerApp.Domain.Common;
+using FlowerApp.Service.Clients;
 using FlowerApp.Service.Common.Documentation;
 using FlowerApp.Service.Common.Mappers;
 using FlowerApp.Service.Database;
@@ -21,6 +22,7 @@ public static class ServiceCollectionExtension
             .AddScoped<IQuestionsStorage, QuestionsStorage>()
             .AddScoped<IUserAnswersStorage, UserAnswersStorage>()
             .AddScoped<IUserStorage, UsersStorage>()
+            .AddScoped<IRecommendationSystemClient, PythonRecommendationSystemClient>()
             .AddScoped<DataSeeder>()
             .AddValidators()
             .AddAutoMappers()

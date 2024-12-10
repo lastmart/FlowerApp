@@ -2,7 +2,6 @@
 using FlowerApp.Data.Storages;
 using FlowerApp.Domain.ApplicationModels.FlowerModels;
 using FlowerApp.Domain.Common;
-using System.Xml.Linq;
 
 namespace FlowerApp.Service.Services;
 
@@ -20,17 +19,7 @@ public class FlowersService : IFlowersService
     public async Task<GetFlowerResponse> Get(Pagination pagination, FlowerFilterParams filterParams,
         FlowerSortOptions sortOptions, string? searchQuery)
     {
-        if (searchQuery is not null)
-        {
-            var flowers = new List<Flower>();
-            var flower = await flowersStorage.Get(searchQuery);
-            if (flower is not null)
-            {
-                flowers.Add(mapper.Map<Flower>(flower));
-            }
-            return new GetFlowerResponse(flowers.Count, flowers);
-        }
-        var response = await flowersStorage.Get(pagination, filterParams, sortOptions);
+        var response = await flowersStorage.Get(pagination, filterParams, sortOptions, searchQuery);
         return mapper.Map<GetFlowerResponse>(response);
     }
 

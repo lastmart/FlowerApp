@@ -83,16 +83,11 @@ public class FlowersStorage : IFlowersStorage
         }
     }
 
-    public async Task<Flower?> Get(string name)
-    {
-        return await flowerAppContext.Flowers
-            .FirstOrDefaultAsync(f => f.Name == name || f.ScientificName == name);
-    }
-
     public async Task<SearchFlowersResult<Flower>> Get(
         Pagination pagination,
         FlowerFilterParams? filterParams = null,
-        FlowerSortOptions? sortByProperty = null
+        FlowerSortOptions? sortByProperty = null,
+        string? searchSubstring = null
     )
     {
         var flowers = flowerAppContext.Flowers.AsQueryable();
@@ -103,10 +98,12 @@ public class FlowersStorage : IFlowersStorage
             flowers = FilterFlowers(flowers, filterParams);
 
         var result = await flowers
+            .Where(flower => searchSubstring != null &&
+                             (flower.ScientificName.Contains(searchSubstring) || flower.Name.Contains(searchSubstring)))
             .Skip(pagination.Skip)
             .Take(pagination.Take)
             .ToListAsync();
-        
+
         return new SearchFlowersResult<Flower>(result.Count, result);
     }
 
@@ -117,10 +114,11 @@ public class FlowersStorage : IFlowersStorage
 
         if (filterParams.Illumination is not null)
             flowers = flowers.Where(f => filterParams.Illumination.Contains(f.Illumination));
-        
+
         if (filterParams.ToxicCategories != null && filterParams.ToxicCategories.Any())
         {
-            var toxicCategory = filterParams.ToxicCategories.Aggregate(ToxicCategory.None, (current, category) => current | category);
+            var toxicCategory =
+                filterParams.ToxicCategories.Aggregate(ToxicCategory.None, (current, category) => current | category);
 
             flowers = toxicCategory == ToxicCategory.None
                 ? flowers.Where(f => f.ToxicCategory == ToxicCategory.None)
@@ -159,7 +157,7 @@ public class FlowersStorage : IFlowersStorage
             SortByOption.ScientificName => f => f.ScientificName,
             SortByOption.WateringFrequency => f => f.WateringFrequency,
             SortByOption.IlluminationInSuites => f => f.Illumination,
-            SortByOption.IsToxic=> f => f.ToxicCategory != ToxicCategory.None,
+            SortByOption.IsToxic => f => f.ToxicCategory != ToxicCategory.None,
             _ => throw new ArgumentException("Invalid sort option.")
         };
     }

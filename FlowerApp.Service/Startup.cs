@@ -1,6 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 using FlowerApp.Service.Database;
 using FlowerApp.Service.Extensions;
+using FlowerApp.Service.Middlewares;
 
 namespace FlowerApp.Service;
 
@@ -24,11 +25,12 @@ public class Startup
             {
                 options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
             });
-        
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment environment, DataSeeder dataSeeder)
     {
+        app.UseMiddleware<ExceptionHandlingMiddleware>();
+
         if (environment.IsDevelopment())
         {
             app

@@ -22,9 +22,9 @@ public class TradeStorage : ITradeStorage
             if (trade.ExpiresAt < DateTime.UtcNow && trade.IsActive)
             {
                 trade.IsActive = false;
-                await context.SaveChangesAsync(); 
+                await context.SaveChangesAsync();
             }
-            
+
             if (!trade.IsActive)
             {
                 return null;
@@ -35,11 +35,11 @@ public class TradeStorage : ITradeStorage
     }
 
 
-
-    public async Task<IEnumerable<Trade>> GetAll(Pagination pagination, string? location, string? userId, bool includeUserTrades)
+    public async Task<IEnumerable<Trade>> GetAll(Pagination pagination, string? location, string? userId,
+        bool includeUserTrades)
     {
         var query = context.Trades.AsQueryable();
-        
+
         foreach (var trade in query)
         {
             if (trade.ExpiresAt < DateTime.UtcNow && trade.IsActive)
@@ -47,7 +47,7 @@ public class TradeStorage : ITradeStorage
                 trade.IsActive = false;
             }
         }
-        
+
         query = query.Where(t => t.IsActive);
 
         if (!string.IsNullOrEmpty(location))
@@ -55,29 +55,19 @@ public class TradeStorage : ITradeStorage
             query = query.Where(t => t.Location.Contains(location));
         }
 
-        switch (includeUserTrades)
+        if (!string.IsNullOrEmpty(userId))
         {
-            case true when !string.IsNullOrEmpty(userId):
-            {
-                var userGuid = Guid.Parse(userId);
-                query = query.Where(t => t.UserIdentifier == userGuid);
-                break;
-            }
-            case false when !string.IsNullOrEmpty(userId):
-            {
-                var userGuid = Guid.Parse(userId);
-                query = query.Where(t => t.UserIdentifier != userGuid);
-                break;
-            }
+            var userGuid = Guid.Parse(userId);
+            query = query.Where(t => !((t.UserIdentifier == userGuid) ^ includeUserTrades));
         }
-        
+
         var result = await query
             .Skip(pagination.Skip)
             .Take(pagination.Take)
             .ToListAsync();
 
         await context.SaveChangesAsync();
-        
+
         return result;
     }
 
@@ -108,7 +98,7 @@ public class TradeStorage : ITradeStorage
         await context.SaveChangesAsync();
         return true;
     }
-    
+
     public async Task<bool> DeactivateTrade(Guid id)
     {
         var trade = await context.Trades.FindAsync(id);

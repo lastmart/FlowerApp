@@ -1,5 +1,8 @@
 ﻿using System.Reflection;
+using FlowerApp.Data.Storages;
 using FlowerApp.Domain.Common;
+using FlowerApp.Service.Clients;
+using FlowerApp.Service.Common.Documentation;
 using FlowerApp.Service.Common.Mappers;
 using FlowerApp.Service.Database;
 using FlowerApp.Service.Services;
@@ -15,9 +18,15 @@ public static class ServiceCollectionExtension
     {
         serviceCollection
             .AddScoped<IFlowersService, FlowersService>()
+            .AddScoped<IRecommendationService, RecommendationService>()
+            .AddScoped<IQuestionsStorage, QuestionsStorage>()
+            .AddScoped<IUserAnswersStorage, UserAnswersStorage>()
+            .AddScoped<IUserStorage, UsersStorage>()
+            .AddScoped<IRecommendationSystemClient, PythonRecommendationSystemClient>()
             .AddScoped<DataSeeder>()
             .AddValidators()
-            .AddAutoMappers();
+            .AddAutoMappers()
+            .AddHttpClient();;
 
         return serviceCollection;
     }
@@ -45,6 +54,7 @@ public static class ServiceCollectionExtension
     private static IServiceCollection AddAutoMappers(this IServiceCollection serviceCollection)
     {
         serviceCollection.AddAutoMapper(typeof(PageResponseProfile), typeof(FlowerProfile));
+        serviceCollection.AddAutoMapper(typeof(QuestionProfile));
 
         return serviceCollection;
     }

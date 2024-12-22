@@ -1,7 +1,7 @@
 using AutoMapper;
-using FlowerApp.Domain.ApplicationModels.FlowerModels;
-using FlowerApp.Domain.DbModels;
-using Flower = FlowerApp.Domain.DbModels.Flower;
+using FlowerApp.Data.DbModels.Flowers;
+using FlowerApp.Domain.Models.FlowerModels;
+using Flower = FlowerApp.Data.DbModels.Flowers.Flower;
 
 namespace FlowerApp.Service.Common.Mappers;
 

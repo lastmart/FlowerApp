@@ -1,5 +1,7 @@
 ﻿using FlowerApp.Data.Configurations;
-using FlowerApp.Domain.DbModels;
+using FlowerApp.Data.DbModels.Flowers;
+using FlowerApp.Data.DbModels.Trades;
+using FlowerApp.Data.DbModels.Users;
 using Microsoft.EntityFrameworkCore;
 
 namespace FlowerApp.Data;

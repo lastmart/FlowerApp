@@ -1,8 +1,7 @@
-﻿namespace FlowerApp.DTOs.Common.Trades;
+namespace FlowerApp.Domain.Models.TradeModels;
 
-public record Trade
+public class Trade
 {
-    public Guid Id { get; set; }
     public Guid UserIdentifier { get; set; }
     public string FlowerName { get; set; }
     public string PreferredTrade { get; set; }

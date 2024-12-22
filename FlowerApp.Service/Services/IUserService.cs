@@ -1,11 +1,10 @@
-using ApplicationUser = FlowerApp.Domain.ApplicationModels.UserModels.User;
-using DbUser = FlowerApp.Domain.DbModels.User;
+using FlowerApp.Domain.Models.UserModels;
 
 namespace FlowerApp.Service.Services;
 
 public interface IUserService
 {
-    Task<DbUser?> Get(Guid id);
-    Task<DbUser?> Create(ApplicationUser user);
-    Task<DbUser?> Update(Guid id, ApplicationUser user);
+    Task<User?> Get(Guid id);
+    Task<User?> Create(User user);
+    Task<User?> Update(Guid id, User user);
 }

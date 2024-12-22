@@ -1,5 +1,4 @@
-
-using FlowerApp.Domain.DbModels;
+using FlowerApp.Data.DbModels.Trades;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -31,7 +30,7 @@ public class TradeConfiguration : IEntityTypeConfiguration<Trade>
 
         builder.Property(trade => trade.ExpiresAt)
             .IsRequired();
-        
+
         builder.Property(trade => trade.IsActive)
             .IsRequired();
     }

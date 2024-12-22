@@ -1,12 +1,12 @@
 using FlowerApp.Domain.Common;
 using FlowerApp.Domain.Models.TradeModels;
 
-namespace FlowerApp.Service.Services;
+namespace FlowerApp.Service.Storages;
 
-public interface ITradeService
+public interface ITradeStorage
 {
     Task<Trade?> Get(Guid id);
-    Task<GetTradesResponse> GetAll(Pagination pagination, string? location, string? userId, bool includeUserTrades);
+    Task<IEnumerable<Trade>> GetAll(Pagination pagination, string? location, string? userId, bool excludeUserTrades);
     Task<bool> Create(Trade trade);
     Task<bool> Update(Guid id, Trade trade);
     Task<bool> DeactivateTrade(Guid id);

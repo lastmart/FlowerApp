@@ -1,45 +1,36 @@
-using AutoMapper;
-using FlowerApp.Data.Storages;
-using DbUser = FlowerApp.Domain.DbModels.User;
-using ApplicationUser = FlowerApp.Domain.ApplicationModels.UserModels.User;
+using FlowerApp.Domain.Models.UserModels;
+using FlowerApp.Service.Storages;
 
 namespace FlowerApp.Service.Services;
 
 public class UserService : IUserService
 {
     private readonly IUserStorage userStorage;
-    private readonly IMapper mapper;
 
-    public UserService(IUserStorage userStorage, IMapper mapper)
+    public UserService(IUserStorage userStorage)
     {
         this.userStorage = userStorage;
-        this.mapper = mapper;
     }
 
-    public async Task<DbUser?> Get(Guid id)
+    public async Task<User?> Get(Guid id)
     {
         var dbUser = await userStorage.Get(id);
-        return dbUser; 
+        return dbUser;
     }
 
-    public async Task<DbUser?> Create(ApplicationUser user)
+    public async Task<User?> Create(User user)
     {
-        var dbUser = mapper.Map<DbUser>(user);
+        var result = await userStorage.Create(user);
 
-        var result = await userStorage.Create(dbUser);
-
-        return result ? dbUser : null;
+        return result ? user : null;
     }
 
-    public async Task<DbUser?> Update(Guid id, ApplicationUser user)
+    public async Task<User?> Update(Guid id, User user)
     {
         var existingUser = await userStorage.Get(id);
         if (existingUser == null) return null;
-    
-        mapper.Map(user, existingUser);
-    
-        var isUpdated = await userStorage.Update(id, existingUser);
-        return isUpdated ? existingUser : null;
-    }
 
+        var isUpdated = await userStorage.Update(id, user);
+        return isUpdated ? user : null;
+    }
 }

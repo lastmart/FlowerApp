@@ -1,5 +1,5 @@
 using FlowerApp.Data;
-using FlowerApp.Data.Storages;
+using FlowerApp.Service.Storages;
 using Microsoft.EntityFrameworkCore;
 
 namespace FlowerApp.Service.Database;
@@ -11,10 +11,7 @@ public static class Database
     {
         var connectionString = configuration.GetConnectionString("DefaultConnection");
         var environmentConnectionString = Environment.GetEnvironmentVariable("DefaultConnection");
-        if (!string.IsNullOrEmpty(environmentConnectionString))
-        {
-            connectionString = environmentConnectionString;
-        }
+        if (!string.IsNullOrEmpty(environmentConnectionString)) connectionString = environmentConnectionString;
 
         serviceCollection
             .AddDbContext<FlowerAppContext>(options => options.UseNpgsql(connectionString))
@@ -24,5 +21,4 @@ public static class Database
 
         return serviceCollection;
     }
-
 }

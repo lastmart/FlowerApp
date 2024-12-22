@@ -1,4 +1,4 @@
-using FlowerApp.Domain.DbModels;
+using FlowerApp.Data.DbModels.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

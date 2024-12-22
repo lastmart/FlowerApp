@@ -4,7 +4,7 @@ using FlowerApp.DTOs.Response.Trades;
 using FlowerApp.Service.Services;
 using Microsoft.AspNetCore.Mvc;
 using DTOTrade = FlowerApp.DTOs.Common.Trades.Trade;
-using ApplicationTrade = FlowerApp.Domain.ApplicationModels.TradeModels.Trade;
+using ApplicationTrade = FlowerApp.Domain.Models.TradeModels.Trade;
 
 namespace FlowerApp.Service.Controllers;
 
@@ -67,7 +67,8 @@ public class TradesController : ControllerBase
         [FromQuery] bool includeUserTrades = false)
     {
         var trades = await tradeService.GetAll(pagination, location, userId, includeUserTrades);
-        return Ok(trades);
+        var response = new GetTradeResponse(trades.Count, trades.Trades.Select(mapper.Map<DTOTrade>));
+        return Ok(response);
     }
 
     /// <summary>

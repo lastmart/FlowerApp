@@ -17,21 +17,15 @@ public class FlowersService : IFlowersService
     }
 
     public async Task<GetFlowerResponse> Get(Pagination pagination, FlowerFilterParams filterParams,
-        FlowerSortOptions sortOptions)
+        FlowerSortOptions sortOptions, string? searchQuery)
     {
-        var response = await flowersStorage.Get(pagination, filterParams, sortOptions);
+        var response = await flowersStorage.Get(pagination, filterParams, sortOptions, searchQuery);
         return mapper.Map<GetFlowerResponse>(response);
     }
 
     public async Task<Flower?> Get(int id)
     {
         var flower = await flowersStorage.Get(id);
-        return mapper.Map<Flower>(flower);
-    }
-
-    public async Task<Flower?> Get(string name)
-    {
-        var flower = await flowersStorage.Get(name);
         return mapper.Map<Flower>(flower);
     }
 }

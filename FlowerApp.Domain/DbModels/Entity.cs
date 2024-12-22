@@ -5,7 +5,5 @@
 /// </summary>
 public record Entity<TId>
 {
-    public TId Id { get; init; } 
-    
-    public override string ToString() => $"{GetType().Name}({nameof(Id)}: {Id})";
+    public TId Id { get; init; }
 }

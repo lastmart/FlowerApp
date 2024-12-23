@@ -1,5 +1,4 @@
 from fastapi import FastAPI
-from typing import List
 from recsys.recsys import RecSys
 from models.recomendations_response import RecomendationsResponse
 

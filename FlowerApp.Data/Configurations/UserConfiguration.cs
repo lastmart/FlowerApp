@@ -1,4 +1,4 @@
-using FlowerApp.Domain.DbModels;
+using FlowerApp.Data.DbModels.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -8,10 +8,20 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 {
     public void Configure(EntityTypeBuilder<User> builder)
     {
-        builder.HasKey(u => u.Id);
-        
-        builder.Property(u => u.Name)
-            .IsRequired()
-            .HasColumnType("varchar(100)");
+        builder.HasKey(user => user.Id);
+
+        builder.Property(user => user.Name)
+            .HasMaxLength(100)
+            .IsRequired();
+
+        builder.Property(user => user.Surname)
+            .HasMaxLength(100)
+            .IsRequired();
+
+        builder.Property(user => user.Email)
+            .HasMaxLength(200);
+
+        builder.Property(user => user.Telegram)
+            .HasMaxLength(200);
     }
 }

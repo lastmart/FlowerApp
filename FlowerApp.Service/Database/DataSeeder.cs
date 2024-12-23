@@ -1,7 +1,8 @@
 using FlowerApp.Data;
-using FlowerApp.Domain.ApplicationModels.FlowerModels;
-using FlowerApp.Domain.DbModels;
-using Flower = FlowerApp.Domain.DbModels.Flower;
+using Flower = FlowerApp.Data.DbModels.Flowers.Flower;
+using ToxicCategory = FlowerApp.Data.DbModels.Flowers.ToxicCategory;
+using WateringFrequency = FlowerApp.Data.DbModels.Flowers.WateringFrequency;
+using Illumination = FlowerApp.Data.DbModels.Flowers.Illumination;
 
 namespace FlowerApp.Service.Database;
 
@@ -186,7 +187,7 @@ public class DataSeeder
                     PhotoUrl = "https://example.com/orchid.jpg",
                     WateringFrequency = WateringFrequency.TwiceAWeek,
                     Illumination = Illumination.Bright,
-                    ToxicCategory = ToxicCategory.People | ToxicCategory.Kids  | ToxicCategory.Pets
+                    ToxicCategory = ToxicCategory.People | ToxicCategory.Kids | ToxicCategory.Pets
                 },
                 new()
                 {

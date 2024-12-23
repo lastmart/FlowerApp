@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlowerApp.Data", "FlowerApp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlowerApp.Domain", "FlowerApp.Domain\FlowerApp.Domain.csproj", "{7726094A-AD68-4177-AB31-0DE39766933C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlowerApp.DTOs", "FlowerApp.DTOs\FlowerApp.DTOs.csproj", "{C3679DF0-5B26-4E0A-A860-5299CB341102}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{7726094A-AD68-4177-AB31-0DE39766933C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7726094A-AD68-4177-AB31-0DE39766933C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7726094A-AD68-4177-AB31-0DE39766933C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3679DF0-5B26-4E0A-A860-5299CB341102}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3679DF0-5B26-4E0A-A860-5299CB341102}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3679DF0-5B26-4E0A-A860-5299CB341102}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3679DF0-5B26-4E0A-A860-5299CB341102}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

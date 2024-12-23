@@ -23,6 +23,8 @@ public static class ServiceCollectionExtension
             .AddScoped<IUserAnswersStorage, UserAnswersStorage>()
             .AddScoped<IUserStorage, UsersStorage>()
             .AddScoped<IRecommendationSystemClient, PythonRecommendationSystemClient>()
+            .AddScoped<IUserService, UserService>()
+            .AddScoped<ITradeService, TradeService>()
             .AddScoped<DataSeeder>()
             .AddValidators()
             .AddAutoMappers()
@@ -53,6 +55,10 @@ public static class ServiceCollectionExtension
 
     private static IServiceCollection AddAutoMappers(this IServiceCollection serviceCollection)
     {
+        serviceCollection
+            .AddAutoMapper(typeof(PageResponseProfile), typeof(FlowerProfile))
+            .AddAutoMapper(typeof(UserProfile))
+            .AddAutoMapper(typeof(TradeProfile));
         serviceCollection.AddAutoMapper(typeof(PageResponseProfile), typeof(FlowerProfile));
         serviceCollection.AddAutoMapper(typeof(QuestionProfile));
 

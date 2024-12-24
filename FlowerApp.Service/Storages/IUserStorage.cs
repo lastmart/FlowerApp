@@ -2,9 +2,6 @@ using FlowerApp.Domain.Models.UserModels;
 
 namespace FlowerApp.Service.Storages;
 
-public interface IUserStorage
+public interface IUserStorage : IStorage<User, int>
 {
-    Task<User?> Get(Guid id);
-    Task<bool> Create(User user);
-    Task<bool> Update(Guid id, User user);
 }

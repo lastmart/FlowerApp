@@ -4,7 +4,7 @@ using FlowerApp.Data;
 using FlowerApp.Domain.Common;
 using FlowerApp.Domain.Models.FlowerModels;
 using Microsoft.EntityFrameworkCore;
-using Flower = FlowerApp.Domain.Models.FlowerModels.Flower;
+using AppFlower = FlowerApp.Domain.Models.FlowerModels.Flower;
 using DBFlower = FlowerApp.Data.DbModels.Flowers.Flower;
 using ToxicCategory = FlowerApp.Domain.Models.FlowerModels.ToxicCategory;
 
@@ -21,22 +21,23 @@ public class FlowersStorage : IFlowersStorage
         this.mapper = mapper;
     }
 
-    public async Task<Flower?> Get(int id)
+    public async Task<AppFlower?> Get(int id)
     {
-        return mapper.Map<Flower>(await flowerAppContext.Flowers.FirstOrDefaultAsync(f => f.Id == id));
+        return mapper.Map<AppFlower>(await flowerAppContext.Flowers.FirstOrDefaultAsync(f => f.Id == id));
     }
 
-    public async Task<IList<Flower>> Get(int[] ids)
+    public async Task<IList<AppFlower>> Get(int[] ids)
     {
         return await flowerAppContext.Flowers
             .Where(f => ids.Contains(f.Id))
-            .Select(dbFlower => mapper.Map<Flower>(dbFlower))
+            .Select(dbFlower => mapper.Map<AppFlower>(dbFlower))
             .ToListAsync();
     }
 
-    public async Task<bool> Create(Flower model)
+    public async Task<bool> Create(AppFlower model)
     {
         await using var transaction = await flowerAppContext.Database.BeginTransactionAsync();
+
         try
         {
             await flowerAppContext.Flowers.AddAsync(mapper.Map<DBFlower>(model));
@@ -51,7 +52,7 @@ public class FlowersStorage : IFlowersStorage
         }
     }
 
-    public async Task<bool> Update(Flower model)
+    public async Task<bool> Update(AppFlower model)
     {
         await using var transaction = await flowerAppContext.Database.BeginTransactionAsync();
         try
@@ -74,7 +75,8 @@ public class FlowersStorage : IFlowersStorage
         try
         {
             var flower = await flowerAppContext.Flowers.FindAsync(id);
-            if (flower == null) return true;
+            if (flower == null) 
+                return true;
             flowerAppContext.Flowers.Remove(flower);
             var result = await flowerAppContext.SaveChangesAsync() > 0;
             await transaction.CommitAsync();
@@ -87,9 +89,9 @@ public class FlowersStorage : IFlowersStorage
         }
     }
 
-    public async Task<Flower?> Get(string name)
+    public async Task<AppFlower?> Get(string name)
     {
-        return mapper.Map<Flower>(await flowerAppContext.Flowers
+        return mapper.Map<AppFlower>(await flowerAppContext.Flowers
             .FirstOrDefaultAsync(f => f.Name == name || f.ScientificName == name));
     }
 
@@ -99,7 +101,7 @@ public class FlowersStorage : IFlowersStorage
         FlowerSortOptions? sortByProperty = null
     )
     {
-        var flowers = flowerAppContext.Flowers.Select(dbFlower => mapper.Map<Flower>(dbFlower));
+        var flowers = flowerAppContext.Flowers.Select(dbFlower => mapper.Map<AppFlower>(dbFlower));
         if (sortByProperty != null)
             flowers = SortFlowers(flowers, sortByProperty);
 
@@ -114,7 +116,7 @@ public class FlowersStorage : IFlowersStorage
         return new GetFlowerResponse(result.Count, result);
     }
 
-    private IQueryable<Flower> FilterFlowers(IQueryable<Flower> flowers, FlowerFilterParams filterParams)
+    private static IQueryable<AppFlower> FilterFlowers(IQueryable<AppFlower> flowers, FlowerFilterParams filterParams)
     {
         if (filterParams.WateringFrequency is not null)
             flowers = flowers.Where(f => filterParams.WateringFrequency.Contains(f.WateringFrequency));
@@ -135,9 +137,9 @@ public class FlowersStorage : IFlowersStorage
         return flowers;
     }
 
-    private IQueryable<Flower> SortFlowers(IQueryable<Flower> flowers, FlowerSortOptions sortOptions)
+    private static IQueryable<AppFlower> SortFlowers(IQueryable<AppFlower> flowers, FlowerSortOptions sortOptions)
     {
-        IOrderedQueryable<Flower>? orderedQuery = null;
+        IOrderedQueryable<AppFlower>? orderedQuery = null;
 
         foreach (var sortOption in sortOptions.SortOptions)
         {
@@ -156,7 +158,7 @@ public class FlowersStorage : IFlowersStorage
         return orderedQuery ?? flowers;
     }
 
-    private static Expression<Func<Flower, object>> GetPropertySelector(SortByOption sortBy)
+    private static Expression<Func<AppFlower, object>> GetPropertySelector(SortByOption sortBy)
     {
         return sortBy switch
         {

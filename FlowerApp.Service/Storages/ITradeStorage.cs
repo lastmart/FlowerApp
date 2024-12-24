@@ -3,11 +3,8 @@ using FlowerApp.Domain.Models.TradeModels;
 
 namespace FlowerApp.Service.Storages;
 
-public interface ITradeStorage
+public interface ITradeStorage : IStorage<Trade, int>
 {
-    Task<Trade?> Get(Guid id);
-    Task<IEnumerable<Trade>> GetAll(Pagination pagination, string? location, string? userId, bool excludeUserTrades);
-    Task<bool> Create(Trade trade);
-    Task<bool> Update(Guid id, Trade trade);
-    Task<bool> DeactivateTrade(Guid id);
+    Task<IEnumerable<Trade>> Get(Pagination pagination, string? location, int? excludeId = null);
+    Task<bool> DeactivateTrade(int id);
 }

@@ -1,10 +1,10 @@
 namespace FlowerApp.Service.Storages;
 
-public interface IStorage<TDbModel, in TDbModelPk>
+public interface IStorage<TAppModel, in TDbModelPk>
 {
-    public Task<TDbModel?> Get(TDbModelPk id);
-    public Task<IList<TDbModel>> Get(TDbModelPk[] ids);
-    public Task<bool> Create(TDbModel model);
-    public Task<bool> Update(TDbModel model);
+    public Task<TAppModel?> Get(TDbModelPk id);
+    public Task<IList<TAppModel>> Get(TDbModelPk[] ids);
+    public Task<bool> Create(TAppModel model);
+    public Task<bool> Update(TAppModel model);
     public Task<bool> Delete(TDbModelPk id);
 }

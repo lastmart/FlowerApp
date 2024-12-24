@@ -1,6 +1,6 @@
-using FlowerApp.Domain.ApplicationModels.FlowerModels;
+using FlowerApp.Domain.Models.FlowerModels;
 
-namespace FlowerApp.Domain.ApplicationModels.RecommendationsModels;
+namespace FlowerApp.Domain.Models.RecommendationModels;
 
 public class RecommendationResult
 {

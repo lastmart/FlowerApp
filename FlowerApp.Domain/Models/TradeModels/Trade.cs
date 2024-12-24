@@ -1,6 +1,6 @@
 namespace FlowerApp.Domain.Models.TradeModels;
 
-public class Trade
+public class Trade : Entity<int>
 {
     public Guid UserIdentifier { get; set; }
     public string FlowerName { get; set; }

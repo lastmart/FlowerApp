@@ -1,20 +1,18 @@
-﻿namespace FlowerApp.Data.DbModels.Trades;
+﻿
+using FlowerApp.Data.DbModels.Users;
 
-public record Trade : Entity<Guid>
+namespace FlowerApp.Data.DbModels.Trades;
+
+public class Trade : Entity<int>
 {
-    public Guid UserIdentifier { get; set; }
+    public int UserId { get; set; }
     public string FlowerName { get; set; }
     public string PreferredTrade { get; set; }
     public string Location { get; set; }
-    public DateTime CreatedAt { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime ExpiresAt { get; set; }
-    public bool IsActive { get; set; }
+    public bool IsActive { get; set; } = true;
     public string Description { get; set; }
-
-    public Trade()
-    {
-        Id = Guid.NewGuid();
-        CreatedAt = DateTime.UtcNow;
-        IsActive = true;
-    }
+    
+    public User User { get; set; }
 }

@@ -1,8 +1,8 @@
 ﻿using FlowerApp.Data.Configurations;
 using FlowerApp.Data.DbModels.Trades;
 using FlowerApp.Data.DbModels.Flowers;
+using FlowerApp.Data.DbModels.Surveys;
 using FlowerApp.Data.DbModels.Users;
-using FlowerApp.Domain.DbModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace FlowerApp.Data;
@@ -10,9 +10,10 @@ namespace FlowerApp.Data;
 public class FlowerAppContext : DbContext
 {
     public DbSet<Flower> Flowers { get; set; }
+    public DbSet<SurveyQuestion> Questions { get; set; }
+    public DbSet<SurveyAnswer> SurveyAnswers { get; set; }
+    public DbSet<Survey> Surveys { get; set; }
     public DbSet<Trade> Trades { get; set; }
-    public DbSet<Question> Questions { get; set; }
-    public DbSet<UserAnswer> UserAnswers { get; set; }
     public DbSet<User> Users { get; set; }
 
     public FlowerAppContext(DbContextOptions<FlowerAppContext> options) : base(options)
@@ -24,10 +25,14 @@ public class FlowerAppContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfiguration(new FlowerConfiguration());
-        modelBuilder.ApplyConfiguration(new TradeConfiguration());
-        modelBuilder.ApplyConfiguration(new QuestionConfiguration());
-        modelBuilder.ApplyConfiguration(new UserAnswerConfiguration());
-        modelBuilder.ApplyConfiguration(new UserConfiguration());
+        modelBuilder
+            .ApplyConfiguration(new FlowerConfiguration())
+            .ApplyConfiguration(new QuestionConfiguration())
+            .ApplyConfiguration(new SurveyAnswerConfiguration())
+            .ApplyConfiguration(new SurveyConfiguration())
+            .ApplyConfiguration(new TradeConfiguration())
+            .ApplyConfiguration(new UserConfiguration());
+        
+        base.OnModelCreating(modelBuilder);
     }
 }

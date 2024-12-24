@@ -1,6 +1,6 @@
 namespace FlowerApp.Data.DbModels.Flowers;
 
-public record Flower : Entity<int>
+public class Flower : Entity<int>
 {
     public string Name { get; set; }
     public string ScientificName { get; set; }

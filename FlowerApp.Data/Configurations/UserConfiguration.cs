@@ -23,5 +23,12 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
         builder.Property(user => user.Telegram)
             .HasMaxLength(200);
+        
+        builder
+            .HasMany(user => user.Trades)
+            .WithOne(trade => trade.User)
+            .HasForeignKey(trade => trade.UserId)
+            .HasPrincipalKey(user => user.Id)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

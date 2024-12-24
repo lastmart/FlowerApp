@@ -1,4 +1,4 @@
-namespace FlowerApp.Domain.ApplicationModels.RecommendationsModels;
+namespace FlowerApp.Domain.Models.RecommendationModels;
 
 public class Answer
 {

@@ -1,24 +1,25 @@
-using FlowerApp.Domain.DbModels;
+﻿using FlowerApp.Data.DbModels.Surveys;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace FlowerApp.Data.Configurations;
 
-public class QuestionConfiguration : IEntityTypeConfiguration<Question>
+public class QuestionConfiguration: IEntityTypeConfiguration<SurveyQuestion>
 {
-    public void Configure(EntityTypeBuilder<Question> builder)
+    public void Configure(EntityTypeBuilder<SurveyQuestion> builder)
     {
-        builder.HasKey(q => q.Id);
-        
-        builder.Property(q => q.QuestionText)
-            .IsRequired()
-            .HasColumnType("varchar(300)");
+        builder.HasKey(survey => survey.Id);
 
-        builder.Property(q => q.AnswerSize)
+        builder.Property(question => question.QuestionType)
             .IsRequired();
 
-        builder.Property(q => q.AnswerOptions)
+        builder.Property(question => question.Variants)
+            .IsRequired();
+
+        builder.Property(question => question.Text)
             .IsRequired()
-            .HasColumnType("text[]");
+            .HasColumnType("varchar(300)");
+        
+        // TODO add constraints
     }
 }

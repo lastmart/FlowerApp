@@ -33,5 +33,8 @@ public class TradeConfiguration : IEntityTypeConfiguration<Trade>
 
         builder.Property(trade => trade.IsActive)
             .IsRequired();
+
+        builder.Property(trade => trade.UserId)
+            .IsRequired();
     }
 }

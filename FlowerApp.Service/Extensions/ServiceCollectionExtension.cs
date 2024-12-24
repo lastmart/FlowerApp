@@ -2,7 +2,6 @@
 using FlowerApp.Data.Storages;
 using FlowerApp.Domain.Common;
 using FlowerApp.Service.Clients;
-using FlowerApp.Service.Common.Documentation;
 using FlowerApp.Service.Common.Mappers;
 using FlowerApp.Service.Database;
 using FlowerApp.Service.Services;
@@ -19,6 +18,7 @@ public static class ServiceCollectionExtension
         serviceCollection
             .AddScoped<IFlowersService, FlowersService>()
             .AddScoped<IRecommendationService, RecommendationService>()
+            .AddScoped<IGoogleAuthService, GoogleAuthService>()
             .AddScoped<IQuestionsStorage, QuestionsStorage>()
             .AddScoped<IUserAnswersStorage, UserAnswersStorage>()
             .AddScoped<IUserStorage, UsersStorage>()
@@ -26,7 +26,7 @@ public static class ServiceCollectionExtension
             .AddScoped<DataSeeder>()
             .AddValidators()
             .AddAutoMappers()
-            .AddHttpClient();;
+            .AddHttpClient();
 
         return serviceCollection;
     }

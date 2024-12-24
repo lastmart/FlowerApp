@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FlowerApp.Data.Migrations
 {
     [DbContext(typeof(FlowerAppContext))]
-    [Migration("20241224193725_UpdateStructure")]
-    partial class UpdateStructure
+    [Migration("20241224231906_Update structure")]
+    partial class Updatestructure
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -49,7 +49,7 @@ namespace FlowerApp.Data.Migrations
 
                     b.Property<string>("PhotoUrl")
                         .IsRequired()
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("varchar(200)");
 
                     b.Property<string>("ScientificName")
                         .IsRequired()

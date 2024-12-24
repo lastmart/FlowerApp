@@ -1,7 +1,7 @@
 using FlowerApp.Domain.Common;
 using FluentValidation;
 
-namespace FlowerApp.Service.Validators;
+namespace FlowerApp.Service.Common.Validators;
 
 public class PaginationValidator : AbstractValidator<Pagination>
 {

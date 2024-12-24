@@ -6,10 +6,18 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace FlowerApp.Data.Migrations
 {
-    public partial class UpdateStructure : Migration
+    public partial class Updatestructure : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AlterColumn<string>(
+                name: "PhotoUrl",
+                table: "Flowers",
+                type: "varchar(200)",
+                nullable: false,
+                oldClrType: typeof(string),
+                oldType: "varchar(50)");
+
             migrationBuilder.CreateTable(
                 name: "Questions",
                 columns: table => new
@@ -153,6 +161,14 @@ namespace FlowerApp.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Users");
+
+            migrationBuilder.AlterColumn<string>(
+                name: "PhotoUrl",
+                table: "Flowers",
+                type: "varchar(50)",
+                nullable: false,
+                oldClrType: typeof(string),
+                oldType: "varchar(200)");
         }
     }
 }

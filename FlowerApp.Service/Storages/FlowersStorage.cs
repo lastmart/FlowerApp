@@ -23,7 +23,8 @@ public class FlowersStorage : IFlowersStorage
 
     public async Task<AppFlower?> Get(int id)
     {
-        return mapper.Map<AppFlower>(await flowerAppContext.Flowers.FirstOrDefaultAsync(f => f.Id == id));
+        var dbFlower = await flowerAppContext.Flowers.FirstOrDefaultAsync(f => f.Id == id);
+        return mapper.Map<AppFlower>(dbFlower);
     }
 
     public async Task<IList<AppFlower>> Get(int[] ids)

@@ -1,10 +1,9 @@
 using AutoMapper;
 using FlowerApp.Domain.Common;
 using FlowerApp.Domain.Models.FlowerModels;
-using FlowerApp.Service.Services;
+using FlowerApp.Service.Storages;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
-using Flower = FlowerApp.DTOs.Common.Flowers.Flower;
 
 namespace FlowerApp.Service.Controllers;
 
@@ -12,18 +11,15 @@ namespace FlowerApp.Service.Controllers;
 [Route("api/flowers")]
 public class FlowersController : ControllerBase
 {
-    private readonly IFlowersService flowersService;
-    private readonly IMapper mapper;
+    private readonly IFlowersStorage flowersStorage;
     private readonly IValidator<Pagination> paginationValidator;
 
     public FlowersController(
-        IFlowersService flowersService,
-        IMapper mapper,
+        IFlowersStorage flowersStorage,
         IValidator<Pagination> paginationValidator
     )
     {
-        this.flowersService = flowersService;
-        this.mapper = mapper;
+        this.flowersStorage = flowersStorage;
         this.paginationValidator = paginationValidator;
     }
 
@@ -62,19 +58,17 @@ public class FlowersController : ControllerBase
     /// <param name="filterParams">Параметры фильтрации цветов</param>
     /// <param name="sortOption">Параметры сортировки цветов</param>
     /// <returns>Список цветов с основной информацией</returns>
-    [HttpPost]
-    public async Task<ActionResult<GetFlowerResponse>> Post(
-        [FromQuery] Pagination pagination,
-        [FromQuery] FlowerFilterParams filterParams,
-        [FromBody] FlowerSortOptions sortOption
+    [HttpGet]
+    public async Task<ActionResult<GetFlowerResponse>> Get(
+        [FromQuery] Pagination pagination
     )
     {
         var paginationValidationResult = await paginationValidator.ValidateAsync(pagination);
         if (!paginationValidationResult.IsValid)
             return BadRequest(paginationValidationResult.Errors);
 
-        var getFlowerResponse = await flowersService.GetBatch(pagination, filterParams, sortOption);
-        return Ok(mapper.Map<DTOs.Response.Flowers.GetFlowerResponse>(getFlowerResponse));
+        var getFlowerResponse = await flowersStorage.Get(pagination);
+        return Ok(getFlowerResponse);
     }
 
     /// <summary>
@@ -85,8 +79,8 @@ public class FlowersController : ControllerBase
     [HttpGet("{id:int}")]
     public async Task<IActionResult> Get(int id)
     {
-        var flower = await flowersService.Get(id);
-        return flower != null ? Ok(mapper.Map<Flower>(flower)) : NotFound();
+        var flower = await flowersStorage.Get(id);
+        return flower != null ? Ok(flower) : NotFound();
     }
 
     /// <summary>
@@ -97,7 +91,7 @@ public class FlowersController : ControllerBase
     [HttpGet("{name}")]
     public async Task<IActionResult> Get(string name)
     {
-        var flower = await flowersService.GetByName(name);
-        return flower != null ? Ok(mapper.Map<Flower>(flower)) : NotFound();
+        var flower = await flowersStorage.Get(name);
+        return flower != null ? Ok(flower) : NotFound();
     }
 }

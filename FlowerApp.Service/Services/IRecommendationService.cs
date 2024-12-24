@@ -1,11 +1,10 @@
-using FlowerApp.Domain.ApplicationModels.FlowerModels;
-using FlowerApp.Domain.ApplicationModels.RecommendationsModels;
-
-namespace FlowerApp.Service.Services;
-
-public interface IRecommendationService
-{
-    Task<List<Question>> GetQuestions();
-    Task<RecommendationResult> GetRecommendations(Guid? userId, string? name, List<Answer> userAnswers, int take);
-}
-
+// using FlowerApp.Domain.Models.RecommendationModels;
+//
+// namespace FlowerApp.Service.Services;
+//
+// public interface IRecommendationService
+// {
+//     Task<List<SurveyQuestion>> GetQuestions();
+//     Task<RecommendationResult> GetRecommendations(Guid? userId, string? name, List<SurveyAnswers> userAnswers, int take);
+// }
+//

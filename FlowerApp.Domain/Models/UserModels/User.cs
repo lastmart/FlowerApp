@@ -1,8 +1,11 @@
+using FlowerApp.Domain.Models.AuthModels;
+
 namespace FlowerApp.Domain.Models.UserModels;
 
 public class User
 {
     public Guid Id { get; set; }
+    public AuthTokens AuthTokens { get; set; }
     public string Name { get; set; }
     public string Surname { get; set; }
     public string? Email { get; set; }

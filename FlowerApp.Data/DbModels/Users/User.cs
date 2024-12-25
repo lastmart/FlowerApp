@@ -10,7 +10,10 @@ public class User : Entity<int>
     public string? Email { get; set; }
     public string? Telegram { get; set; }
     public int SurveyId { get; set; }
+    public int AuthTokensId { get; set; }
 
     public Survey Survey { get; set; }
     public IEnumerable<Trade> Trades { get; set; }
+
+    public AuthTokens.AuthTokens Tokens { get; set; }
 }

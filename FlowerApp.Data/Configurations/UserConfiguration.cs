@@ -1,3 +1,4 @@
+using FlowerApp.Data.DbModels.AuthTokens;
 using FlowerApp.Data.DbModels.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -23,12 +24,19 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
         builder.Property(user => user.Telegram)
             .HasMaxLength(200);
-        
+
         builder
             .HasMany(user => user.Trades)
             .WithOne(trade => trade.User)
             .HasForeignKey(trade => trade.UserId)
             .HasPrincipalKey(user => user.Id)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder
+            .HasOne(user => user.Tokens)
+            .WithOne(tokens => tokens.User)
+            .HasForeignKey<User>(user => user.AuthTokensId)
+            .HasPrincipalKey<AuthTokens>(tokens => tokens.UserId)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }

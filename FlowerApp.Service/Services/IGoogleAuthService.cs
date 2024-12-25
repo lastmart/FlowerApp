@@ -1,4 +1,4 @@
-﻿using FlowerApp.Domain.ApplicationModels.AuthModels;
+﻿using FlowerApp.Domain.Models.AuthModels;
 using Kontur.Results;
 
 namespace FlowerApp.Service.Services;

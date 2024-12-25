@@ -1,8 +1,9 @@
 ﻿using System.Security.Authentication;
 using System.Web;
-using FlowerApp.Data.Storages;
-using FlowerApp.Domain.ApplicationModels.AuthModels;
+using FlowerApp.Domain.Models.AuthModels;
+using FlowerApp.Domain.Models.UserModels;
 using FlowerApp.Service.Configuration;
+using FlowerApp.Service.Storages;
 using Google.Apis.Auth.OAuth2.Requests;
 using Google.Apis.Auth.OAuth2.Responses;
 using Google.Apis.Util;
@@ -17,9 +18,12 @@ public class GoogleAuthService : IGoogleAuthService
     private readonly ApiSettings apiSettings;
     private readonly IUserStorage userStorage;
 
-    public GoogleAuthService(IUserStorage userStorage)
+    public GoogleAuthService(IUserStorage userStorage, Func<ApiSettings> apiSettings,
+        Func<ApiSecretSettings> secretSettings)
     {
         this.userStorage = userStorage;
+        this.apiSettings = apiSettings.Invoke();
+        apiSecretSettings = secretSettings.Invoke();
     }
 
     public async Task<Result<bool, AuthTokens>> TryAuthenticateUserAsync(string authCode)
@@ -27,9 +31,17 @@ public class GoogleAuthService : IGoogleAuthService
         try
         {
             var authTokens = await GetUserCredentials(authCode);
-            // if (await userStorage.GetUserByAccessToken(authTokens.AccessToken) != null) return authTokens;
-            var userInfo = GetUserInfoByAccessToken(authTokens.AccessToken);
-            // await userStorage.Create(new User {})
+            if (await userStorage.GetByAuthTokens(authTokens) != null) return authTokens;
+            var userInfo = await GetUserInfoByAccessToken(authTokens.AccessToken);
+            await userStorage.Create(new User
+            {
+                AuthTokens = authTokens,
+                Email = userInfo["email"],
+                Id = Guid.NewGuid(),
+                Name = userInfo["given_name"],
+                Surname = userInfo["family_name"],
+                Telegram = null
+            });
             return authTokens;
         }
         catch (TokenResponseException ex)

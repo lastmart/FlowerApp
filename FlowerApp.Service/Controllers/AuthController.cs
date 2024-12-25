@@ -5,7 +5,7 @@ namespace FlowerApp.Service.Controllers;
 
 [ApiController]
 [Route("auth")]
-public class AuthController
+public class AuthController : ControllerBase
 {
     private readonly IGoogleAuthService googleAuthService;
 
@@ -18,7 +18,7 @@ public class AuthController
     public async Task<IActionResult> GoogleLogin([FromRoute] string authCode)
     {
         var response = await googleAuthService.TryAuthenticateUserAsync(authCode);
-        if (response.Failure) return new Unauthorized();
+        if (response.Failure) return Unauthorized();
 
         return Ok(response);
     }

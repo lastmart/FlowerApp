@@ -27,7 +27,7 @@ public static class ServiceCollectionExtension
             .AddScoped<DataSeeder>()
             .AddValidators()
             .AddAutoMappers()
-            .AddHttpClient();
+            .AddHttpClient();;
 
         return serviceCollection;
     }

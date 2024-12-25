@@ -18,26 +18,19 @@ public class FlowersService : IFlowersService
     }
 
     public async Task<GetFlowerResponse> Get(
+        string? searchString,
         Pagination pagination,
         FlowerFilterParams filterParams,
         FlowerSortOptions sortOptions
     )
     {
-        var response = await flowersStorage.Get(pagination, filterParams, sortOptions);
+        var response = await flowersStorage.Get(searchString, pagination, filterParams, sortOptions);
         return response;
     }
 
-    public async Task<List<Flower>> Get(string searchString)
+    public async Task<List<Flower>> Get(int id)
     {
-        if (int.TryParse(searchString, out var id))
-        {
-            var flower = await flowersStorage.Get(id);
-            return new List<Flower> { mapper.Map<Flower>(flower) };
-        }
-
-        var flowers = await flowersStorage.Get(searchString);
-        return flowers
-            .Select(f => mapper.Map<Flower>(f))
-            .ToList();
+        var flower = await flowersStorage.Get(id);
+        return new List<Flower> { mapper.Map<Flower>(flower) };
     }
 }

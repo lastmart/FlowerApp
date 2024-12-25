@@ -2,6 +2,7 @@ using AutoMapper;
 using FlowerApp.Domain.Models.FlowerModels;
 using FlowerApp.DTOs.Common;
 using FlowerApp.Service.Services;
+using FlowerApp.Service.Storages;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using GetFlowerResponse = FlowerApp.DTOs.Response.Flowers.GetFlowerResponse;
@@ -12,19 +13,17 @@ namespace FlowerApp.Service.Controllers;
 [Route("api/flowers")]
 public class FlowersController : ControllerBase
 {
-    private readonly IFlowersService flowersService;
+    private readonly IFlowersStorage flowersStorage;
     private readonly IValidator<Pagination> paginationValidator;
     private readonly IMapper mapper;
 
     public FlowersController(
-        IFlowersService flowersService,
         IValidator<Pagination> paginationValidator,
-        IMapper mapper
-    )
+        IMapper mapper, IFlowersStorage flowersStorage)
     {
-        this.flowersService = flowersService;
         this.paginationValidator = paginationValidator;
         this.mapper = mapper;
+        this.flowersStorage = flowersStorage;
     }
 
     /// <summary>
@@ -58,12 +57,14 @@ public class FlowersController : ControllerBase
     ///     * isToxic - токсичность
     ///     - IsDescending: направление сортировки (true - по убыванию, false - по возрастанию)
     /// </remarks>
+    /// <param name="searchString">Поиск по названию цветка</param>
     /// <param name="pagination">Параметры пагинации (Skip, Take)</param>
     /// <param name="filterParams">Параметры фильтрации цветов</param>
     /// <param name="sortOption">Параметры сортировки цветов</param>
     /// <returns>Список цветов с основной информацией</returns>
-    [HttpGet]
+    [HttpGet("{searchString}")]
     public async Task<ActionResult<GetFlowerResponse>> Get(
+        string? searchString,
         [FromQuery] Pagination pagination,
         [FromQuery] FlowerFilterParams filterParams,
         [FromQuery] RawSortOption sortOption
@@ -73,19 +74,19 @@ public class FlowersController : ControllerBase
         if (!paginationValidationResult.IsValid)
             return BadRequest(paginationValidationResult.Errors);
 
-        var getFlowerResponse = await flowersService.Get(pagination, filterParams, mapper.Map<FlowerSortOptions>(sortOption));
+        var getFlowerResponse = await flowersStorage.Get(searchString, pagination, filterParams, mapper.Map<FlowerSortOptions>(sortOption));
         return Ok(getFlowerResponse);
     }
 
     /// <summary>
     ///     Получение иформации о конкретном цветке
     /// </summary>
-    /// <param name="searchString">Идентификатор или префиксу названия цветка</param>
+    /// <param name="id">Идентификатор цветка</param>
     /// <returns>Детальная информация о цветке</returns>
-    [HttpGet("{searchString}")]
-    public async Task<IActionResult> Get(string searchString)
+    [HttpGet("{id:int}")]
+    public async Task<IActionResult> Get(int id)
     {
-        var flowers = await flowersService.Get(searchString);
+        var flowers = await flowersStorage.Get(id);
         return Ok(flowers);
     }
 }

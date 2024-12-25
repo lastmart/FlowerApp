@@ -7,10 +7,11 @@ namespace FlowerApp.Service.Services;
 public interface IFlowersService
 {
     Task<GetFlowerResponse> Get(
+        string? searchString,
         Pagination pagination,
         FlowerFilterParams filterParams,
         FlowerSortOptions sortOptions
     );
 
-    Task<List<Flower>> Get(string searchString);
+    Task<List<Flower>> Get(int id);
 }

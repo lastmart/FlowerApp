@@ -132,8 +132,8 @@ public class DataSeeder
                 new()
                 {
                     Id = 1,
-                    Name = "Rose",
-                    ScientificName = "Rosa",
+                    Name = "rose",
+                    ScientificName = "rosa",
                     AppearanceDescription = "Beautiful red flower",
                     CareDescription = "Needs regular watering and sunlight",
                     PhotoUrl = "https://yt3.googleusercontent.com/RcRHIvIJHiYww-fIjs62ntgv1v_-wjQAVZ0fqLHCWpC2XqMtx9GH1SKeVfbuf39lyL02iREpDw=s900-c-k-c0x00ffffff-no-rj",
@@ -146,8 +146,8 @@ public class DataSeeder
                 new()
                 {
                     Id = 2,
-                    Name = "Lily",
-                    ScientificName = "Lilium",
+                    Name = "lily",
+                    ScientificName = "lilium",
                     AppearanceDescription = "Elegant white flower",
                     CareDescription = "Needs moderate watering and indirect sunlight",
                     PhotoUrl = "https://yt3.googleusercontent.com/RcRHIvIJHiYww-fIjs62ntgv1v_-wjQAVZ0fqLHCWpC2XqMtx9GH1SKeVfbuf39lyL02iREpDw=s900-c-k-c0x00ffffff-no-rj",
@@ -160,8 +160,8 @@ public class DataSeeder
                 new()
                 {
                     Id = 3,
-                    Name = "Tulip",
-                    ScientificName = "Tulipa",
+                    Name = "tulip",
+                    ScientificName = "tulipa",
                     AppearanceDescription = "Bright and colorful flower",
                     CareDescription = "Needs well-drained soil and moderate sunlight",
                     PhotoUrl = "https://yt3.googleusercontent.com/RcRHIvIJHiYww-fIjs62ntgv1v_-wjQAVZ0fqLHCWpC2XqMtx9GH1SKeVfbuf39lyL02iREpDw=s900-c-k-c0x00ffffff-no-rj",
@@ -174,8 +174,8 @@ public class DataSeeder
                 new()
                 {
                     Id = 4,
-                    Name = "Sunflower",
-                    ScientificName = "Helianthus",
+                    Name = "sunflower",
+                    ScientificName = "helianthus",
                     AppearanceDescription = "Large yellow flower",
                     CareDescription = "Needs full sunlight and regular watering",
                     PhotoUrl = "https://yt3.googleusercontent.com/RcRHIvIJHiYww-fIjs62ntgv1v_-wjQAVZ0fqLHCWpC2XqMtx9GH1SKeVfbuf39lyL02iREpDw=s900-c-k-c0x00ffffff-no-rj",
@@ -188,8 +188,8 @@ public class DataSeeder
                 new()
                 {
                     Id = 5,
-                    Name = "Orchid",
-                    ScientificName = "Orchidaceae",
+                    Name = "orchid",
+                    ScientificName = "orchidaceae",
                     AppearanceDescription = "Exotic and colorful flower",
                     CareDescription = "Needs indirect sunlight and careful watering",
                     PhotoUrl = "https://yt3.googleusercontent.com/RcRHIvIJHiYww-fIjs62ntgv1v_-wjQAVZ0fqLHCWpC2XqMtx9GH1SKeVfbuf39lyL02iREpDw=s900-c-k-c0x00ffffff-no-rj",
@@ -202,8 +202,8 @@ public class DataSeeder
                 new()
                 {
                     Id = 6,
-                    Name = "Daisy",
-                    ScientificName = "Bellis perennis",
+                    Name = "daisy",
+                    ScientificName = "bellis perennis",
                     AppearanceDescription = "Simple and cheerful flower",
                     CareDescription = "Needs moderate sunlight and regular watering",
                     PhotoUrl = "https://yt3.googleusercontent.com/RcRHIvIJHiYww-fIjs62ntgv1v_-wjQAVZ0fqLHCWpC2XqMtx9GH1SKeVfbuf39lyL02iREpDw=s900-c-k-c0x00ffffff-no-rj",
@@ -216,8 +216,8 @@ public class DataSeeder
                 new()
                 {
                     Id = 7,
-                    Name = "Carnation",
-                    ScientificName = "Dianthus caryophyllus",
+                    Name = "carnation",
+                    ScientificName = "dianthus caryophyllus",
                     AppearanceDescription = "Fragrant and colorful flower",
                     CareDescription = "Needs well-drained soil and moderate sunlight",
                     PhotoUrl = "https://yt3.googleusercontent.com/RcRHIvIJHiYww-fIjs62ntgv1v_-wjQAVZ0fqLHCWpC2XqMtx9GH1SKeVfbuf39lyL02iREpDw=s900-c-k-c0x00ffffff-no-rj",
@@ -230,8 +230,8 @@ public class DataSeeder
                 new()
                 {
                     Id = 8,
-                    Name = "Peony",
-                    ScientificName = "Paeonia",
+                    Name = "peony",
+                    ScientificName = "paeonia",
                     AppearanceDescription = "Large and fragrant flower",
                     CareDescription = "Needs full sunlight and regular watering",
                     PhotoUrl = "https://yt3.googleusercontent.com/RcRHIvIJHiYww-fIjs62ntgv1v_-wjQAVZ0fqLHCWpC2XqMtx9GH1SKeVfbuf39lyL02iREpDw=s900-c-k-c0x00ffffff-no-rj",
@@ -244,8 +244,8 @@ public class DataSeeder
                 new()
                 {
                     Id = 9,
-                    Name = "Marigold",
-                    ScientificName = "Tagetes",
+                    Name = "marigold",
+                    ScientificName = "tagetes",
                     AppearanceDescription = "Bright and cheerful flower",
                     CareDescription = "Needs full sunlight and regular watering",
                     PhotoUrl = "https://yt3.googleusercontent.com/RcRHIvIJHiYww-fIjs62ntgv1v_-wjQAVZ0fqLHCWpC2XqMtx9GH1SKeVfbuf39lyL02iREpDw=s900-c-k-c0x00ffffff-no-rj",
@@ -258,8 +258,8 @@ public class DataSeeder
                 new()
                 {
                     Id = 10,
-                    Name = "Lavender",
-                    ScientificName = "Lavandula",
+                    Name = "lavender",
+                    ScientificName = "lavandula",
                     AppearanceDescription = "Fragrant and purple flower",
                     CareDescription = "Needs full sunlight and well-drained soil",
                     PhotoUrl = "https://yt3.googleusercontent.com/RcRHIvIJHiYww-fIjs62ntgv1v_-wjQAVZ0fqLHCWpC2XqMtx9GH1SKeVfbuf39lyL02iREpDw=s900-c-k-c0x00ffffff-no-rj",

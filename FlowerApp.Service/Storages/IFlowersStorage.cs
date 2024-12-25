@@ -7,6 +7,7 @@ namespace FlowerApp.Service.Storages;
 public interface IFlowersStorage : IStorage<Flower, int>
 {
     Task<GetFlowerResponse> Get(
+        string? searchString,
         Pagination pagination,
         FlowerFilterParams? filterParams = null,
         FlowerSortOptions? sortByProperty = null

@@ -99,12 +99,19 @@ public class FlowersStorage : IFlowersStorage
     }
 
     public async Task<GetFlowerResponse> Get(
+        string? searchString,
         Pagination pagination,
         FlowerFilterParams? filterParams = null,
         FlowerSortOptions? sortBy = null
     )
     {
         var flowers = flowerAppContext.Flowers.AsQueryable();
+        if (searchString is not null)
+        {
+            searchString = searchString.ToLower();
+            flowers = flowers.Where(f => f.Name.StartsWith(searchString) || f.ScientificName.StartsWith(searchString));
+        }
+
         if (sortBy != null && sortBy.SortOptions.Any())
             flowers = SortFlowers(flowers, sortBy);
 
@@ -130,7 +137,8 @@ public class FlowersStorage : IFlowersStorage
 
         if (filterParams.ToxicCategories != null && filterParams.ToxicCategories.Any())
         {
-            var toxicCategory = filterParams.ToxicCategories.Aggregate(ToxicCategory.None, (current, category) => current | category);
+            var toxicCategory =
+                filterParams.ToxicCategories.Aggregate(ToxicCategory.None, (current, category) => current | category);
 
             flowers = toxicCategory == ToxicCategory.None
                 ? flowers.Where(f => f.ToxicCategory == ToxicCategory.None)

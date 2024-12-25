@@ -10,4 +10,8 @@
         <Folder Include="Request\"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\FlowerApp.Domain\FlowerApp.Domain.csproj" />
+    </ItemGroup>
+
 </Project>

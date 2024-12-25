@@ -1,4 +1,4 @@
-using FlowerApp.Domain.Common;
+using FlowerApp.DTOs.Common;
 using FluentValidation;
 
 namespace FlowerApp.Service.Common.Validators;

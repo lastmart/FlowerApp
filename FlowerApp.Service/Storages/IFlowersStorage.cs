@@ -1,5 +1,6 @@
-using FlowerApp.Domain.Common;
 using FlowerApp.Domain.Models.FlowerModels;
+using FlowerApp.DTOs.Common;
+using Flower = FlowerApp.Domain.Models.FlowerModels.Flower;
 
 namespace FlowerApp.Service.Storages;
 
@@ -11,5 +12,5 @@ public interface IFlowersStorage : IStorage<Flower, int>
         FlowerSortOptions? sortByProperty = null
     );
 
-    Task<Flower?> Get(string name);
+    Task<List<Flower>> Get(string name);
 }

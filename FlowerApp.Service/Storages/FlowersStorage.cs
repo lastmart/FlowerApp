@@ -1,12 +1,12 @@
 ﻿using System.Linq.Expressions;
 using AutoMapper;
 using FlowerApp.Data;
-using FlowerApp.Domain.Common;
+using FlowerApp.Data.DbModels.Flowers;
 using FlowerApp.Domain.Models.FlowerModels;
+using FlowerApp.DTOs.Common;
 using Microsoft.EntityFrameworkCore;
 using AppFlower = FlowerApp.Domain.Models.FlowerModels.Flower;
-using DBFlower = FlowerApp.Data.DbModels.Flowers.Flower;
-using ToxicCategory = FlowerApp.Domain.Models.FlowerModels.ToxicCategory;
+using DbFlower = FlowerApp.Data.DbModels.Flowers.Flower;
 
 namespace FlowerApp.Service.Storages;
 
@@ -41,7 +41,7 @@ public class FlowersStorage : IFlowersStorage
 
         try
         {
-            await flowerAppContext.Flowers.AddAsync(mapper.Map<DBFlower>(model));
+            await flowerAppContext.Flowers.AddAsync(mapper.Map<DbFlower>(model));
             var result = await flowerAppContext.SaveChangesAsync() > 0;
             await transaction.CommitAsync();
             return result;
@@ -58,7 +58,7 @@ public class FlowersStorage : IFlowersStorage
         await using var transaction = await flowerAppContext.Database.BeginTransactionAsync();
         try
         {
-            flowerAppContext.Flowers.Update(mapper.Map<DBFlower>(model));
+            flowerAppContext.Flowers.Update(mapper.Map<DbFlower>(model));
             var result = await flowerAppContext.SaveChangesAsync() > 0;
             await transaction.CommitAsync();
             return result;
@@ -76,7 +76,7 @@ public class FlowersStorage : IFlowersStorage
         try
         {
             var flower = await flowerAppContext.Flowers.FindAsync(id);
-            if (flower == null) 
+            if (flower == null)
                 return true;
             flowerAppContext.Flowers.Remove(flower);
             var result = await flowerAppContext.SaveChangesAsync() > 0;
@@ -90,21 +90,23 @@ public class FlowersStorage : IFlowersStorage
         }
     }
 
-    public async Task<AppFlower?> Get(string name)
+    public async Task<List<AppFlower>> Get(string name)
     {
-        return mapper.Map<AppFlower>(await flowerAppContext.Flowers
-            .FirstOrDefaultAsync(f => f.Name == name || f.ScientificName == name));
+        return await flowerAppContext.Flowers
+            .Where(f => f.Name.StartsWith(name) || f.ScientificName.StartsWith(name))
+            .Select(f => mapper.Map<AppFlower>(f))
+            .ToListAsync();
     }
 
     public async Task<GetFlowerResponse> Get(
         Pagination pagination,
         FlowerFilterParams? filterParams = null,
-        FlowerSortOptions? sortByProperty = null
+        FlowerSortOptions? sortBy = null
     )
     {
-        var flowers = flowerAppContext.Flowers.Select(dbFlower => mapper.Map<AppFlower>(dbFlower));
-        if (sortByProperty != null)
-            flowers = SortFlowers(flowers, sortByProperty);
+        var flowers = flowerAppContext.Flowers.AsQueryable();
+        if (sortBy != null && sortBy.SortOptions.Any())
+            flowers = SortFlowers(flowers, sortBy);
 
         if (filterParams != null)
             flowers = FilterFlowers(flowers, filterParams);
@@ -112,12 +114,13 @@ public class FlowersStorage : IFlowersStorage
         var result = await flowers
             .Skip(pagination.Skip)
             .Take(pagination.Take)
+            .Select(dbFlower => mapper.Map<AppFlower>(dbFlower))
             .ToListAsync();
 
         return new GetFlowerResponse(result.Count, result);
     }
 
-    private static IQueryable<AppFlower> FilterFlowers(IQueryable<AppFlower> flowers, FlowerFilterParams filterParams)
+    private static IQueryable<DbFlower> FilterFlowers(IQueryable<DbFlower> flowers, FlowerFilterParams filterParams)
     {
         if (filterParams.WateringFrequency is not null)
             flowers = flowers.Where(f => filterParams.WateringFrequency.Contains(f.WateringFrequency));
@@ -127,24 +130,23 @@ public class FlowersStorage : IFlowersStorage
 
         if (filterParams.ToxicCategories != null && filterParams.ToxicCategories.Any())
         {
-            var toxicCategory =
-                filterParams.ToxicCategories.Aggregate(ToxicCategory.None, (current, category) => current | category);
+            var toxicCategory = filterParams.ToxicCategories.Aggregate(ToxicCategory.None, (current, category) => current | category);
 
             flowers = toxicCategory == ToxicCategory.None
-                ? flowers.Where(f => f.ToxicCategory[0] == ToxicCategory.None)
-                : flowers.Where(f => (f.ToxicCategory[0] & toxicCategory) != 0);
+                ? flowers.Where(f => f.ToxicCategory == ToxicCategory.None)
+                : flowers.Where(f => (f.ToxicCategory & toxicCategory) != 0);
         }
 
         return flowers;
     }
 
-    private static IQueryable<AppFlower> SortFlowers(IQueryable<AppFlower> flowers, FlowerSortOptions sortOptions)
+    private static IQueryable<DbFlower> SortFlowers(IQueryable<DbFlower> flowers, FlowerSortOptions sortOptions)
     {
-        IOrderedQueryable<AppFlower>? orderedQuery = null;
+        IOrderedQueryable<DbFlower>? orderedQuery = null;
 
         foreach (var sortOption in sortOptions.SortOptions)
         {
-            var propertySelector = GetPropertySelector(sortOption.SortBy);
+            var propertySelector = GetPropertySelector(sortOption.FlowerSortField);
 
             if (orderedQuery == null)
                 orderedQuery = sortOption.IsDescending
@@ -159,15 +161,15 @@ public class FlowersStorage : IFlowersStorage
         return orderedQuery ?? flowers;
     }
 
-    private static Expression<Func<AppFlower, object>> GetPropertySelector(SortByOption sortBy)
+    private static Expression<Func<DbFlower, object>> GetPropertySelector(FlowerSortField flowerSort)
     {
-        return sortBy switch
+        return flowerSort switch
         {
-            SortByOption.Name => f => f.Name,
-            SortByOption.ScientificName => f => f.ScientificName,
-            SortByOption.WateringFrequency => f => f.WateringFrequency,
-            SortByOption.IlluminationInSuites => f => f.Illumination,
-            SortByOption.IsToxic => f => f.ToxicCategory[0] != ToxicCategory.None,
+            FlowerSortField.Name => f => f.Name,
+            FlowerSortField.ScientificName => f => f.ScientificName,
+            FlowerSortField.WateringFrequency => f => f.WateringFrequency,
+            FlowerSortField.IlluminationInSuites => f => f.Illumination,
+            FlowerSortField.IsToxic => f => f.ToxicCategory != ToxicCategory.None,
             _ => throw new ArgumentException("Invalid sort option.")
         };
     }

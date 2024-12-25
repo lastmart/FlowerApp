@@ -1,9 +1,10 @@
 using AutoMapper;
-using FlowerApp.Domain.Common;
 using FlowerApp.Domain.Models.FlowerModels;
-using FlowerApp.Service.Storages;
+using FlowerApp.DTOs.Common;
+using FlowerApp.Service.Services;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
+using GetFlowerResponse = FlowerApp.DTOs.Response.Flowers.GetFlowerResponse;
 
 namespace FlowerApp.Service.Controllers;
 
@@ -11,16 +12,19 @@ namespace FlowerApp.Service.Controllers;
 [Route("api/flowers")]
 public class FlowersController : ControllerBase
 {
-    private readonly IFlowersStorage flowersStorage;
+    private readonly IFlowersService flowersService;
     private readonly IValidator<Pagination> paginationValidator;
+    private readonly IMapper mapper;
 
     public FlowersController(
-        IFlowersStorage flowersStorage,
-        IValidator<Pagination> paginationValidator
+        IFlowersService flowersService,
+        IValidator<Pagination> paginationValidator,
+        IMapper mapper
     )
     {
-        this.flowersStorage = flowersStorage;
+        this.flowersService = flowersService;
         this.paginationValidator = paginationValidator;
+        this.mapper = mapper;
     }
 
     /// <summary>
@@ -60,38 +64,28 @@ public class FlowersController : ControllerBase
     /// <returns>Список цветов с основной информацией</returns>
     [HttpGet]
     public async Task<ActionResult<GetFlowerResponse>> Get(
-        [FromQuery] Pagination pagination
+        [FromQuery] Pagination pagination,
+        [FromQuery] FlowerFilterParams filterParams,
+        [FromQuery] RawSortOption sortOption
     )
     {
         var paginationValidationResult = await paginationValidator.ValidateAsync(pagination);
         if (!paginationValidationResult.IsValid)
             return BadRequest(paginationValidationResult.Errors);
 
-        var getFlowerResponse = await flowersStorage.Get(pagination);
+        var getFlowerResponse = await flowersService.Get(pagination, filterParams, mapper.Map<FlowerSortOptions>(sortOption));
         return Ok(getFlowerResponse);
     }
 
     /// <summary>
-    ///     Получить цветок по идентификатору
+    ///     Получение иформации о конкретном цветке
     /// </summary>
-    /// <param name="id">Идентификатор цветка</param>
+    /// <param name="searchString">Идентификатор или префиксу названия цветка</param>
     /// <returns>Детальная информация о цветке</returns>
-    [HttpGet("{id:int}")]
-    public async Task<IActionResult> Get(int id)
+    [HttpGet("{searchString}")]
+    public async Task<IActionResult> Get(string searchString)
     {
-        var flower = await flowersStorage.Get(id);
-        return flower != null ? Ok(flower) : NotFound();
-    }
-
-    /// <summary>
-    ///     Получить цветок по названию или научному названию
-    /// </summary>
-    /// <param name="name">Название цветка</param>
-    /// <returns>Детальная информация о цветке</returns>
-    [HttpGet("{name}")]
-    public async Task<IActionResult> Get(string name)
-    {
-        var flower = await flowersStorage.Get(name);
-        return flower != null ? Ok(flower) : NotFound();
+        var flowers = await flowersService.Get(searchString);
+        return Ok(flowers);
     }
 }

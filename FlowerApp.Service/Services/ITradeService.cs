@@ -1,5 +1,5 @@
-using FlowerApp.Domain.Common;
 using FlowerApp.Domain.Models.TradeModels;
+using FlowerApp.DTOs.Common;
 
 namespace FlowerApp.Service.Services;
 

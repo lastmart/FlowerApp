@@ -1,6 +1,6 @@
 using AutoMapper;
 using FlowerApp.Data;
-using FlowerApp.Domain.Common;
+using FlowerApp.DTOs.Common;
 using Microsoft.EntityFrameworkCore;
 using AppTrade = FlowerApp.Domain.Models.TradeModels.Trade;
 using DbTrade = FlowerApp.Data.DbModels.Trades.Trade;

@@ -1,3 +1,5 @@
+using FlowerApp.Data.DbModels.Flowers;
+
 namespace FlowerApp.Domain.Models.FlowerModels;
 
 public class FlowerFilterParams

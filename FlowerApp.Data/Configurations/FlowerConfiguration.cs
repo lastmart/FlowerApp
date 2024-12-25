@@ -1,7 +1,6 @@
-﻿using FlowerApp.Domain.ApplicationModels.FlowerModels;
+﻿using FlowerApp.Data.DbModels.Flowers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Flower = FlowerApp.Domain.DbModels.Flower;
 
 namespace FlowerApp.Data.Configurations;
 
@@ -27,18 +26,18 @@ public class FlowerConfiguration : IEntityTypeConfiguration<Flower>
             .IsRequired();
 
         builder.Property(flower => flower.PhotoUrl)
-            .HasColumnType("varchar(50)");
+            .HasColumnType("varchar(200)");
 
         builder.Property(flower => flower.WateringFrequency)
             .IsRequired();
-        
+
         builder.Property(flower => flower.Soil)
             .IsRequired();
-        
+
         builder.Property(flower => flower.Size)
             .IsRequired();
         builder.HasCheckConstraint("CK_Size", "\"Size\" >= 0");
-        
+
         builder.Property(flower => flower.ToxicCategory)
             .IsRequired();
 

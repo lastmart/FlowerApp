@@ -1,31 +1,34 @@
-﻿using AutoMapper;
-using FlowerApp.Data.Storages;
-using FlowerApp.Domain.ApplicationModels.FlowerModels;
-using FlowerApp.Domain.Common;
+﻿using FlowerApp.Domain.Common;
+using FlowerApp.Domain.Models.FlowerModels;
+using FlowerApp.Service.Storages;
 
 namespace FlowerApp.Service.Services;
 
 public class FlowersService : IFlowersService
 {
     private readonly IFlowersStorage flowersStorage;
-    private readonly IMapper mapper;
 
-    public FlowersService(IFlowersStorage flowersStorage, IMapper mapper)
+    public FlowersService(IFlowersStorage flowersStorage)
     {
         this.flowersStorage = flowersStorage;
-        this.mapper = mapper;
     }
 
-    public async Task<GetFlowerResponse> Get(Pagination pagination, FlowerFilterParams filterParams,
-        FlowerSortOptions sortOptions, string? searchQuery)
+    public async Task<GetFlowerResponse> GetBatch(Pagination pagination, FlowerFilterParams filterParams,
+        FlowerSortOptions sortOptions)
     {
-        var response = await flowersStorage.Get(pagination, filterParams, sortOptions, searchQuery);
-        return mapper.Map<GetFlowerResponse>(response);
+        var response = await flowersStorage.Get(pagination, filterParams, sortOptions);
+        return response;
     }
 
     public async Task<Flower?> Get(int id)
     {
         var flower = await flowersStorage.Get(id);
-        return mapper.Map<Flower>(flower);
+        return flower;
+    }
+
+    public async Task<Flower?> GetByName(string name)
+    {
+        var flower = await flowersStorage.Get(name);
+        return flower;
     }
 }

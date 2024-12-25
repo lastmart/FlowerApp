@@ -1,10 +1,13 @@
-﻿using FlowerApp.Domain.ApplicationModels.FlowerModels;
-using FlowerApp.Domain.Common;
+﻿using FlowerApp.Domain.Common;
+using FlowerApp.Domain.Models.FlowerModels;
 
 namespace FlowerApp.Service.Services;
 
 public interface IFlowersService
 {
-    Task<GetFlowerResponse> Get(Pagination pagination, FlowerFilterParams filterParams, FlowerSortOptions sortOptions, string? searchQuery);
+    Task<GetFlowerResponse> GetBatch(Pagination pagination, FlowerFilterParams filterParams,
+        FlowerSortOptions sortOptions);
+
     Task<Flower?> Get(int id);
+    Task<Flower?> GetByName(string name);
 }

@@ -8,7 +8,8 @@ public interface IFlowersStorage : IStorage<Flower, int>
     Task<GetFlowerResponse> Get(
         Pagination pagination,
         FlowerFilterParams? filterParams = null,
-        FlowerSortOptions? sortByProperty = null,
-        string? searchSubstring = null
+        FlowerSortOptions? sortByProperty = null
     );
+
+    Task<Flower?> Get(string name);
 }

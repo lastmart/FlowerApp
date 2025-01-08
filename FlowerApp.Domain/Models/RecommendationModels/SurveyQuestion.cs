@@ -1,6 +1,10 @@
-using FlowerApp.Data.DbModels.Surveys;
-
 namespace FlowerApp.Domain.Models.RecommendationModels;
+
+public enum QuestionType
+{
+    SingleAnswer,
+    MultiAnswer
+}
 
 public class SurveyQuestion : Entity<int>
 {

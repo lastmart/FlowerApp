@@ -1,5 +1,6 @@
 using AutoMapper;
 using FlowerApp.Data;
+using FlowerApp.Domain.Models.AuthModels;
 using Microsoft.EntityFrameworkCore;
 using AppUser = FlowerApp.Domain.Models.UserModels.User;
 using DbUser = FlowerApp.Data.DbModels.Users.User;
@@ -20,6 +21,11 @@ public class UsersStorage : IUserStorage
     public async Task<AppUser?> Get(int id)
     {
         return mapper.Map<AppUser>(await dbContext.Users.FirstOrDefaultAsync(u => u.Id == id));
+    }
+
+    public async Task<AppUser?> GetByGoogleId(string googleId)
+    {
+        return mapper.Map<AppUser>(await dbContext.Users.FirstOrDefaultAsync(user => user.GoogleUserId == googleId));
     }
 
     public async Task<IList<AppUser>> Get(int[] ids)

@@ -10,7 +10,8 @@ public class SurveyAnswerConfiguration: IEntityTypeConfiguration<SurveyAnswer>
     {
         builder.HasKey(answer => answer.Id);
         
-        builder.Property(answer => answer.QuestionsMask)
+        builder
+            .Property(answer => answer.QuestionsMask)
             .HasMaxLength(30)
             .IsRequired();
         

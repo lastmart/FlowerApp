@@ -11,16 +11,18 @@ public class SurveyConfiguration : IEntityTypeConfiguration<Survey>
     {
         builder.HasKey(survey => survey.Id);
 
-        builder.HasMany(survey => survey.Answers)
+        builder
+            .HasMany(survey => survey.Answers)
             .WithOne(answer => answer.Survey)
             .HasForeignKey(answer => answer.SurveyId)
             .HasPrincipalKey(survey => survey.Id)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasOne(survey => survey.User)
+        builder
+            .HasOne(survey => survey.User)
             .WithOne(user => user.Survey)
-            .HasForeignKey<Survey>(survey => survey.UserId)
-            .HasPrincipalKey<User>(user => user.SurveyId)
+            .HasForeignKey<User>(user => user.SurveyId)
+            .HasPrincipalKey<Survey>(survey => survey.Id)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }

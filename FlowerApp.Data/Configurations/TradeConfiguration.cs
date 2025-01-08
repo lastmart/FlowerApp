@@ -10,31 +10,39 @@ public class TradeConfiguration : IEntityTypeConfiguration<Trade>
     {
         builder.HasKey(trade => trade.Id);
 
-        builder.Property(trade => trade.FlowerName)
+        builder
+            .Property(trade => trade.FlowerName)
             .HasMaxLength(100)
             .IsRequired();
 
-        builder.Property(trade => trade.PreferredTrade)
+        builder
+            .Property(trade => trade.PreferredTrade)
             .HasMaxLength(100)
             .IsRequired();
 
-        builder.Property(trade => trade.Location)
+        builder
+            .Property(trade => trade.Location)
             .HasMaxLength(100)
             .IsRequired();
 
-        builder.Property(trade => trade.Description)
+        builder
+            .Property(trade => trade.Description)
             .HasMaxLength(500);
 
-        builder.Property(trade => trade.CreatedAt)
+        builder
+            .Property(trade => trade.CreatedAt)
             .IsRequired();
 
-        builder.Property(trade => trade.ExpiresAt)
+        builder
+            .Property(trade => trade.ExpiresAt)
             .IsRequired();
 
-        builder.Property(trade => trade.IsActive)
+        builder
+            .Property(trade => trade.IsActive)
             .IsRequired();
 
-        builder.Property(trade => trade.UserId)
+        builder
+            .Property(trade => trade.UserId)
             .IsRequired();
     }
 }

@@ -34,7 +34,7 @@ public class FlowerAppContext : DbContext
             .ApplyConfiguration(new SurveyConfiguration())
             .ApplyConfiguration(new TradeConfiguration())
             .ApplyConfiguration(new UserConfiguration());
-        
+
         base.OnModelCreating(modelBuilder);
     }
 }

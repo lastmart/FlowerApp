@@ -10,4 +10,8 @@
         <PackageReference Include="Kontur.Results" Version="3.0.0"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\FlowerApp.Data\FlowerApp.Data.csproj" />
+    </ItemGroup>
+
 </Project>

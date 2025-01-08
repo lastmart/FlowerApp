@@ -10,22 +10,27 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
     {
         builder.HasKey(user => user.Id);
 
-        builder.Property(user => user.GoogleUserId)
+        builder
+            .Property(user => user.GoogleUserId)
             .HasMaxLength(255)
             .IsRequired();
 
-        builder.Property(user => user.Name)
+        builder
+            .Property(user => user.Name)
             .HasMaxLength(100)
             .IsRequired();
 
-        builder.Property(user => user.Surname)
+        builder
+            .Property(user => user.Surname)
             .HasMaxLength(100)
             .IsRequired();
 
-        builder.Property(user => user.Email)
+        builder
+            .Property(user => user.Email)
             .HasMaxLength(200);
 
-        builder.Property(user => user.Telegram)
+        builder
+            .Property(user => user.Telegram)
             .HasMaxLength(200);
 
         builder

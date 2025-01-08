@@ -1,3 +1,5 @@
+using FlowerApp.Data.DbModels.Surveys;
+
 namespace FlowerApp.Data.DbModels.Flowers;
 
 public class Flower : Entity<int>
@@ -12,4 +14,6 @@ public class Flower : Entity<int>
     public Soil Soil { get; set; }
     public ToxicCategory ToxicCategory { get; set; }
     public Illumination Illumination { get; set; }
+
+    public IEnumerable<SurveyFlower> SurveyFlowers { get; set; }
 }

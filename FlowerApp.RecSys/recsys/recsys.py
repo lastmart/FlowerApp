@@ -3,8 +3,8 @@ import pandas as pd
 
 from scipy.sparse.linalg import svds
 from sklearn.metrics.pairwise import cosine_similarity
-from data.answers_storage import AnswersStorage
-from data.flower_features_storage import FlowerFeaturesStorage
+from data.new_answers_storage import AnswersStorage
+from data.new_flower_features_storage import FlowerFeaturesStorage
 from models.recomendations_response import RecomendationsResponse
 
 

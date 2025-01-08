@@ -1,7 +1,7 @@
 import pandas as pd
 
 from typing import Generator
-from models.flower_feature import FlowerFeature
+from models.internal_models.flower_feature import FlowerFeature
 import os
 
 CURRENT_DIRECTORY = os.path.dirname(os.path.abspath(__file__))

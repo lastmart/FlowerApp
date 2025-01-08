@@ -1,7 +1,7 @@
 import pandas as pd
 
 from typing import Generator
-from models.answer import Answer
+from models.internal_models.answer import Answer
 import os
 
 CURRENT_DIRECTORY = os.path.dirname(os.path.abspath(__file__))

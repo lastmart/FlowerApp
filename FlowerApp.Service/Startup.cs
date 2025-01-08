@@ -1,6 +1,9 @@
 ﻿using System.Text.Json.Serialization;
+using FlowerApp.Service.Common;
+using Microsoft.AspNetCore.Authorization;
 using FlowerApp.Service.Database;
 using FlowerApp.Service.Extensions;
+using FlowerApp.Service.Handlers;
 using FlowerApp.Service.Middlewares;
 
 namespace FlowerApp.Service;
@@ -19,6 +22,9 @@ public class Startup
         serviceCollection
             .AddDatabase(configuration)
             .AddServices()
+            .AddAuthorization(options =>
+                options.AddPolicy(Constants.PolicyNames.GoogleAuthorization, policy =>
+                    policy.Requirements.Add(new GoogleAuthorizationRequirement())))
             .AddSwagger()
             .AddControllers()
             .AddJsonOptions(options =>
@@ -36,6 +42,7 @@ public class Startup
             app
                 .UseCors()
                 .UseRouting()
+                .UseAuthorization()
                 .UseEndpoints(endpoints => endpoints.MapControllers());
         }
 

@@ -10,6 +10,10 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
     {
         builder.HasKey(user => user.Id);
 
+        builder.Property(user => user.GoogleUserId)
+            .HasMaxLength(255)
+            .IsRequired();
+
         builder.Property(user => user.Name)
             .HasMaxLength(100)
             .IsRequired();
@@ -23,7 +27,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
         builder.Property(user => user.Telegram)
             .HasMaxLength(200);
-        
+
         builder
             .HasMany(user => user.Trades)
             .WithOne(trade => trade.User)

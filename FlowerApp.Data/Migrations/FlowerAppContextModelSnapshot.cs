@@ -202,6 +202,11 @@ namespace FlowerApp.Data.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
 
+                    b.Property<string>("GoogleUserId")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)

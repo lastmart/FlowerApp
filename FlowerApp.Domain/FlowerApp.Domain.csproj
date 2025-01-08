@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\FlowerApp.Data\FlowerApp.Data.csproj" />
+        <PackageReference Include="Kontur.Results" Version="3.0.0"/>
     </ItemGroup>
 
 </Project>

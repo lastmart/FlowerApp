@@ -2,10 +2,13 @@
 using FlowerApp.DTOs.Common;
 using FlowerApp.Service.Common.Mappers;
 using FlowerApp.Service.Common.Validators;
+using FlowerApp.Service.Configuration;
 using FlowerApp.Service.Database;
+using FlowerApp.Service.Handlers;
 using FlowerApp.Service.Services;
 using FlowerApp.Service.Storages;
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.OpenApi.Models;
 
 namespace FlowerApp.Service.Extensions;
@@ -15,6 +18,10 @@ public static class ServiceCollectionExtension
     public static IServiceCollection AddServices(this IServiceCollection serviceCollection)
     {
         serviceCollection
+            .AddConfiguration<ApiSettings>()
+            .AddConfiguration<ApiSecretSettings>()
+            .AddScoped<IGoogleAuthService, GoogleAuthService>()
+            // .AddScoped<IFlowersService, FlowersService>()
             // .AddScoped<IRecommendationService, RecommendationService>()
             // .AddScoped<IQuestionsStorage, QuestionsStorage>()
             // .AddScoped<IUserAnswersStorage, UserAnswersStorage>()
@@ -24,10 +31,12 @@ public static class ServiceCollectionExtension
             // .AddScoped<ITradeService, TradeService>()
             .AddFlowerServices()
             .AddStorages()
+            .AddHandlers()
             .AddScoped<DataSeeder>()
             .AddValidators()
             .AddAutoMappers()
             .AddHttpClient();
+        ;
 
         return serviceCollection;
     }
@@ -82,5 +91,19 @@ public static class ServiceCollectionExtension
             .AddScoped<IFlowersStorage, FlowersStorage>()
             .AddScoped<IUserStorage, UsersStorage>()
             .AddScoped<ITradeStorage, TradeStorage>();
+    }
+    
+    private static IServiceCollection AddHandlers(this IServiceCollection serviceCollection)
+    {
+        return serviceCollection
+            .AddScoped<IAuthorizationHandler, GoogleAuthorizationHandler>();
+    }
+    
+    private static IServiceCollection AddConfiguration<TConfig>(this IServiceCollection serviceCollection)
+        where TConfig : class
+    {
+        return serviceCollection
+            .AddSingleton<Func<TConfig>>(
+                provider => () => provider.GetRequiredService<IConfiguration>().Get<TConfig>());
     }
 }

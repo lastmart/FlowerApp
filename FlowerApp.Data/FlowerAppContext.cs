@@ -12,6 +12,7 @@ public class FlowerAppContext : DbContext
     public DbSet<Flower> Flowers { get; set; }
     public DbSet<SurveyQuestion> Questions { get; set; }
     public DbSet<SurveyAnswer> SurveyAnswers { get; set; }
+    public DbSet<SurveyFlower> SurveyFlowers { get; set; }
     public DbSet<Survey> Surveys { get; set; }
     public DbSet<Trade> Trades { get; set; }
     public DbSet<User> Users { get; set; }
@@ -29,6 +30,7 @@ public class FlowerAppContext : DbContext
             .ApplyConfiguration(new FlowerConfiguration())
             .ApplyConfiguration(new QuestionConfiguration())
             .ApplyConfiguration(new SurveyAnswerConfiguration())
+            .ApplyConfiguration(new SurveyFlowerConfiguration())
             .ApplyConfiguration(new SurveyConfiguration())
             .ApplyConfiguration(new TradeConfiguration())
             .ApplyConfiguration(new UserConfiguration());

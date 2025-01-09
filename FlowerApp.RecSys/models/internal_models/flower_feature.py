@@ -6,4 +6,4 @@ class FlowerFeature:
     flower_id: int
     question_id: int
     features_size: int
-    feature: int
+    feature: list[float]

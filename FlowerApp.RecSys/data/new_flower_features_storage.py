@@ -41,7 +41,7 @@ FROM "SurveyFlowers"
     def get_flowers_by_question_id(self, question_id: int) -> list:
         self.__cursor.execute(
 f'''
-SELECT "FlowerId", "SurveyQuestionId", "Variants", "RelevantVariants"
+SELECT "FlowerId", "SurveyQuestionId", "Variants", "RelevantVariantsProbabilities"
 FROM "SurveyFlowers"
 JOIN "Questions" ON "SurveyQuestionId" = "Questions"."Id"
 WHERE "SurveyQuestionId"={question_id}
@@ -54,16 +54,20 @@ WHERE "SurveyQuestionId"={question_id}
                 flower_row['FlowerId'],
                 flower_row['SurveyQuestionId'],
                 flower_row['Variants'],
-                flower_row['RelevantVariants']
+                flower_row['RelevantVariantsProbabilities']
             )
 
     def _parse_to_feature_flower(self, flower_id: str, question_id: str, variants: str, relevant_variants: str):
-        sorted_variants = sorted(variants.split(';'))
         relevant_variants = relevant_variants.split(';')
-        feature = sum(1 << i for i, variant in enumerate(sorted_variants) if variant in relevant_variants)
+        variants = variants.split(';')
+        if len(variants) != len(relevant_variants):
+            print(f'Входные параметры имеют разную длину: возможных вариантов {len(variants)}, вариантов в маске {len(relevant_variants)}')
+            raise ValueError()
+
+        feature = [float(variant) for variant in relevant_variants]
         return FlowerFeature(
             int(flower_id),
             int(question_id),
-            len(variants.split(';')),
+            len(variants),
             feature
         )

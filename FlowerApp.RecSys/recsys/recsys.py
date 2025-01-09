@@ -29,13 +29,9 @@ class RecSys:
             for flower_feature_row in\
                 self.__flower_features_storage.iterate_flower_features_by_row_with_question_id(
                     answer_row.question_id):
-                answer_array = self.__decode_mask(
-                    answer_row.answer,
-                    flower_feature_row.features_size)
-                flower_feature_array = self.__decode_mask(
-                    flower_feature_row.feature,
-                    flower_feature_row.features_size)
-                
+                answer_array = answer_row.answer
+                flower_feature_array = flower_feature_row.feature
+
                 match_score = np.dot(answer_array, flower_feature_array)
                 answer_matrix[answer_row.user_id - 1, flower_feature_row.flower_id - 1] = match_score
 

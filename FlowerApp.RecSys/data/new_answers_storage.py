@@ -63,10 +63,14 @@ JOIN "Questions" ON "SurveyAnswers"."QuestionId" = "Questions"."Id"
                 answer_row['Variants'])
 
     def _parse_to_answer(self, user_id: str, question_id: str, questions_mask: str, variants: str):
-        sorted_variants = sorted(variants.split(';'))
+        variants = variants.split(';')
         questions_mask = questions_mask.split(';')
-        answer = sum(1 << i for i, variant in enumerate(sorted_variants) if variant in questions_mask)
+        if len(variants) != len(questions_mask):
+            print(f'Входные параметры имеют разную длину: возможных вариантов {len(variants)}, вариантов в маске {len(questions_mask)}')
+            raise ValueError()
+
+        answer = [int(variant) for variant in questions_mask]
         return Answer(user_id,
                       question_id,
-                      len(sorted_variants),
+                      len(variants),
                       answer)

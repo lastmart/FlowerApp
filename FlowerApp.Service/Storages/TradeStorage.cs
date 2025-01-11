@@ -32,54 +32,82 @@ public class TradeStorage : ITradeStorage
             .ToListAsync();
     }
 
-
-    public async Task<IEnumerable<AppTrade>> Get(Pagination pagination, string? location, int? excludeId)
+    public async Task<IEnumerable<AppTrade>> GetOtherUsersTrades(
+        Pagination pagination, 
+        string? location, 
+        int? userId)
     {
-        var query = dbContext.Trades.Where(t => t.IsActive);
+        var query = dbContext.Trades
+            .Where(t => t.IsActive && t.UserId != userId);
 
         if (!string.IsNullOrEmpty(location))
         {
             query = query.Where(t => t.Location.Contains(location));
         }
 
-        if (excludeId != null)
-        {
-            query = query.Where(trade => trade.UserId != excludeId);
-        }
-
-        var result = await query
+        return await query
             .Skip(pagination.Skip)
             .Take(pagination.Take)
             .Select(trade => mapper.Map<AppTrade>(trade))
             .ToListAsync();
+    }
 
-        await dbContext.SaveChangesAsync();
+    public async Task<IEnumerable<AppTrade>> GetUserTrades(
+        Pagination pagination, 
+        string? location, 
+        int userId)
+    {
+        var query = dbContext.Trades
+            .Where(t => t.IsActive && t.UserId == userId);
 
-        return result;
+        if (!string.IsNullOrEmpty(location))
+        {
+            query = query.Where(t => t.Location.Contains(location));
+        }
+
+        return await query
+            .Skip(pagination.Skip)
+            .Take(pagination.Take)
+            .Select(trade => mapper.Map<AppTrade>(trade))
+            .ToListAsync();
     }
 
     public async Task<bool> Create(AppTrade trade)
     {
+        await using var transaction = await dbContext.Database.BeginTransactionAsync();
         try
         {
             await dbContext.Trades.AddAsync(mapper.Map<DbTrade>(trade));
-            return await dbContext.SaveChangesAsync() > 0;
+            var result = await dbContext.SaveChangesAsync() > 0;
+            await transaction.CommitAsync();
+            return result;
         }
-        catch (Exception)
+        catch
         {
+            await transaction.RollbackAsync();
             return false;
         }
     }
 
     public async Task<bool> Update(AppTrade trade)
     {
-        var dbTrade = await dbContext.Trades.FindAsync(trade.Id);
-        if (dbTrade == null)
-            return false;
+        await using var transaction = await dbContext.Database.BeginTransactionAsync();
+        try
+        {
+            var dbTrade = await dbContext.Trades.FindAsync(trade.Id);
+            if (dbTrade == null)
+                return false;
 
-        CopyTrade(dbTrade, trade);
-        await dbContext.SaveChangesAsync();
-        return true;
+            mapper.Map(trade, dbTrade);
+            var result = await dbContext.SaveChangesAsync() > 0;
+            await transaction.CommitAsync();
+            return result;
+        }
+        catch
+        {
+            await transaction.RollbackAsync();
+            return false;
+        }
     }
 
     public async Task<bool> Delete(int id)
@@ -87,10 +115,11 @@ public class TradeStorage : ITradeStorage
         await using var transaction = await dbContext.Database.BeginTransactionAsync();
         try
         {
-            var user = await dbContext.Trades.FindAsync(id);
-            if (user == null)
+            var trade = await dbContext.Trades.FindAsync(id);
+            if (trade == null)
                 return true;
-            dbContext.Trades.Remove(user);
+            
+            dbContext.Trades.Remove(trade);
             var result = await dbContext.SaveChangesAsync() > 0;
             await transaction.CommitAsync();
             return result;
@@ -104,20 +133,22 @@ public class TradeStorage : ITradeStorage
 
     public async Task<bool> DeactivateTrade(int id)
     {
-        var trade = await dbContext.Trades.FindAsync(id);
-        if (trade == null)
+        await using var transaction = await dbContext.Database.BeginTransactionAsync();
+        try
+        {
+            var trade = await dbContext.Trades.FindAsync(id);
+            if (trade == null)
+                return false;
+
+            trade.IsActive = false;
+            var result = await dbContext.SaveChangesAsync() > 0;
+            await transaction.CommitAsync();
+            return result;
+        }
+        catch
+        {
+            await transaction.RollbackAsync();
             return false;
-
-        trade.IsActive = false;
-        return await dbContext.SaveChangesAsync() > 0;
-    }
-
-    private static void CopyTrade(DbTrade dbTrade, AppTrade appTrade)
-    {
-        dbTrade.FlowerName = appTrade.FlowerName;
-        dbTrade.PreferredTrade = appTrade.PreferredTrade;
-        dbTrade.Location = appTrade.Location;
-        dbTrade.Description = appTrade.Description;
-        dbTrade.ExpiresAt = appTrade.ExpiresAt;
+        }
     }
 }

@@ -5,9 +5,10 @@ namespace FlowerApp.Service.Services;
 
 public interface ITradeService
 {
-    Task<Trade?> Get(Guid id);
-    Task<GetTradesResponse> GetAll(Pagination pagination, string? location, string? userId, bool includeUserTrades);
+    Task<Trade?> Get(int id);
+    Task<GetTradesResponse> GetOtherUsersTrades(Pagination pagination, string? location, int? id);
+    Task<GetTradesResponse> GetUserTrades(Pagination pagination, string? location, int id);
     Task<bool> Create(Trade trade);
-    Task<bool> Update(Guid id, Trade trade);
-    Task<bool> DeactivateTrade(Guid id);
+    Task<bool> Update(Trade trade);
+    Task<bool> DeactivateTrade(int id);
 }

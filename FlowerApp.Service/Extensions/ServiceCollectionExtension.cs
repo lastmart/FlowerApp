@@ -28,7 +28,7 @@ public static class ServiceCollectionExtension
             // .AddScoped<IUserStorage, UsersStorage>()
             // .AddScoped<IRecommendationSystemClient, PythonRecommendationSystemClient>()
             // .AddScoped<IUserService, UserService>()
-            // .AddScoped<ITradeService, TradeService>()
+            .AddScoped<ITradeService, TradeService>()
             .AddFlowerServices()
             .AddStorages()
             .AddHandlers()
@@ -65,9 +65,9 @@ public static class ServiceCollectionExtension
     {
         return serviceCollection
             .AddAutoMapper(typeof(PageResponseProfile))
-            .AddAutoMapper(typeof(FlowerSortOptionProfile));
-        // .AddAutoMapper(typeof(UserProfile))
-        // .AddAutoMapper(typeof(TradeProfile));
+            .AddAutoMapper(typeof(FlowerSortOptionProfile))
+        .AddAutoMapper(typeof(UserProfile))
+        .AddAutoMapper(typeof(TradeProfile));
         // serviceCollection.AddAutoMapper(typeof(QuestionProfile));
     }
 

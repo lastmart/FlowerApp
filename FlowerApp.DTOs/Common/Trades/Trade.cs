@@ -2,8 +2,8 @@
 
 public record Trade
 {
-    public Guid Id { get; set; }
-    public Guid UserIdentifier { get; set; }
+    public int Id { get; set; }
+    public int UserIdentifier { get; set; }
     public string FlowerName { get; set; }
     public string PreferredTrade { get; set; }
     public string Location { get; set; }

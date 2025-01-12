@@ -12,11 +12,11 @@ public class FlowerProfile : Profile
     {
         CreateMap<DbFlower, ApplicationFlower>()
             .ForMember(dest => dest.ToxicCategory, opt => opt.MapFrom(src =>
-                src.ToxicCategory == ToxicCategory.None
-                    ? new List<string> { "None" }
+                src.ToxicCategory == ToxicCategory.Any
+                    ? new List<string> { ToxicCategory.Any.ToString() }
                     : Enum.GetValues(typeof(ToxicCategory))
                         .Cast<ToxicCategory>()
-                        .Where(tc => tc != ToxicCategory.None && src.ToxicCategory.HasFlag(tc))
+                        .Where(tc => tc != ToxicCategory.Any && src.ToxicCategory.HasFlag(tc))
                         .Select(tc => tc.ToString())
                         .ToList()));
 

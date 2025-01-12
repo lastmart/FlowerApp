@@ -21,7 +21,6 @@ public static class ServiceCollectionExtension
             .AddConfiguration<ApiSettings>()
             .AddConfiguration<ApiSecretSettings>()
             .AddScoped<IGoogleAuthService, GoogleAuthService>()
-            // .AddScoped<IFlowersService, FlowersService>()
             // .AddScoped<IRecommendationService, RecommendationService>()
             // .AddScoped<IQuestionsStorage, QuestionsStorage>()
             // .AddScoped<IUserAnswersStorage, UserAnswersStorage>()
@@ -29,7 +28,6 @@ public static class ServiceCollectionExtension
             // .AddScoped<IRecommendationSystemClient, PythonRecommendationSystemClient>()
             // .AddScoped<IUserService, UserService>()
             // .AddScoped<ITradeService, TradeService>()
-            .AddFlowerServices()
             .AddStorages()
             .AddHandlers()
             .AddScoped<DataSeeder>()
@@ -64,17 +62,10 @@ public static class ServiceCollectionExtension
     private static IServiceCollection AddAutoMappers(this IServiceCollection serviceCollection)
     {
         return serviceCollection
-            .AddAutoMapper(typeof(PageResponseProfile))
-            .AddAutoMapper(typeof(FlowerSortOptionProfile));
+            .AddAutoMapper(typeof(PageResponseProfile));
         // .AddAutoMapper(typeof(UserProfile))
         // .AddAutoMapper(typeof(TradeProfile));
         // serviceCollection.AddAutoMapper(typeof(QuestionProfile));
-    }
-
-    private static IServiceCollection AddFlowerServices(this IServiceCollection serviceCollection)
-    {
-        return serviceCollection
-            .AddScoped<IFlowersService, FlowersService>();
     }
 
     private static IServiceCollection AddValidators(this IServiceCollection serviceCollection)

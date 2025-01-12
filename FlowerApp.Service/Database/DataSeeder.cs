@@ -268,7 +268,21 @@ public class DataSeeder
                     Soil = Soil.OrchidsSoil,
                     Illumination = Illumination.Bright,
                     ToxicCategory = ToxicCategory.None
-                }
+                },
+                new()
+                {
+                    Id = 11,
+                    Name = "rice",
+                    ScientificName = "rice",
+                    AppearanceDescription = "Favourite Van's food",
+                    CareDescription = "Needs regular watering and sunlight",
+                    PhotoUrl = "https://yt3.googleusercontent.com/RcRHIvIJHiYww-fIjs62ntgv1v_-wjQAVZ0fqLHCWpC2XqMtx9GH1SKeVfbuf39lyL02iREpDw=s900-c-k-c0x00ffffff-no-rj",
+                    Size = 15,
+                    Soil = Soil.UniversalSoil,
+                    WateringFrequency = WateringFrequency.OnceAWeek,
+                    Illumination = Illumination.Bright,
+                    ToxicCategory = ToxicCategory.None
+                },
             };
 
             context.Flowers.AddRange(flowers);

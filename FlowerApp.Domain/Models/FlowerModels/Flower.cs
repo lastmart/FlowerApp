@@ -10,6 +10,7 @@ public class Flower : Entity<int>
     public string CareDescription { get; set; }
     public Uri PhotoUrl { get; set; }
     public WateringFrequency WateringFrequency { get; set; }
+    public Soil Soil { get; set; }
     public float Size { get; set; }
     public List<ToxicCategory> ToxicCategory { get; set; }
     public Illumination Illumination { get; set; }

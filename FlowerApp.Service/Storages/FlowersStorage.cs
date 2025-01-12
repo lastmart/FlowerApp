@@ -2,6 +2,7 @@
 using AutoMapper;
 using FlowerApp.Data;
 using FlowerApp.Data.DbModels.Flowers;
+using FlowerApp.Domain.Models;
 using FlowerApp.Domain.Models.FlowerModels;
 using FlowerApp.DTOs.Common;
 using Microsoft.EntityFrameworkCore;
@@ -102,7 +103,7 @@ public class FlowersStorage : IFlowersStorage
         string? searchString,
         Pagination pagination,
         FlowerFilterParams? filterParams = null,
-        FlowerSortOptions? sortBy = null
+        FlowerSortParams? sortParams = null
     )
     {
         var flowers = flowerAppContext.Flowers.AsQueryable();
@@ -112,8 +113,8 @@ public class FlowersStorage : IFlowersStorage
             flowers = flowers.Where(f => f.Name.StartsWith(searchString) || f.ScientificName.StartsWith(searchString));
         }
 
-        if (sortBy != null && sortBy.SortOptions.Any())
-            flowers = SortFlowers(flowers, sortBy);
+        if (sortParams != null)
+            flowers = SortFlowers(flowers, sortParams);
 
         if (filterParams != null)
             flowers = FilterFlowers(flowers, filterParams);
@@ -129,56 +130,41 @@ public class FlowersStorage : IFlowersStorage
 
     private static IQueryable<DbFlower> FilterFlowers(IQueryable<DbFlower> flowers, FlowerFilterParams filterParams)
     {
-        if (filterParams.WateringFrequency is not null)
-            flowers = flowers.Where(f => filterParams.WateringFrequency.Contains(f.WateringFrequency));
+        if (filterParams.WateringFrequency != WateringFrequency.Any)
+            flowers = flowers.Where(flower => (filterParams.WateringFrequency & flower.WateringFrequency) == filterParams.WateringFrequency);
 
-        if (filterParams.Illumination is not null)
-            flowers = flowers.Where(f => filterParams.Illumination.Contains(f.Illumination));
+        if (filterParams.Illumination != Illumination.Any)
+            flowers = flowers.Where(flower => (filterParams.Illumination & flower.Illumination) == filterParams.Illumination);
 
-        if (filterParams.ToxicCategories != null && filterParams.ToxicCategories.Any())
-        {
-            var toxicCategory =
-                filterParams.ToxicCategories.Aggregate(ToxicCategory.None, (current, category) => current | category);
+        if (filterParams.ToxicCategories != ToxicCategory.Any)
+            flowers = flowers.Where(flower => (filterParams.ToxicCategories & flower.ToxicCategory) == filterParams.ToxicCategories);
 
-            flowers = toxicCategory == ToxicCategory.None
-                ? flowers.Where(f => f.ToxicCategory == ToxicCategory.None)
-                : flowers.Where(f => (f.ToxicCategory & toxicCategory) != 0);
-        }
+        if (filterParams.Soil != Soil.Any)
+            flowers = flowers.Where(flower => (filterParams.Soil & flower.Soil) == filterParams.Soil);
 
         return flowers;
     }
 
-    private static IQueryable<DbFlower> SortFlowers(IQueryable<DbFlower> flowers, FlowerSortOptions sortOptions)
+    private static IQueryable<DbFlower> SortFlowers(IQueryable<DbFlower> flowers, FlowerSortParams sortParams)
     {
-        IOrderedQueryable<DbFlower>? orderedQuery = null;
+        var propertySelector = GetPropertySelector(sortParams.SortField);
 
-        foreach (var sortOption in sortOptions.SortOptions)
+        return sortParams.SortDirection switch
         {
-            var propertySelector = GetPropertySelector(sortOption.FlowerSortField);
-
-            if (orderedQuery == null)
-                orderedQuery = sortOption.IsDescending
-                    ? flowers.OrderByDescending(propertySelector)
-                    : flowers.OrderBy(propertySelector);
-            else
-                orderedQuery = sortOption.IsDescending
-                    ? orderedQuery.ThenByDescending(propertySelector)
-                    : orderedQuery.ThenBy(propertySelector);
-        }
-
-        return orderedQuery ?? flowers;
+            SortDirection.Descending => flowers.OrderByDescending(propertySelector),
+            SortDirection.Ascending => flowers.OrderBy(propertySelector),
+            _ => throw new ArgumentOutOfRangeException($"Invalid sort direction: {sortParams.SortDirection}")
+        };
     }
 
-    private static Expression<Func<DbFlower, object>> GetPropertySelector(FlowerSortField flowerSort)
+    private static Expression<Func<DbFlower, object>> GetPropertySelector(FlowerSortField field)
     {
-        return flowerSort switch
+        return field switch
         {
-            FlowerSortField.Name => f => f.Name,
-            FlowerSortField.ScientificName => f => f.ScientificName,
-            FlowerSortField.WateringFrequency => f => f.WateringFrequency,
-            FlowerSortField.IlluminationInSuites => f => f.Illumination,
-            FlowerSortField.IsToxic => f => f.ToxicCategory != ToxicCategory.None,
-            _ => throw new ArgumentException("Invalid sort option.")
+            FlowerSortField.Name => flower => flower.Name,
+            FlowerSortField.ScientificName => flower => flower.ScientificName,
+            FlowerSortField.Size => flower => flower.Size,
+            _ => throw new ArgumentOutOfRangeException($"Invalid field name to sort: {field}")
         };
     }
 }

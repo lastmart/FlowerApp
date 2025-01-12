@@ -1,8 +1,10 @@
 namespace FlowerApp.Data.DbModels.Flowers;
 
+[Flags]
 public enum Illumination
 {
-    Bright,
-    PartialShade,
-    AverageIllumination
+    Any = 0b000,
+    Bright = 0b001,
+    PartialShade = 0b010,
+    AverageIllumination = 0b100
 }

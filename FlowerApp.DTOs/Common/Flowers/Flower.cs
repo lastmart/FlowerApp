@@ -9,6 +9,7 @@ public class Flower
     public string CareDescription { get; set; }
     public Uri PhotoUrl { get; set; }
     public string WateringFrequency { get; set; }
+    public string Soil { get; set; }
     public float Size { get; set; }
     public List<string> ToxicCategory { get; set; }
     public string Illumination { get; set; }

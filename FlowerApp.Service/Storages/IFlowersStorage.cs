@@ -10,7 +10,7 @@ public interface IFlowersStorage : IStorage<Flower, int>
         string? searchString,
         Pagination pagination,
         FlowerFilterParams? filterParams = null,
-        FlowerSortOptions? sortByProperty = null
+        FlowerSortParams? sortParams = null
     );
 
     Task<List<Flower>> Get(string name);

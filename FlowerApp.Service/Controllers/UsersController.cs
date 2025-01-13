@@ -1,62 +1,57 @@
-// using AutoMapper;
-// using FlowerApp.Service.Services;
-// using Microsoft.AspNetCore.Mvc;
-// using ApplicationUser = FlowerApp.Domain.Models.UserModels.User;
-// using DTOUser = FlowerApp.DTOs.Common.Users.User;
-//
-// namespace FlowerApp.Service.Controllers;
-//
-// [ApiController]
-// [Route("api/users")]
-// public class UsersController : ControllerBase
-// {
-//     private readonly IMapper mapper;
-//     private readonly IUserService userService;
-//
-//     public UsersController(IUserService userService, IMapper mapper)
-//     {
-//         this.userService = userService;
-//         this.mapper = mapper;
-//     }
-//
-//     /// <summary>
-//     ///     Получить пользователя по идентификатору
-//     /// </summary>
-//     /// <param name="id">Идентификатор пользователя</param>
-//     /// <returns>Детальная информация о пользователе</returns>
-//     [HttpGet("{id:guid}")]
-//     public async Task<IActionResult> Get(Guid id)
-//     {
-//         var user = await userService.Get(id);
-//         return user != null ? Ok(mapper.Map<DTOUser>(user)) : NotFound();
-//     }
-//
-//     /// <summary>
-//     ///     Создать нового пользователя
-//     /// </summary>
-//     /// <param name="user">Информация о новом пользователе</param>
-//     /// <returns>Детальная информация о созданном пользователе</returns>
-//     [HttpPost]
-//     public async Task<IActionResult> Create([FromBody] DTOUser user)
-//     {
-//         var createdUser = await userService.Create(mapper.Map<ApplicationUser>(user));
-//         if (createdUser != null) return Ok(createdUser);
-//
-//         return BadRequest("Failed to create user");
-//     }
-//
-//     /// <summary>
-//     ///     Обновить информацию о пользователе
-//     /// </summary>
-//     /// <param name="id">Идентификатор пользователя</param>
-//     /// <param name="user">Информация для обновления пользователя</param>
-//     /// <returns>Информация о обновленном пользователе</returns>
-//     [HttpPut("{id:guid}")]
-//     public async Task<IActionResult> Update(Guid id, [FromBody] DTOUser user)
-//     {
-//         var updatedUser = await userService.Update(id, mapper.Map<ApplicationUser>(user));
-//         if (updatedUser != null) return Ok(mapper.Map<DTOUser>(updatedUser));
-//
-//         return NotFound("User not found");
-//     }
-// }
+using AutoMapper;
+using FlowerApp.Service.Services;
+using Microsoft.AspNetCore.Mvc;
+using ApplicationUser = FlowerApp.Domain.Models.UserModels.User;
+using DTOUser = FlowerApp.DTOs.Common.Users.User;
+
+namespace FlowerApp.Service.Controllers;
+
+[ApiController]
+[Route("api/users")]
+public class UsersController : ControllerBase
+{
+    private readonly IMapper mapper;
+    private readonly IUserService userService;
+
+    public UsersController(IUserService userService, IMapper mapper)
+    {
+        this.userService = userService;
+        this.mapper = mapper;
+    }
+
+    /// <summary>
+    /// Обновить информацию о пользователе по GoogleId
+    /// </summary>
+    /// <param name="googleId">GoogleId пользователя</param>
+    /// <param name="userDto">Информация для обновления пользователя, все поля опциональные</param>
+    /// <returns>Информация об обновленном пользователе</returns>
+    [HttpPut("{googleId}")]
+    public async Task<IActionResult> UpdateByGoogleId(string googleId, [FromBody] DTOUser userDto)
+    {
+        var existingUser = await userService.Get(googleId);
+        if (existingUser == null)
+            return NotFound("User with the specified GoogleId not found");
+
+        var userToUpdate = mapper.Map<ApplicationUser>(userDto);
+        var updatedUser = await userService.Update(googleId, userToUpdate);
+
+        return updatedUser != null
+            ? Ok("User updated")
+            : StatusCode(500, "Failed to update user");
+    }
+    
+    /// <summary>
+    /// Получить пользователя по GoogleId
+    /// </summary>
+    /// <param name="googleId">GoogleId пользователя</param>
+    /// <returns>Информация о пользователе</returns>
+    [HttpGet("{googleId}")]
+    public async Task<IActionResult> GetByGoogleId(string googleId)
+    {
+        var user = await userService.Get(googleId);
+        if (user == null)
+            return NotFound("User with the specified GoogleId not found");
+
+        return Ok(user);
+    }
+}

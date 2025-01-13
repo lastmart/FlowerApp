@@ -18,11 +18,11 @@ public class SurveyConfiguration : IEntityTypeConfiguration<Survey>
             .HasPrincipalKey(survey => survey.Id)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder
-            .HasOne(survey => survey.User)
-            .WithOne(user => user.Survey)
-            .HasForeignKey<User>(user => user.SurveyId)
-            .HasPrincipalKey<Survey>(survey => survey.Id)
-            .OnDelete(DeleteBehavior.Cascade);
+        // builder
+            // .HasOne(survey => survey.User)
+            // .WithOne(user => user.Survey)
+            // .HasForeignKey<User>(user => user.SurveyId)
+            // .HasPrincipalKey<Survey>(survey => survey.Id)
+            // .OnDelete(DeleteBehavior.Cascade);
     }
 }

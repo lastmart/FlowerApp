@@ -67,9 +67,8 @@ public class GoogleAuthService : IGoogleAuthService
 
         return new User
         {
-            GoogleUserId = googleUserId,
+            GoogleId = googleUserId,
             Email = userInfoDictionary[EmailField],
-            Id = Guid.NewGuid(),
             Name = userInfoDictionary[NameField],
             Surname = userInfoDictionary[SurnameField],
             Telegram = null

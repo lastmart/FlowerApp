@@ -18,20 +18,20 @@ public class UsersStorage : IUserStorage
         this.mapper = mapper;
     }
 
-    public async Task<AppUser?> Get(int id)
+    public async Task<AppUser?> Get(string id)
     {
-        return mapper.Map<AppUser>(await dbContext.Users.FirstOrDefaultAsync(u => u.Id == id));
+        return mapper.Map<AppUser>(await dbContext.Users.FirstOrDefaultAsync(u => u.GoogleId == id));
     }
 
     public async Task<AppUser?> GetByGoogleId(string googleId)
     {
-        return mapper.Map<AppUser>(await dbContext.Users.FirstOrDefaultAsync(user => user.GoogleUserId == googleId));
+        return mapper.Map<AppUser>(await dbContext.Users.FirstOrDefaultAsync(user => user.GoogleId == googleId));
     }
 
-    public async Task<IList<AppUser>> Get(int[] ids)
+    public async Task<IList<AppUser>> Get(string[] ids)
     {
         return await dbContext.Users
-            .Where(u => ids.Contains(u.Id))
+            .Where(u => ids.Contains(u.GoogleId))
             .Select(u => mapper.Map<AppUser>(u))
             .ToListAsync();
     }
@@ -59,14 +59,13 @@ public class UsersStorage : IUserStorage
         await using var transaction = await dbContext.Database.BeginTransactionAsync();
         try
         {
-            var dbUser = await dbContext.Users.FindAsync(model.Id);
+            var dbUser = await dbContext.Users.FindAsync(model.GoogleId);
 
             if (dbUser == null)
                 return false;
 
             CopyUser(dbUser, model);
-            var dbModel = mapper.Map<DbUser>(model);
-            dbContext.Users.Update(dbModel);
+            dbContext.Users.Update(dbUser);
             var result = await dbContext.SaveChangesAsync() > 0;
             await transaction.CommitAsync();
             return result;
@@ -77,8 +76,9 @@ public class UsersStorage : IUserStorage
             return false;
         }
     }
+    
 
-    public async Task<bool> Delete(int id)
+    public async Task<bool> Delete(string id)
     {
         await using var transaction = await dbContext.Database.BeginTransactionAsync();
         try
@@ -98,11 +98,11 @@ public class UsersStorage : IUserStorage
         }
     }
 
-    private static void CopyUser(DbUser dbUser, AppUser appUser)
+    public static void CopyUser(DbUser dbUser, AppUser appUser)
     {
-        dbUser.Name = appUser.Name;
-        dbUser.Email = appUser.Email;
-        dbUser.Surname = appUser.Surname;
-        dbUser.Telegram = appUser.Telegram;
+        if (appUser.Name != null) dbUser.Name = appUser.Name;
+        if (appUser.Email != null) dbUser.Email = appUser.Email;
+        if (appUser.Surname != null) dbUser.Surname = appUser.Surname;
+        if (appUser.Telegram != null) dbUser.Telegram = appUser.Telegram;
     }
 }

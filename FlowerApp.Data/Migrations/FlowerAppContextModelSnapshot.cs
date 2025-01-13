@@ -202,8 +202,9 @@ namespace FlowerApp.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("character varying(255)");
 
                     b.HasKey("Id");
 
@@ -214,20 +215,13 @@ namespace FlowerApp.Data.Migrations
 
             modelBuilder.Entity("FlowerApp.Data.DbModels.Users.User", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    b.Property<string>("GoogleId")
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
 
                     b.Property<string>("Email")
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
-
-                    b.Property<string>("GoogleUserId")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -239,17 +233,16 @@ namespace FlowerApp.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
-                    b.Property<int>("SurveyId")
+                    b.Property<int?>("SurveyId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Telegram")
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
 
-                    b.HasKey("Id");
+                    b.HasKey("GoogleId");
 
-                    b.HasIndex("SurveyId")
-                        .IsUnique();
+                    b.HasIndex("SurveyId");
 
                     b.ToTable("Users");
                 });
@@ -310,10 +303,8 @@ namespace FlowerApp.Data.Migrations
             modelBuilder.Entity("FlowerApp.Data.DbModels.Users.User", b =>
                 {
                     b.HasOne("FlowerApp.Data.DbModels.Surveys.Survey", "Survey")
-                        .WithOne("User")
-                        .HasForeignKey("FlowerApp.Data.DbModels.Users.User", "SurveyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany()
+                        .HasForeignKey("SurveyId");
 
                     b.Navigation("Survey");
                 });
@@ -326,8 +317,6 @@ namespace FlowerApp.Data.Migrations
             modelBuilder.Entity("FlowerApp.Data.DbModels.Surveys.Survey", b =>
                 {
                     b.Navigation("Answers");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("FlowerApp.Data.DbModels.Surveys.SurveyFlower", b =>

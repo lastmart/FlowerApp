@@ -6,6 +6,6 @@ public class Survey : Entity<int>
 {
     public int UserId { get; set; }
 
-    public User User;
+    // public User User;
     public IEnumerable<SurveyAnswer> Answers { get; set; }
 }

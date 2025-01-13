@@ -33,7 +33,7 @@ public class TradeStorage : ITradeStorage
     }
 
 
-    public async Task<IEnumerable<AppTrade>> Get(Pagination pagination, string? location, int? excludeId)
+    public async Task<IEnumerable<AppTrade>> Get(Pagination pagination, string? location, string? excludeId)
     {
         var query = dbContext.Trades.Where(t => t.IsActive);
 

@@ -8,4 +8,5 @@ public interface IGoogleAuthService
 {
     public Task<Result<bool, AuthTokens>> TryAuthenticateUserAsync(string authCode);
     public Task<Result<bool, User>> GetUserByAccessToken(string accessToken);
+    public Task<Result<bool, string>> GetUserGoogleIdByAccessToken(string accessToken);
 }

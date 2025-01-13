@@ -23,6 +23,7 @@ public class AuthController : ControllerBase
     [HttpGet("google/{authCode}")]
     public async Task<IActionResult> GoogleLogin([FromRoute] string authCode)
     {
+        
         var decodedAuthCode = Uri.UnescapeDataString(authCode);
         var response = await googleAuthService.TryAuthenticateUserAsync(decodedAuthCode);
         if (response.Failure) return Unauthorized();

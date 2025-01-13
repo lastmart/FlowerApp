@@ -76,6 +76,12 @@ public class GoogleAuthService : IGoogleAuthService
         };
     }
 
+    public async Task<Result<bool, string>> GetUserGoogleIdByAccessToken(string accessToken)
+    {
+        var userInfoDictionary = await GetUserInfoByAccessToken(accessToken);
+        return userInfoDictionary.TryGetValue(GoogleUserIdField, out var value) ? value : false;
+    }
+
     private async Task<AuthTokens> GetUserAuthTokens(string authCode)
     {
         var tokenRequest = new AuthorizationCodeTokenRequest

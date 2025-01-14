@@ -21,13 +21,14 @@ public static class ServiceCollectionExtension
             .AddConfiguration<ApiSettings>()
             .AddConfiguration<ApiSecretSettings>()
             .AddScoped<IGoogleAuthService, GoogleAuthService>()
+            // .AddScoped<IFlowersService, FlowersService>()
             // .AddScoped<IRecommendationService, RecommendationService>()
             // .AddScoped<IQuestionsStorage, QuestionsStorage>()
             // .AddScoped<IUserAnswersStorage, UserAnswersStorage>()
             // .AddScoped<IUserStorage, UsersStorage>()
             // .AddScoped<IRecommendationSystemClient, PythonRecommendationSystemClient>()
             // .AddScoped<IUserService, UserService>()
-            // .AddScoped<ITradeService, TradeService>()
+            .AddScoped<ITradeService, TradeService>()
             .AddStorages()
             .AddHandlers()
             .AddScoped<DataSeeder>()
@@ -62,9 +63,9 @@ public static class ServiceCollectionExtension
     private static IServiceCollection AddAutoMappers(this IServiceCollection serviceCollection)
     {
         return serviceCollection
-            .AddAutoMapper(typeof(PageResponseProfile));
-        // .AddAutoMapper(typeof(UserProfile))
-        // .AddAutoMapper(typeof(TradeProfile));
+            .AddAutoMapper(typeof(PageResponseProfile))
+        .AddAutoMapper(typeof(UserProfile))
+        .AddAutoMapper(typeof(TradeProfile));
         // serviceCollection.AddAutoMapper(typeof(QuestionProfile));
     }
 

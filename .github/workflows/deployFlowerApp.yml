@@ -15,6 +15,9 @@ jobs:
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
 
+    - name: List files in current directory
+      run: ls -R
+
     - name: Replace secrets in appsettings.json
       run: |
         sed -i "s|\"GoogleClientId\": \"\"|\"GoogleClientId\": \"${{ secrets.GOOGLECLIENTID }}\"|g" appsettings.json

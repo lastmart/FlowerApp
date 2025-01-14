@@ -7,7 +7,7 @@ public class Flower
     public string ScientificName { get; set; }
     public string AppearanceDescription { get; set; }
     public string CareDescription { get; set; }
-    public Uri PhotoUrl { get; set; }
+    public string PhotoBase64 { get; set; }
     public string WateringFrequency { get; set; }
     public string Soil { get; set; }
     public float Size { get; set; }

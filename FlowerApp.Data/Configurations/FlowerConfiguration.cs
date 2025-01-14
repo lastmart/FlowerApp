@@ -30,8 +30,7 @@ public class FlowerConfiguration : IEntityTypeConfiguration<Flower>
             .IsRequired();
 
         builder
-            .Property(flower => flower.PhotoUrl)
-            .HasColumnType("varchar(200)");
+            .Property(flower => flower.PhotoBase64);
 
         builder
             .Property(flower => flower.WateringFrequency)

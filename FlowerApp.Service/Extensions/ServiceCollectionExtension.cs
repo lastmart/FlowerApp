@@ -27,6 +27,7 @@ public static class ServiceCollectionExtension
             .AddScoped<IRecommendationService, RecommendationService>()
             .AddScoped<IRecommendationSystemClient, PythonRecommendationSystemClient>()
             .AddScoped<ITradeService, TradeService>()
+            .AddScoped<IUserService, UserService>()
             .AddStorages()
             .AddHandlers()
             .AddScoped<DataSeeder>()

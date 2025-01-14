@@ -4,7 +4,7 @@ namespace FlowerApp.Service.Services;
 
 public interface IUserService
 {
-    Task<User?> Get(Guid id);
+    Task<User?> Get(string id);
     Task<User?> Create(User user);
-    Task<User?> Update(Guid id, User user);
+    Task<User?> Update(User user);
 }

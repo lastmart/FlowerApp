@@ -14,15 +14,16 @@ public class FlowersController : ControllerBase
 {
     private readonly IFlowersStorage flowersStorage;
     private readonly IValidator<Pagination> paginationValidator;
-    private readonly IMapper mapper;
 
     public FlowersController(
         IValidator<Pagination> paginationValidator,
-        IMapper mapper, IFlowersStorage flowersStorage)
+        IFlowersStorage flowersStorage,
+        Mapper mapper
+    )
     {
         this.paginationValidator = paginationValidator;
-        this.mapper = mapper;
         this.flowersStorage = flowersStorage;
+        this.mapper = mapper;
     }
 
     /// <summary>
@@ -34,8 +35,8 @@ public class FlowersController : ControllerBase
     /// <param name="sortParams">Параметры сортировки цветов</param>
     /// <returns>Список цветов с основной информацией</returns>
     [HttpGet]
-    public async Task<ActionResult<GetFlowerResponse>> Get132(
-        string? searchString,   
+    public async Task<ActionResult<GetFlowerResponse>> Get(
+        string? searchString,
         [FromQuery] Pagination pagination,
         [FromQuery] FlowerFilterParams filterParams,
         [FromQuery] FlowerSortParams sortParams

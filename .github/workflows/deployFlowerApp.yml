@@ -20,6 +20,9 @@ jobs:
         sed -i "s|\"GoogleClientId\": \"\"|\"GoogleClientId\": \"${{ secrets.GOOGLECLIENTID }}\"|g" ./FlowerApp.Service/appsettings.json
         sed -i "s|\"GoogleClientSecret\": \"\"|\"GoogleClientSecret\": \"${{ secrets.GOOGLECLIENTSECRET }}\"|g" ./FlowerApp.Service/appsettings.json
 
+    - name: Print appsettings.json
+      run: cat FlowerApp.Service/appsettings.json
+
     - name: Build Docker image
       run: docker build -t flowerapp-service -f ./FlowerApp.Service/Dockerfile .
     

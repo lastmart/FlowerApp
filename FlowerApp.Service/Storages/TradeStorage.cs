@@ -35,7 +35,7 @@ public class TradeStorage : ITradeStorage
     public async Task<IList<AppTrade>> GetOtherUsersTrades(
         Pagination pagination, 
         string? location, 
-        int? excludeUserId)
+        string? excludeUserId)
     {
         var query = dbContext.Trades
             .Where(t => t.IsActive && t.UserId != excludeUserId);
@@ -55,7 +55,7 @@ public class TradeStorage : ITradeStorage
     public async Task<IList<AppTrade>> GetUserTrades(
         Pagination pagination, 
         string? location, 
-        int userId)
+        string userId)
     {
         var query = dbContext.Trades
             .Where(t => t.IsActive && t.UserId == userId);

@@ -18,20 +18,20 @@ public class UsersStorage : IUserStorage
         this.mapper = mapper;
     }
 
-    public async Task<AppUser?> Get(int id)
+    public async Task<AppUser?> Get(string googleId)
     {
-        return mapper.Map<AppUser>(await dbContext.Users.FirstOrDefaultAsync(u => u.Id == id));
+        return mapper.Map<AppUser>(await dbContext.Users.FirstOrDefaultAsync(u => u.GoogleId == googleId));
     }
 
     public async Task<AppUser?> GetByGoogleId(string googleId)
     {
-        return mapper.Map<AppUser>(await dbContext.Users.FirstOrDefaultAsync(user => user.GoogleUserId == googleId));
+        return mapper.Map<AppUser>(await dbContext.Users.FirstOrDefaultAsync(user => user.GoogleId == googleId));
     }
 
-    public async Task<IList<AppUser>> Get(int[] ids)
+    public async Task<IList<AppUser>> Get(string[] ids)
     {
         return await dbContext.Users
-            .Where(u => ids.Contains(u.Id))
+            .Where(u => ids.Contains(u.GoogleId))
             .Select(u => mapper.Map<AppUser>(u))
             .ToListAsync();
     }
@@ -59,7 +59,7 @@ public class UsersStorage : IUserStorage
         await using var transaction = await dbContext.Database.BeginTransactionAsync();
         try
         {
-            var dbUser = await dbContext.Users.FindAsync(model.Id);
+            var dbUser = await dbContext.Users.FindAsync(model.GoogleId);
 
             if (dbUser == null)
                 return false;
@@ -78,12 +78,12 @@ public class UsersStorage : IUserStorage
         }
     }
 
-    public async Task<bool> Delete(int id)
+    public async Task<bool> Delete(string googleId)
     {
         await using var transaction = await dbContext.Database.BeginTransactionAsync();
         try
         {
-            var user = await dbContext.Users.FindAsync(id);
+            var user = await dbContext.Users.FindAsync(googleId);
             if (user == null)
                 return true;
             dbContext.Users.Remove(user);

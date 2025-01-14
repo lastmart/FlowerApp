@@ -11,6 +11,6 @@ public class UserProfile : Profile
         CreateMap<DbUser, ApplicationUser>();
 
         CreateMap<ApplicationUser, DbUser>()
-            .ForMember(dest => dest.Id, opt => opt.Ignore()); // Игнорируем Id, так как он генерируется в DbModel
+            .ForMember(dest => dest.GoogleId, opt => opt.Ignore()); // Игнорируем Id, так как он генерируется в DbModel
     }
 }

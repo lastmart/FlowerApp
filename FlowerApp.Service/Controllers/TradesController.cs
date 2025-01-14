@@ -106,23 +106,23 @@ public class TradesController : ControllerBase
     /// <summary>
     ///     Получение всех трейдов конкретного пользователя
     /// </summary>
-    /// <param name="userId">Идентификатор пользователя</param>
+    /// <param name="googleId">Идентификатор пользователя</param>
     /// <param name="pagination">Параметры пагинации</param>
     /// <param name="location">Локация для фильтрации (опционально)</param>
     /// <returns>Список трейдов пользователя с общим количеством</returns>
-    [HttpGet("user/{userId}")]
+    [HttpGet("user/{googleId}")]
     public async Task<ActionResult<IRepositoryOperationStatus>> GetUserTrades(
-        int userId,
+        string googleId,
         [FromQuery] Pagination pagination,
         [FromQuery] string? location = null)
     {
-        var response = await tradeService.GetUserTrades(pagination, location, userId);
+        var response = await tradeService.GetUserTrades(pagination, location, googleId);
         if (response.Result == OperationResult.NotFound )
         {
             return NotFound(new FailureOperationStatus
             {
                 Code = "UserNotFound",
-                Message = $"User with ID {userId} not found."
+                Message = $"User with ID {googleId} not found."
             });
         }
         var trades = response.Data?.Trades.Select(t => mapper.Map<DTOTrade>(t));
@@ -137,23 +137,23 @@ public class TradesController : ControllerBase
     /// <summary>
     ///     Получение всех трейдов, кроме трейдов указанного пользователя
     /// </summary>
-    /// <param name="userId">Идентификатор пользователя, чьи трейды нужно исключить</param>
+    /// <param name="googleId">Идентификатор пользователя, чьи трейды нужно исключить</param>
     /// <param name="pagination">Параметры пагинации</param>
     /// <param name="location">Локация для фильтрации (опционально)</param>
     /// <returns>Список трейдов других пользователей с общим количеством</returns>
     [HttpGet("others")]
     public async Task<ActionResult<IRepositoryOperationStatus>> GetOtherUsersTrades(
         [FromQuery] Pagination pagination,
-        [FromQuery] int? userId = null,
+        [FromQuery] string? googleId = null,
         [FromQuery] string? location = null)
     {
-        var response = await tradeService.GetOtherUsersTrades(pagination, location, userId);
+        var response = await tradeService.GetOtherUsersTrades(pagination, location, googleId);
         if (response.Result == OperationResult.NotFound)
         {
             return NotFound(new FailureOperationStatus
             {
                 Code = "UserNotFound",
-                Message = $"User with ID {userId} not found."
+                Message = $"User with ID {googleId} not found."
             });
         }
         

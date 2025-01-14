@@ -22,30 +22,30 @@ public class TradeService : ITradeService
             return trade;
         }
         
-        public async Task<GetTradesResponse?> GetOtherUsersTrades(Pagination pagination, string? location, int? userId)
+        public async Task<TradeResponse> GetOtherUsersTrades(Pagination pagination, string? location, int? userId)
         {
             if (userId.HasValue)
             {
                 var user = await userStorage.Get(userId.Value);
                 if (user == null)
                 {
-                    return null;
+                    return new TradeResponse(OperationResult.NotFound, "User not found", null);
                 }
             }
 
             var trades = (await tradeStorage.GetOtherUsersTrades(pagination, location, userId)).ToList();
-            return new GetTradesResponse(trades.Count, trades);
+            return new TradeResponse(OperationResult.Success, "Trades fetched successfully", new GetTradesResponse(trades.Count, trades));
         }
         
-        public async Task<GetTradesResponse?> GetUserTrades(Pagination pagination, string? location, int userId)
+        public async Task<TradeResponse> GetUserTrades(Pagination pagination, string? location, int userId)
         {
             var user = await userStorage.Get(userId);
             if (user == null)
             {
-                return null;
+                return new TradeResponse(OperationResult.NotFound, "User not found", null);
             }
             var trades = (await tradeStorage.GetUserTrades(pagination, location, userId)).ToList();
-            return new GetTradesResponse(trades.Count, trades);
+            return new TradeResponse(OperationResult.Success, "User trades fetched successfully", new GetTradesResponse(trades.Count, trades));
         }
         
         public async Task<OperationResult> Create(Trade trade)

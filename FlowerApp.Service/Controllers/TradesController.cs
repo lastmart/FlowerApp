@@ -117,7 +117,7 @@ public class TradesController : ControllerBase
         [FromQuery] string? location = null)
     {
         var response = await tradeService.GetUserTrades(pagination, location, userId);
-        if (response == null)
+        if (response.Result == OperationResult.NotFound )
         {
             return NotFound(new FailureOperationStatus
             {
@@ -125,13 +125,13 @@ public class TradesController : ControllerBase
                 Message = $"User with ID {userId} not found."
             });
         }
-        var trades = response.Trades.Select(t => mapper.Map<DTOTrade>(t));
-        return new SuccessOperationStatus<GetTradeResponse>
+        var trades = response.Data?.Trades.Select(t => mapper.Map<DTOTrade>(t));
+        return Ok(new SuccessOperationStatus<GetTradeResponse>
         {
             Code = "Ok",
             Message = "",
-            Data = new GetTradeResponse(response.Count, trades)
-        };
+            Data = new GetTradeResponse(response.Data?.Count ?? 0, trades)
+        });
     }
     
     /// <summary>
@@ -148,7 +148,7 @@ public class TradesController : ControllerBase
         [FromQuery] string? location = null)
     {
         var response = await tradeService.GetOtherUsersTrades(pagination, location, userId);
-        if (response == null)
+        if (response.Result == OperationResult.NotFound)
         {
             return NotFound(new FailureOperationStatus
             {
@@ -156,12 +156,13 @@ public class TradesController : ControllerBase
                 Message = $"User with ID {userId} not found."
             });
         }
-        var trades = response.Trades.Select(t => mapper.Map<DTOTrade>(t));
+        
+        var trades = response.Data?.Trades.Select(t => mapper.Map<DTOTrade>(t));
         return new SuccessOperationStatus<GetTradeResponse>
         {
             Code = "Ok",
             Message = "",
-            Data = new GetTradeResponse(response.Count, trades)
+            Data = new GetTradeResponse(response.Data?.Count ?? 0, trades)
         };
     }
 }

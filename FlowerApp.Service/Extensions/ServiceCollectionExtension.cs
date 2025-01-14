@@ -94,10 +94,19 @@ public static class ServiceCollectionExtension
     }
 
     private static IServiceCollection AddConfiguration<TConfig>(this IServiceCollection serviceCollection)
-        where TConfig : class
+        where TConfig : class, new()
     {
         return serviceCollection
             .AddSingleton<Func<TConfig>>(
-                provider => () => provider.GetRequiredService<IConfiguration>().Get<TConfig>());
+                provider => () =>
+                {
+                    var config = new TConfig();
+                    provider
+                        .GetRequiredService<IConfiguration>()
+                        .GetSection(typeof(TConfig).Name)
+                        .Bind(config, opt => opt.BindNonPublicProperties = true);
+                    return config;
+                });
     }
+
 }

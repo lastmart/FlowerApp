@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FlowerApp.Data.Migrations
 {
     [DbContext(typeof(FlowerAppContext))]
-    [Migration("20250114184343_Initial")]
-    partial class Initial
+    [Migration("20250114210242_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

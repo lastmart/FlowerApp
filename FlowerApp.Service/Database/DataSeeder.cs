@@ -76,28 +76,35 @@ public class DataSeeder
                 {
                     Id = 2,
                     Text = "Сколько раз в неделю вы готовы поливать цветы?",
-                    Variants = string.Join(";", new List<string> { "Меньше 3 раз", "Больше 3 раз" }),
+                    Variants = string.Join(";", new List<string> { "Меньше 3 раз", "Больше 3 раз", "Не готов" }),
                     QuestionType = QuestionType.SingleAnswer
                 },
                 new()
                 {
                     Id = 3,
-                    Text = "Есть ли у вас домашние животные или дети?",
+                    Text = "Есть ли у вас домашние животные?",
                     Variants = string.Join(";", new List<string> { "Да", "Нет" }),
+                    QuestionType = QuestionType.SingleAnswer
+                },,
+                new()
+                {
+                    Id = 4,
+                    Text = "Есть ли у вас дети?",
+                    Variants = string.Join(";", new List<string> { "Да", "Скорее да", "Не знаю", "Скорее нет", "Нет", "1", "2" }),
                     QuestionType = QuestionType.SingleAnswer
                 },
                 new()
                 {
-                    Id = 4,
+                    Id = 5,
                     Text = "Готовы ли вы следить за освещением для цветка?",
                     Variants = string.Join(";", new List<string> { "Да", "Нет", "Специальное освещение" }),
                     QuestionType = QuestionType.SingleAnswer
                 },
                 new()
                 {
-                    Id = 5,
-                    Text = "Готовы ли вы часто пересаживать цветок?",
-                    Variants = string.Join(";", new List<string> { "Да", "Нет" }),
+                    Id = 6,
+                    Text = "Какого размера цветок вы бы хотели завести?",
+                    Variants = string.Join(";", new List<string> { "Большой", "Средний", "Маленький" }),
                     QuestionType = QuestionType.SingleAnswer
                 }
             };
@@ -106,56 +113,65 @@ public class DataSeeder
             await context.SaveChangesAsync();
         }
 
-        // if (!context.SurveyAnswers.Any() && context.Users.Any())
-        // {
-        //     var firstUser = context.Users.First();
-        //     var userAnswers = new List<UserAnswer>
-        //     {
-        //         new UserAnswer
-        //         {
-        //             Id = 1,
-        //             UserId = firstUser.Id,
-        //             QuestionId = 1,
-        //             AnswersSize = 1,
-        //             AnswerMask = 1
-        //         },
-        //         new UserAnswer
-        //         {
-        //             Id = 2,
-        //             UserId = firstUser.Id,
-        //             QuestionId = 2,
-        //             AnswersSize = 1,
-        //             AnswerMask = 0
-        //         },
-        //         new UserAnswer
-        //         {
-        //             Id = 3,
-        //             UserId = firstUser.Id,
-        //             QuestionId = 2,
-        //             AnswersSize = 1,
-        //             AnswerMask = 1
-        //         },
-        //         new UserAnswer
-        //         {
-        //             Id = 4,
-        //             UserId = firstUser.Id,
-        //             QuestionId = 2,
-        //             AnswersSize = 1,
-        //             AnswerMask = 2
-        //         },
-        //         new UserAnswer
-        //         {
-        //             Id = 5,
-        //             UserId = firstUser.Id,
-        //             QuestionId = 2,
-        //             AnswersSize = 1,
-        //             AnswerMask = 0
-        //         }
-        //     };
-        //
-        //     context.SurveyAnswers.AddRange(userAnswers);
-        //     await context.SaveChangesAsync();
-        // }
+        if (!context.Surveys.Any())
+        {
+            var surveys = new List<Survey>
+            {
+                new()
+                {
+                    Id = 1,
+                    UserId = "1234567890"
+                },
+                new()
+                {
+                    Id = 2,
+                    UserId = "1122334455"
+                }
+            };
+
+            context.Surveys.AddRange(surveys);
+            await context.SaveChangesAsync();
+        }
+
+        if (!context.SurveyAnswers.Any())
+        {
+            var firstUser = context.Users.First();
+            var surveyAnswers = new List<SurveyAnswer>
+            {
+                new SurveyAnswer()
+                {
+                    Id = 1,
+                    QuestionId = 1,
+                    SurveyId = 1,
+                    QuestionsMask = "0;1"
+                },
+                new SurveyAnswer()
+                {
+                    Id = 2,
+                    QuestionId = 4,
+                    SurveyId = 1,
+                    QuestionsMask = "0;0;1;0;0;0;0"
+                },
+                new SurveyAnswer()
+                {
+                    Id = 3,
+                    QuestionId = 1,
+                    SurveyId = 2,
+                    QuestionsMask = "1;0"
+                },
+                new SurveyAnswer()
+                {
+                    Id = 1,
+                    QuestionId = 4,
+                    SurveyId = 2,
+                    QuestionsMask = "0;0;0;1;0;0;0"
+                },
+            };
+        
+            context.SurveyAnswers.AddRange(surveyAnswers);
+
+            await context.SaveChangesAsync();
+        }
 
         if (!context.Flowers.Any())
         {
@@ -315,6 +331,446 @@ public class DataSeeder
 
             context.Flowers.AddRange(flowers);
 
+            await context.SaveChangesAsync();
+        }
+
+        if (!context.SurveyFlowers.Any())
+        {
+            var surveyFlowers = new List<SurveyFlowers>()
+            {
+                new SurveyFlower()
+                {
+                    Id = 1,
+                    FlowerId = 1,
+                    SurveyQuestionId = 1,
+                    RelevantVariantsProbabilities = "1;1";
+                },
+                new SurveyFlower()
+                {
+                    Id = 1,
+                    FlowerId = 1,
+                    SurveyQuestionId = 2,
+                    RelevantVariantsProbabilities = "1;0.2;0";
+                },
+                new SurveyFlower()
+                {
+                    Id = 1,
+                    FlowerId = 1,
+                    SurveyQuestionId = 3,
+                    RelevantVariantsProbabilities = "1;1";
+                },
+                new SurveyFlower()
+                {
+                    Id = 1,
+                    FlowerId = 1,
+                    SurveyQuestionId = 4,
+                    RelevantVariantsProbabilities = "0.7;0.5;1;0.5;1;0.5;0.5";
+                },
+                new SurveyFlower()
+                {
+                    Id = 1,
+                    FlowerId = 1,
+                    SurveyQuestionId = 5,
+                    RelevantVariantsProbabilities = "0.6;0.8;0.2";
+                },
+                new SurveyFlower()
+                {
+                    Id = 1,
+                    FlowerId = 1,
+                    SurveyQuestionId = 6,
+                    RelevantVariantsProbabilities = "0.7;0.9;0.1";
+                },
+
+                new SurveyFlower()
+                {
+                    Id = 2,
+                    FlowerId = 1,
+                    SurveyQuestionId = 1,
+                    RelevantVariantsProbabilities = "0;1";
+                },
+                new SurveyFlower()
+                {
+                    Id = 2,
+                    FlowerId = 1,
+                    SurveyQuestionId = 2,
+                    RelevantVariantsProbabilities = "1;0.2;0";
+                },
+                new SurveyFlower()
+                {
+                    Id = 2,
+                    FlowerId = 1,
+                    SurveyQuestionId = 3,
+                    RelevantVariantsProbabilities = "0;1";
+                },
+                new SurveyFlower()
+                {
+                    Id = 2,
+                    FlowerId = 1,
+                    SurveyQuestionId = 4,
+                    RelevantVariantsProbabilities = "0;0.5;1;0.5;1;0.5;0.5";
+                },
+                new SurveyFlower()
+                {
+                    Id = 2,
+                    FlowerId = 1,
+                    SurveyQuestionId = 5,
+                    RelevantVariantsProbabilities = "0.3;0.7;1";
+                },
+                new SurveyFlower()
+                {
+                    Id = 2,
+                    FlowerId = 1,
+                    SurveyQuestionId = 6,
+                    RelevantVariantsProbabilities = "0.7;0.9;0.1";
+                },
+                
+                new SurveyFlower()
+                {
+                    Id = 3,
+                    FlowerId = 1,
+                    SurveyQuestionId = 1,
+                    RelevantVariantsProbabilities = "0;1";
+                },
+                new SurveyFlower()
+                {
+                    Id = 3,
+                    FlowerId = 1,
+                    SurveyQuestionId = 2,
+                    RelevantVariantsProbabilities = "1;0.2;0";
+                },
+                new SurveyFlower()
+                {
+                    Id = 3,
+                    FlowerId = 1,
+                    SurveyQuestionId = 3,
+                    RelevantVariantsProbabilities = "0;1";
+                },
+                new SurveyFlower()
+                {
+                    Id = 3,
+                    FlowerId = 1,
+                    SurveyQuestionId = 4,
+                    RelevantVariantsProbabilities = "0;0.5;1;0.5;1;0.5;0.5";
+                },
+                new SurveyFlower()
+                {
+                    Id = 3,
+                    FlowerId = 1,
+                    SurveyQuestionId = 5,
+                    RelevantVariantsProbabilities = "0.5;1;0.2";
+                },
+                new SurveyFlower()
+                {
+                    Id = 3,
+                    FlowerId = 1,
+                    SurveyQuestionId = 6,
+                    RelevantVariantsProbabilities = "0.3;0.9;0.2";
+                },
+                
+                new SurveyFlower()
+                {
+                    Id = 4,
+                    FlowerId = 1,
+                    SurveyQuestionId = 1,
+                    RelevantVariantsProbabilities = "1;1";
+                },
+                new SurveyFlower()
+                {
+                    Id = 4,
+                    FlowerId = 1,
+                    SurveyQuestionId = 2,
+                    RelevantVariantsProbabilities = "1;0.2;0";
+                },
+                new SurveyFlower()
+                {
+                    Id = 4,
+                    FlowerId = 1,
+                    SurveyQuestionId = 3,
+                    RelevantVariantsProbabilities = "1;1";
+                },
+                new SurveyFlower()
+                {
+                    Id = 4,
+                    FlowerId = 1,
+                    SurveyQuestionId = 4,
+                    RelevantVariantsProbabilities = "0.7;0.5;1;0.5;1;0.5;0.5";
+                },
+                new SurveyFlower()
+                {
+                    Id = 4,
+                    FlowerId = 1,
+                    SurveyQuestionId = 5,
+                    RelevantVariantsProbabilities = "1;0.3;0";
+                },
+                new SurveyFlower()
+                {
+                    Id = 4,
+                    FlowerId = 1,
+                    SurveyQuestionId = 6,
+                    RelevantVariantsProbabilities = "1;0.5;0";
+                },
+
+                new SurveyFlower()
+                {
+                    Id = 5,
+                    FlowerId = 1,
+                    SurveyQuestionId = 1,
+                    RelevantVariantsProbabilities = "1;1";
+                },
+                new SurveyFlower()
+                {
+                    Id = 5,
+                    FlowerId = 1,
+                    SurveyQuestionId = 2,
+                    RelevantVariantsProbabilities = "0;0.7;1";
+                },
+                new SurveyFlower()
+                {
+                    Id = 5,
+                    FlowerId = 1,
+                    SurveyQuestionId = 3,
+                    RelevantVariantsProbabilities = "1;1";
+                },
+                new SurveyFlower()
+                {
+                    Id = 5,
+                    FlowerId = 1,
+                    SurveyQuestionId = 4,
+                    RelevantVariantsProbabilities = "0.7;0.5;1;0.5;1;0.5;0.5";
+                },
+                new SurveyFlower()
+                {
+                    Id = 5,
+                    FlowerId = 1,
+                    SurveyQuestionId = 5,
+                    RelevantVariantsProbabilities = "0.2;1;0.7";
+                },
+                new SurveyFlower()
+                {
+                    Id = 5,
+                    FlowerId = 1,
+                    SurveyQuestionId = 6,
+                    RelevantVariantsProbabilities = "0.1;0.6;0.8";
+                },
+                
+                new SurveyFlower()
+                {
+                    Id = 6,
+                    FlowerId = 1,
+                    SurveyQuestionId = 1,
+                    RelevantVariantsProbabilities = "0;1";
+                },
+                new SurveyFlower()
+                {
+                    Id = 6,
+                    FlowerId = 1,
+                    SurveyQuestionId = 2,
+                    RelevantVariantsProbabilities = "1;0.2;0";
+                },
+                new SurveyFlower()
+                {
+                    Id = 6,
+                    FlowerId = 1,
+                    SurveyQuestionId = 3,
+                    RelevantVariantsProbabilities = "0;1";
+                },
+                new SurveyFlower()
+                {
+                    Id = 6,
+                    FlowerId = 1,
+                    SurveyQuestionId = 4,
+                    RelevantVariantsProbabilities = "0.7;0.5;1;0.5;1;0.5;0.5";
+                },
+                new SurveyFlower()
+                {
+                    Id = 6,
+                    FlowerId = 1,
+                    SurveyQuestionId = 5,
+                    RelevantVariantsProbabilities = "0.5;1;0.2";
+                },
+                new SurveyFlower()
+                {
+                    Id = 6,
+                    FlowerId = 1,
+                    SurveyQuestionId = 6,
+                    RelevantVariantsProbabilities = "0.3;0.9;0.2";
+                },
+                
+                new SurveyFlower()
+                {
+                    Id = 7,
+                    FlowerId = 1,
+                    SurveyQuestionId = 1,
+                    RelevantVariantsProbabilities = "0;1";
+                },
+                new SurveyFlower()
+                {
+                    Id = 7,
+                    FlowerId = 1,
+                    SurveyQuestionId = 2,
+                    RelevantVariantsProbabilities = "0.3;1;0.2";
+                },
+                new SurveyFlower()
+                {
+                    Id = 7,
+                    FlowerId = 1,
+                    SurveyQuestionId = 3,
+                    RelevantVariantsProbabilities = "0;1";
+                },
+                new SurveyFlower()
+                {
+                    Id = 7,
+                    FlowerId = 1,
+                    SurveyQuestionId = 4,
+                    RelevantVariantsProbabilities = "0.7;0.5;1;0.5;1;0.5;0.5";
+                },
+                new SurveyFlower()
+                {
+                    Id = 7,
+                    FlowerId = 1,
+                    SurveyQuestionId = 5,
+                    RelevantVariantsProbabilities = "0.7;1;0.1";
+                },
+                new SurveyFlower()
+                {
+                    Id = 7,
+                    FlowerId = 1,
+                    SurveyQuestionId = 6,
+                    RelevantVariantsProbabilities = "0.3;0.9;0.2";
+                },
+                
+                new SurveyFlower()
+                {
+                    Id = 8,
+                    FlowerId = 1,
+                    SurveyQuestionId = 1,
+                    RelevantVariantsProbabilities = "0;1";
+                },
+                new SurveyFlower()
+                {
+                    Id = 8,
+                    FlowerId = 1,
+                    SurveyQuestionId = 2,
+                    RelevantVariantsProbabilities = "0.3;1;0.2";
+                },
+                new SurveyFlower()
+                {
+                    Id = 8,
+                    FlowerId = 1,
+                    SurveyQuestionId = 3,
+                    RelevantVariantsProbabilities = "0;1";
+                },
+                new SurveyFlower()
+                {
+                    Id = 8,
+                    FlowerId = 1,
+                    SurveyQuestionId = 4,
+                    RelevantVariantsProbabilities = "0.7;0.5;1;0.5;1;0.5;0.5";
+                },
+                new SurveyFlower()
+                {
+                    Id = 8,
+                    FlowerId = 1,
+                    SurveyQuestionId = 5,
+                    RelevantVariantsProbabilities = "0.7;1;0.1";
+                },
+                new SurveyFlower()
+                {
+                    Id = 8,
+                    FlowerId = 1,
+                    SurveyQuestionId = 6,
+                    RelevantVariantsProbabilities = "1;0.5;0";
+                },
+                
+                new SurveyFlower()
+                {
+                    Id = 9,
+                    FlowerId = 1,
+                    SurveyQuestionId = 1,
+                    RelevantVariantsProbabilities = "1;1";
+                },
+                new SurveyFlower()
+                {
+                    Id = 9,
+                    FlowerId = 1,
+                    SurveyQuestionId = 2,
+                    RelevantVariantsProbabilities = "0.3;1;0.2";
+                },
+                new SurveyFlower()
+                {
+                    Id = 9,
+                    FlowerId = 1,
+                    SurveyQuestionId = 3,
+                    RelevantVariantsProbabilities = "1;1";
+                },
+                new SurveyFlower()
+                {
+                    Id = 9,
+                    FlowerId = 1,
+                    SurveyQuestionId = 4,
+                    RelevantVariantsProbabilities = "0.7;0.5;1;0.5;1;0.5;0.5";
+                },
+                new SurveyFlower()
+                {
+                    Id = 9,
+                    FlowerId = 1,
+                    SurveyQuestionId = 5,
+                    RelevantVariantsProbabilities = "1;0.4;0";
+                },
+                new SurveyFlower()
+                {
+                    Id = 9,
+                    FlowerId = 1,
+                    SurveyQuestionId = 6,
+                    RelevantVariantsProbabilities = "0;0.3;0.9";
+                },
+                
+                new SurveyFlower()
+                {
+                    Id = 10,
+                    FlowerId = 1,
+                    SurveyQuestionId = 1,
+                    RelevantVariantsProbabilities = "1;1";
+                },
+                new SurveyFlower()
+                {
+                    Id = 10,
+                    FlowerId = 1,
+                    SurveyQuestionId = 2,
+                    RelevantVariantsProbabilities = "0;0.7;1";
+                },
+                new SurveyFlower()
+                {
+                    Id = 10,
+                    FlowerId = 1,
+                    SurveyQuestionId = 3,
+                    RelevantVariantsProbabilities = "0;1";
+                },
+                new SurveyFlower()
+                {
+                    Id = 10,
+                    FlowerId = 1,
+                    SurveyQuestionId = 4,
+                    RelevantVariantsProbabilities = "0.7;0.5;1;0.5;1;0.5;0.5";
+                },
+                new SurveyFlower()
+                {
+                    Id = 10,
+                    FlowerId = 1,
+                    SurveyQuestionId = 5,
+                    RelevantVariantsProbabilities = "1;0.4;0";
+                },
+                new SurveyFlower()
+                {
+                    Id = 10,
+                    FlowerId = 1,
+                    SurveyQuestionId = 6,
+                    RelevantVariantsProbabilities = "0;0.2;0.9";
+                }
+            };
+            
+            context.SurveyFlowers.AddRange(surveyFlowers);
+        
             await context.SaveChangesAsync();
         }
     }

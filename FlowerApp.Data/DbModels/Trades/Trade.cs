@@ -5,7 +5,7 @@ namespace FlowerApp.Data.DbModels.Trades;
 
 public class Trade : Entity<int>
 {
-    public int UserId { get; set; }
+    public string UserId { get; set; }
     public string FlowerName { get; set; }
     public string PreferredTrade { get; set; }
     public string Location { get; set; }
@@ -13,6 +13,7 @@ public class Trade : Entity<int>
     public DateTime ExpiresAt { get; set; }
     public bool IsActive { get; set; } = true;
     public string Description { get; set; }
+    public string PhotoBase64 {get; set;}
     
     public User User { get; set; }
 }

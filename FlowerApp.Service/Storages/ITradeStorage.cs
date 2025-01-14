@@ -5,6 +5,7 @@ namespace FlowerApp.Service.Storages;
 
 public interface ITradeStorage : IStorage<Trade, int>
 {
-    Task<IEnumerable<Trade>> Get(Pagination pagination, string? location, int? excludeId = null);
+    Task<IList<Trade>> GetOtherUsersTrades(Pagination pagination, string? location, string? excludeUserId);
+    Task<IList<Trade>> GetUserTrades(Pagination pagination, string? location, string userId);
     Task<bool> DeactivateTrade(int id);
 }

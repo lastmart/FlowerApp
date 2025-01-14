@@ -6,49 +6,31 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace FlowerApp.Data.Migrations
 {
-    public partial class Updatestructure : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterColumn<string>(
-                name: "PhotoUrl",
-                table: "Flowers",
-                type: "varchar(200)",
-                nullable: false,
-                oldClrType: typeof(string),
-                oldType: "varchar(50)");
-
             migrationBuilder.CreateTable(
-                name: "Questions",
+                name: "Flowers",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Text = table.Column<string>(type: "varchar(300)", nullable: false),
-                    QuestionType = table.Column<int>(type: "integer", nullable: false),
-                    Variants = table.Column<string>(type: "text", nullable: false)
+                    Name = table.Column<string>(type: "varchar(50)", nullable: false),
+                    ScientificName = table.Column<string>(type: "varchar(50)", nullable: false),
+                    AppearanceDescription = table.Column<string>(type: "varchar(300)", nullable: false),
+                    CareDescription = table.Column<string>(type: "varchar(300)", nullable: false),
+                    PhotoUrl = table.Column<string>(type: "varchar(200)", nullable: false),
+                    Size = table.Column<float>(type: "real", nullable: false),
+                    WateringFrequency = table.Column<int>(type: "integer", nullable: false),
+                    Soil = table.Column<int>(type: "integer", nullable: false),
+                    ToxicCategory = table.Column<int>(type: "integer", nullable: false),
+                    Illumination = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Questions", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Users",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    Surname = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    Email = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: true),
-                    Telegram = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: true),
-                    SurveyId = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Users", x => x.Id);
-                    table.UniqueConstraint("AK_Users_SurveyId", x => x.SurveyId);
+                    table.PrimaryKey("PK_Flowers", x => x.Id);
+                    table.CheckConstraint("CK_Size", "\"Size\" >= 0");
                 });
 
             migrationBuilder.CreateTable(
@@ -57,17 +39,76 @@ namespace FlowerApp.Data.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    UserId = table.Column<int>(type: "integer", nullable: false)
+                    UserId = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Surveys", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SurveyFlowers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    RelevantVariantsProbabilities = table.Column<string>(type: "text", nullable: false),
+                    FlowerId = table.Column<int>(type: "integer", nullable: false),
+                    SurveyQuestionId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SurveyFlowers", x => x.Id);
+                    table.UniqueConstraint("AK_SurveyFlowers_SurveyQuestionId", x => x.SurveyQuestionId);
                     table.ForeignKey(
-                        name: "FK_Surveys_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "SurveyId",
+                        name: "FK_SurveyFlowers_Flowers_FlowerId",
+                        column: x => x.FlowerId,
+                        principalTable: "Flowers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    GoogleId = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
+                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Surname = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Email = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: true),
+                    Telegram = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: true),
+                    SurveyId = table.Column<int>(type: "integer", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.GoogleId);
+                    table.ForeignKey(
+                        name: "FK_Users_Surveys_SurveyId",
+                        column: x => x.SurveyId,
+                        principalTable: "Surveys",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Questions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false),
+                    Text = table.Column<string>(type: "varchar(300)", nullable: false),
+                    QuestionType = table.Column<int>(type: "integer", nullable: false),
+                    Variants = table.Column<string>(type: "text", nullable: false),
+                    SurveyFlowerId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Questions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Questions_SurveyFlowers_Id",
+                        column: x => x.Id,
+                        principalTable: "SurveyFlowers",
+                        principalColumn: "SurveyQuestionId",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -76,14 +117,15 @@ namespace FlowerApp.Data.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    UserId = table.Column<int>(type: "integer", nullable: false),
+                    UserId = table.Column<string>(type: "character varying(255)", nullable: false),
                     FlowerName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     PreferredTrade = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     Location = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     ExpiresAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     IsActive = table.Column<bool>(type: "boolean", nullable: false),
-                    Description = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false)
+                    Description = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
+                    PhotoBase64 = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -92,7 +134,7 @@ namespace FlowerApp.Data.Migrations
                         name: "FK_Trades_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "Id",
+                        principalColumn: "GoogleId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -134,15 +176,20 @@ namespace FlowerApp.Data.Migrations
                 column: "SurveyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Surveys_UserId",
-                table: "Surveys",
-                column: "UserId",
-                unique: true);
+                name: "IX_SurveyFlowers_FlowerId",
+                table: "SurveyFlowers",
+                column: "FlowerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Trades_UserId",
                 table: "Trades",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_SurveyId",
+                table: "Users",
+                column: "SurveyId",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -157,18 +204,16 @@ namespace FlowerApp.Data.Migrations
                 name: "Questions");
 
             migrationBuilder.DropTable(
+                name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "SurveyFlowers");
+
+            migrationBuilder.DropTable(
                 name: "Surveys");
 
             migrationBuilder.DropTable(
-                name: "Users");
-
-            migrationBuilder.AlterColumn<string>(
-                name: "PhotoUrl",
-                table: "Flowers",
-                type: "varchar(50)",
-                nullable: false,
-                oldClrType: typeof(string),
-                oldType: "varchar(200)");
+                name: "Flowers");
         }
     }
 }

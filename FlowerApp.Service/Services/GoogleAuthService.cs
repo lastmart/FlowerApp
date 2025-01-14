@@ -60,16 +60,15 @@ public class GoogleAuthService : IGoogleAuthService
     {
         var userInfoDictionary = await GetUserInfoByAccessToken(accessToken);
         var googleUserId = userInfoDictionary[GoogleUserIdField];
-        if (await userStorage.GetByGoogleId(googleUserId) == null)
+        if (await userStorage.GetByGoogleId(googleUserId) != null)
         {
             return false;
         }
 
         return new User
         {
-            GoogleUserId = googleUserId,
+            GoogleId = googleUserId,
             Email = userInfoDictionary[EmailField],
-            Id = Guid.NewGuid(),
             Name = userInfoDictionary[NameField],
             Surname = userInfoDictionary[SurnameField],
             Telegram = null

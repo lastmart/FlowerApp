@@ -33,10 +33,19 @@ public class TradesController : ControllerBase
         var trade = await tradeService.Get(id);
         if (trade == null)
         {
-            return NotFound("Trade not found");
+            return NotFound(new FailureOperationStatus
+            {
+                Code = "TradeNotFound",
+                Message = "No trade found with the given ID"
+            });
         }
 
-        return Ok(mapper.Map<DTOTrade>(trade));
+        return Ok(new SuccessOperationStatus<DTOTrade>
+        {
+            Code = "Ok",
+            Message = "",
+            Data = mapper.Map<DTOTrade>(trade)
+        });
     }
     
 
@@ -51,10 +60,10 @@ public class TradesController : ControllerBase
         var result = await tradeService.Create(mapper.Map<ApplicationTrade>(trade));
         return result switch
         {
-            OperationResult.Success => Ok(),
-            OperationResult.NotFound => NotFound("User not found"),
-            OperationResult.InvalidData => BadRequest("User must have either email or telegram specified"),
-            _ => StatusCode(500, "An unexpected error occurred")
+            OperationResult.Success => Ok(new SuccessOperationStatus<object> { Code = "Ok", Message = "Trade created successfully"}),
+            OperationResult.NotFound => NotFound(new FailureOperationStatus { Code = "UserNotFound", Message = "User not found" }),
+            OperationResult.InvalidData => BadRequest(new FailureOperationStatus { Code = "InvalidData", Message = "User must have either email or telegram specified" }),
+            _ => StatusCode(500, new FailureOperationStatus { Code = "InternalServerError", Message = "An unexpected error occurred" })
         };
     }
 
@@ -69,9 +78,9 @@ public class TradesController : ControllerBase
         var result = await tradeService.DeactivateTrade(id);
         return result switch
         {
-            OperationResult.Success => Ok(),
-            OperationResult.NotFound => NotFound("Trade not found"),
-            _ => StatusCode(500, "An unexpected error occurred")
+            OperationResult.Success => Ok(new SuccessOperationStatus<object> { Code = "Ok", Message = "Trade deactivated successfully" }),
+            OperationResult.NotFound => NotFound(new FailureOperationStatus { Code = "TradeNotFound", Message = "No exchange was found for this id" }),
+            _ => StatusCode(500, new FailureOperationStatus { Code = "InternalServerError", Message = "An unexpected error occurred" })
         };
     }
 
@@ -88,9 +97,9 @@ public class TradesController : ControllerBase
         
         return result switch
         {
-            OperationResult.Success => Ok("Trade deactivated successfully"),
-            OperationResult.NotFound => NotFound("Trade not found"),
-            _ => StatusCode(500, "An unexpected error occurred")
+            OperationResult.Success => Ok(new SuccessOperationStatus<object> { Code = "Ok", Message = "Trade updated successfully" }),
+            OperationResult.NotFound => NotFound(new FailureOperationStatus { Code = "TradeNotFound", Message = "Trade or associated user not found" }),
+            _ => StatusCode(500, new FailureOperationStatus { Code = "InternalServerError", Message = "An unexpected error occurred" })
         };
     }
     
@@ -102,14 +111,27 @@ public class TradesController : ControllerBase
     /// <param name="location">Локация для фильтрации (опционально)</param>
     /// <returns>Список трейдов пользователя с общим количеством</returns>
     [HttpGet("user/{userId}")]
-    public async Task<ActionResult<GetTradeResponse>> GetUserTrades(
+    public async Task<ActionResult<IRepositoryOperationStatus>> GetUserTrades(
         int userId,
         [FromQuery] Pagination pagination,
         [FromQuery] string? location = null)
     {
         var response = await tradeService.GetUserTrades(pagination, location, userId);
+        if (response == null)
+        {
+            return NotFound(new FailureOperationStatus
+            {
+                Code = "UserNotFound",
+                Message = $"User with ID {userId} not found."
+            });
+        }
         var trades = response.Trades.Select(t => mapper.Map<DTOTrade>(t));
-        return Ok(new GetTradeResponse(response.Count, trades));
+        return new SuccessOperationStatus<GetTradeResponse>
+        {
+            Code = "Ok",
+            Message = "",
+            Data = new GetTradeResponse(response.Count, trades)
+        };
     }
     
     /// <summary>
@@ -120,13 +142,26 @@ public class TradesController : ControllerBase
     /// <param name="location">Локация для фильтрации (опционально)</param>
     /// <returns>Список трейдов других пользователей с общим количеством</returns>
     [HttpGet("others")]
-    public async Task<ActionResult<GetTradeResponse>> GetOtherUsersTrades(
+    public async Task<ActionResult<IRepositoryOperationStatus>> GetOtherUsersTrades(
         [FromQuery] Pagination pagination,
         [FromQuery] int? userId = null,
         [FromQuery] string? location = null)
     {
         var response = await tradeService.GetOtherUsersTrades(pagination, location, userId);
+        if (response == null)
+        {
+            return NotFound(new FailureOperationStatus
+            {
+                Code = "UserNotFound",
+                Message = $"User with ID {userId} not found."
+            });
+        }
         var trades = response.Trades.Select(t => mapper.Map<DTOTrade>(t));
-        return Ok(new GetTradeResponse(response.Count, trades));
+        return new SuccessOperationStatus<GetTradeResponse>
+        {
+            Code = "Ok",
+            Message = "",
+            Data = new GetTradeResponse(response.Count, trades)
+        };
     }
 }

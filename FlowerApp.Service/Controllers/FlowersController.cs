@@ -1,4 +1,3 @@
-using AutoMapper;
 using FlowerApp.Domain.Models.FlowerModels;
 using FlowerApp.DTOs.Common;
 using FlowerApp.Service.Storages;
@@ -17,13 +16,11 @@ public class FlowersController : ControllerBase
 
     public FlowersController(
         IValidator<Pagination> paginationValidator,
-        IFlowersStorage flowersStorage,
-        Mapper mapper
+        IFlowersStorage flowersStorage
     )
     {
         this.paginationValidator = paginationValidator;
         this.flowersStorage = flowersStorage;
-        this.mapper = mapper;
     }
 
     /// <summary>

@@ -69,4 +69,4 @@ jobs:
           if [ "$(docker ps -a -q -f name=flowerapp-container)" ]; then
             docker rm flowerapp-container
           fi
-          docker run -d -p 8888:80 --name flowerapp-container -e DefaultConnection="${{ secrets.DefaultConnection }}" flowerapp-service
+          docker run -d -p 8888:80 --name flowerapp-container -e DefaultConnection="${{ secrets.DefaultConnection }}" -e GoogleClientId="${{ secrets.GOOGLECLIENTID }}" -e GoogleClientSecret="${{ secrets.GOOGLECLIENTSECRET }}" flowerapp-service

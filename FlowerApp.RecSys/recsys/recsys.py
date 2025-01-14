@@ -25,6 +25,8 @@ class RecSys:
                return RecomendationsResponse(len(response), response)
         
         answer_matrix = np.zeros((self.__answers_storage.get_users_count(), self.__flowers_size))
+        user_ids = []
+        flower_ids = []
         for answer_row in self.__answers_storage.iterate_answers_by_row():
             for flower_feature_row in\
                 self.__flower_features_storage.iterate_flower_features_by_row_with_question_id(
@@ -36,8 +38,12 @@ class RecSys:
                     flower_feature_row.feature,
                     flower_feature_row.features_size)
                 
+                if (answer_row.user_id not in user_ids):
+                    user_ids.append(answer_row.user_id)
+                if (flower_feature_row.flower_id not in flower_ids):
+                    flower_ids.append(flower_feature_row.flower_id)
                 match_score = np.dot(answer_array, flower_feature_array)
-                answer_matrix[answer_row.user_id - 1, flower_feature_row.flower_id - 1] = match_score
+                answer_matrix[user_ids.index(answer_row.user_id) , flower_ids.index(flower_feature_row.flower_id)] = match_score
 
         self.__count_latent_component = min(self.__count_latent_component, answer_matrix.shape[1] - 1)
         return self.__find_k_best_flower_for_user(user_id, take, answer_matrix)

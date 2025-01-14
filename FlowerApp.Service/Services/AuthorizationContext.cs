@@ -14,10 +14,13 @@ public class AuthorizationContext : IAuthorizationContext
         this.googleAuthService = googleAuthService;
     }
 
-    public async Task<string> GetGoogleId()
+    public async Task<string> GetGoogleIdFromAccessToken()
     {
         var accessToken = httpContextAccessor.HttpContext?.GetAccessTokenFromHeaderAuthorization();
-        if (accessToken is null) throw new ArgumentNullException("HttpContext is null");
+        if (accessToken is null)
+        {
+            throw new ArgumentNullException("HttpContext is null");
+        }
 
         return (await googleAuthService.GetUserGoogleIdByAccessToken(accessToken)).GetValueOrThrow(
             new ArgumentNullException("Can't get user googleId by accessToken"));

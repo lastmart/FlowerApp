@@ -2,5 +2,5 @@
 
 public interface IAuthorizationContext
 {
-    public Task<string> GetGoogleId();
+    public Task<string> GetGoogleIdFromAccessToken();
 }

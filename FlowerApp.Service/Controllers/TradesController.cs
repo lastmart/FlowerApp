@@ -31,6 +31,7 @@ public class TradesController : ControllerBase
     public async Task<ActionResult<DTOTrade>> GetTrade(int id)
     {
         var trade = await tradeService.Get(id);
+
         if (trade == null)
         {
             return NotFound(new FailureOperationStatus
@@ -87,7 +88,6 @@ public class TradesController : ControllerBase
     /// <summary>
     ///     Обновление существующего трейда
     /// </summary>
-    /// <param name="id">Идентификатор трейда для обновления</param>
     /// <param name="trade">Детали трейда для обновления</param>
     /// <returns>Обновленный трейд</returns>
     [HttpPut]
@@ -114,7 +114,8 @@ public class TradesController : ControllerBase
     public async Task<ActionResult<IRepositoryOperationStatus>> GetUserTrades(
         string googleId,
         [FromQuery] Pagination pagination,
-        [FromQuery] string? location = null)
+        [FromQuery] string? location = null
+    )
     {
         var response = await tradeService.GetUserTrades(pagination, location, googleId);
         if (response.Result == OperationResult.NotFound )

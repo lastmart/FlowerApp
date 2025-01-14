@@ -45,11 +45,21 @@ public class TradeStorage : ITradeStorage
             query = query.Where(t => t.Location.Contains(location));
         }
 
-        return await query
+        var trades = await query
             .Skip(pagination.Skip)
             .Take(pagination.Take)
             .Select(trade => mapper.Map<AppTrade>(trade))
             .ToListAsync();
+        
+        
+        foreach (var trade in trades)
+        {
+            var user = await dbContext.Users.FirstOrDefaultAsync(u => u.GoogleId == trade.UserId);
+            trade.AuthorName = user?.Name ?? string.Empty;
+            trade.ContactData = user?.Telegram ?? string.Empty;
+        }
+
+        return trades;
     }
 
     public async Task<IList<AppTrade>> GetUserTrades(
@@ -65,11 +75,20 @@ public class TradeStorage : ITradeStorage
             query = query.Where(t => t.Location.Contains(location));
         }
 
-        return await query
+        var trades = await query
             .Skip(pagination.Skip)
             .Take(pagination.Take)
             .Select(trade => mapper.Map<AppTrade>(trade))
             .ToListAsync();
+        var user = await dbContext.Users.FirstOrDefaultAsync(u => u.GoogleId == userId);
+        
+        foreach (var trade in trades)
+        {
+            trade.AuthorName = user?.Name ?? string.Empty;
+            trade.ContactData = user?.Telegram ?? string.Empty;
+        }
+
+        return trades;
     }
 
     public async Task<bool> Create(AppTrade trade)

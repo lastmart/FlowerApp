@@ -19,6 +19,14 @@ public class TradeService : ITradeService
         public async Task<Trade?> Get(int id)
         {
             var trade = await tradeStorage.Get(id);
+
+            if (trade is not null)
+            {
+                var user = await userStorage.Get(trade.UserId);
+                trade.AuthorName = user?.Name ?? string.Empty;
+                trade.ContactData = user?.Telegram ?? string.Empty;
+            }
+
             return trade;
         }
         

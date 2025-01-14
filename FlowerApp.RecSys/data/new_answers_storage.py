@@ -2,17 +2,18 @@
 from typing import Generator
 from models.internal_models.answer import Answer
 import psycopg2
+import os
 
 
 class AnswersStorage:
     def __init__(self):
-        self.__conn = psycopg2.connect("""
-    host=localhost
-    port=5432
-    dbname=Postgres
-    user=
-    password=
-""")
+        default_connection_string = ""
+        if os.path.exists("./default_connection"):
+            with open("./default_connection", 'r') as file:
+                default_connection_string = file.read()
+        connection_string = os.getenv("DefaultConnection", default_connection_string)
+
+        self.__conn = psycopg2.connect(connection_string)
         self.__cursor = self.__conn.cursor()
         self.__conn.autocommit = True
 

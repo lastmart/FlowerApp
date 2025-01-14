@@ -8,10 +8,10 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 {
     public void Configure(EntityTypeBuilder<User> builder)
     {
-        builder.HasKey(user => user.Id);
+        builder.HasKey(user => user.GoogleId);
 
         builder
-            .Property(user => user.GoogleUserId)
+            .Property(user => user.GoogleId)
             .HasMaxLength(255)
             .IsRequired();
 
@@ -37,7 +37,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .HasMany(user => user.Trades)
             .WithOne(trade => trade.User)
             .HasForeignKey(trade => trade.UserId)
-            .HasPrincipalKey(user => user.Id)
+            .HasPrincipalKey(user => user.GoogleId)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }

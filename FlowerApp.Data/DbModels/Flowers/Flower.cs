@@ -8,7 +8,7 @@ public class Flower : Entity<int>
     public string ScientificName { get; set; }
     public string AppearanceDescription { get; set; }
     public string CareDescription { get; set; }
-    public string PhotoUrl { get; set; }
+    public string PhotoBase64 { get; set; }
     public float Size { get; set; }
     public WateringFrequency WateringFrequency { get; set; }
     public Soil Soil { get; set; }

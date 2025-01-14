@@ -33,7 +33,7 @@ public class FlowersController : ControllerBase
     /// <param name="filterParams">Параметры фильтрации цветов</param>
     /// <param name="sortParams">Параметры сортировки цветов</param>
     /// <returns>Список цветов с основной информацией</returns>
-    [HttpGet("{searchString?}")]
+    [HttpGet]
     public async Task<ActionResult<GetFlowerResponse>> Get132(
         string? searchString,   
         [FromQuery] Pagination pagination,

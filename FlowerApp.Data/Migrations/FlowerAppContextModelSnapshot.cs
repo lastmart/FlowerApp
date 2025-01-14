@@ -45,9 +45,9 @@ namespace FlowerApp.Data.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(50)");
 
-                    b.Property<string>("PhotoUrl")
+                    b.Property<string>("PhotoBase64")
                         .IsRequired()
-                        .HasColumnType("varchar(200)");
+                        .HasColumnType("text");
 
                     b.Property<string>("ScientificName")
                         .IsRequired()

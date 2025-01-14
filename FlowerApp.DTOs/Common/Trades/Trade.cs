@@ -10,4 +10,5 @@ public record Trade
     public DateTime ExpiresAt { get; set; }
     public bool IsActive { get; set; }
     public string Description { get; set; }
+    public string PhotoBase64 {get; set;}
 }

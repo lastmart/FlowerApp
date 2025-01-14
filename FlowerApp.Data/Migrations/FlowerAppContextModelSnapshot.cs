@@ -198,6 +198,10 @@ namespace FlowerApp.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
+                    b.Property<string>("PhotoBase64")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("PreferredTrade")
                         .IsRequired()
                         .HasMaxLength(100)

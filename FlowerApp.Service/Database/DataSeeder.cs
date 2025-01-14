@@ -20,6 +20,39 @@ public class DataSeeder
         // {
         //     var users = new List<User>
         //     {
+        //         new() 
+        //         { 
+        //             GoogleId = "1234567890", 
+        //             Name = "Mark", 
+        //             Surname = "Smith", 
+        //             Email = "mark.smith@example.com", 
+        //             Telegram = "mark_smith", 
+        //         },
+        //         new() 
+        //         { 
+        //             GoogleId = "0987654321", 
+        //             Name = "Alice", 
+        //             Surname = "Johnson", 
+        //             Email = "alice.johnson@example.com", 
+        //             Telegram = "alice_johnson", 
+        //         },
+        //         new() 
+        //         { 
+        //             GoogleId = "1122334455", 
+        //             Name = "Bob", 
+        //             Surname = "Brown", 
+        //             Email = "bob.brown@example.com", 
+        //             Telegram = "bob_brown", 
+        //         }
+        //     };
+        //
+        //     context.Users.AddRange(users);
+        //     await context.SaveChangesAsync();
+        // }
+        // if (!context.Users.Any())
+        // {
+        //     var users = new List<User>
+        //     {
         //         new() { Name = "Mark", Email = "test@123.ru", Surname = "Surname", Telegram = "dasvjdv" },
         //         new() { Name = "Alice", Email = "test@123.ru", Surname = "Surname", Telegram = "dasvjdv" }
         //     };

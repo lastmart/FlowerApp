@@ -44,5 +44,8 @@ public class TradeConfiguration : IEntityTypeConfiguration<Trade>
         builder
             .Property(trade => trade.UserId)
             .IsRequired();
+
+        builder
+            .Property(trade => trade.PhotoBase64);
     }
 }

@@ -8,8 +8,8 @@ import os
 class FlowerFeaturesStorage:
     def __init__(self):
         default_connection_string = ""
-        if os.path.exists("./default_connection"):
-            with open("./default_connection", 'r') as file:
+        if os.path.exists("data/default_connection"):
+            with open("data/default_connection", 'r') as file:
                 default_connection_string = file.read()
         connection_string = os.getenv("DefaultConnection", default_connection_string)
 

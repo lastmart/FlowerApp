@@ -22,6 +22,7 @@ public class Startup
         serviceCollection
             .AddDatabase(configuration)
             .AddServices()
+            .AddHttpContextAccessor()
             .AddAuthorization(options =>
                 options.AddPolicy(Constants.PolicyNames.GoogleAuthorization, policy =>
                     policy.Requirements.Add(new GoogleAuthorizationRequirement())))

@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FlowerApp.Data.Migrations
 {
     [DbContext(typeof(FlowerAppContext))]
-    [Migration("20250114152434_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250114184343_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -47,9 +47,9 @@ namespace FlowerApp.Data.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(50)");
 
-                    b.Property<string>("PhotoUrl")
+                    b.Property<string>("PhotoBase64")
                         .IsRequired()
-                        .HasColumnType("varchar(200)");
+                        .HasColumnType("text");
 
                     b.Property<string>("ScientificName")
                         .IsRequired()
@@ -141,18 +141,20 @@ namespace FlowerApp.Data.Migrations
 
                     b.HasIndex("FlowerId");
 
+                    b.HasIndex("SurveyQuestionId");
+
                     b.ToTable("SurveyFlowers");
                 });
 
             modelBuilder.Entity("FlowerApp.Data.DbModels.Surveys.SurveyQuestion", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("QuestionType")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("SurveyFlowerId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Text")
@@ -165,7 +167,7 @@ namespace FlowerApp.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Questions");
+                    b.ToTable("SurveyQuestions");
                 });
 
             modelBuilder.Entity("FlowerApp.Data.DbModels.Trades.Trade", b =>
@@ -282,19 +284,15 @@ namespace FlowerApp.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Flower");
-                });
-
-            modelBuilder.Entity("FlowerApp.Data.DbModels.Surveys.SurveyQuestion", b =>
-                {
-                    b.HasOne("FlowerApp.Data.DbModels.Surveys.SurveyFlower", "SurveyFlower")
-                        .WithOne("SurveyQuestion")
-                        .HasForeignKey("FlowerApp.Data.DbModels.Surveys.SurveyQuestion", "Id")
-                        .HasPrincipalKey("FlowerApp.Data.DbModels.Surveys.SurveyFlower", "SurveyQuestionId")
+                    b.HasOne("FlowerApp.Data.DbModels.Surveys.SurveyQuestion", "SurveyQuestion")
+                        .WithMany("SurveyFlowers")
+                        .HasForeignKey("SurveyQuestionId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("SurveyFlower");
+                    b.Navigation("Flower");
+
+                    b.Navigation("SurveyQuestion");
                 });
 
             modelBuilder.Entity("FlowerApp.Data.DbModels.Trades.Trade", b =>
@@ -330,15 +328,11 @@ namespace FlowerApp.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("FlowerApp.Data.DbModels.Surveys.SurveyFlower", b =>
-                {
-                    b.Navigation("SurveyQuestion")
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("FlowerApp.Data.DbModels.Surveys.SurveyQuestion", b =>
                 {
                     b.Navigation("Answers");
+
+                    b.Navigation("SurveyFlowers");
                 });
 
             modelBuilder.Entity("FlowerApp.Data.DbModels.Users.User", b =>

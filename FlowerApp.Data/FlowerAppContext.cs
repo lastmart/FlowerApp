@@ -10,7 +10,7 @@ namespace FlowerApp.Data;
 public class FlowerAppContext : DbContext
 {
     public DbSet<Flower> Flowers { get; set; }
-    public DbSet<SurveyQuestion> Questions { get; set; }
+    public DbSet<SurveyQuestion> SurveyQuestions { get; set; }
     public DbSet<SurveyAnswer> SurveyAnswers { get; set; }
     public DbSet<SurveyFlower> SurveyFlowers { get; set; }
     public DbSet<Survey> Surveys { get; set; }

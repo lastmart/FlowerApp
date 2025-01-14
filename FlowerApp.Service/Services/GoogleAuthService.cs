@@ -1,6 +1,5 @@
 ﻿using System.Net.Http.Headers;
 using System.Security.Authentication;
-using System.Web;
 using FlowerApp.Domain.Models.AuthModels;
 using FlowerApp.Domain.Models.UserModels;
 using FlowerApp.Service.Configuration;
@@ -73,6 +72,12 @@ public class GoogleAuthService : IGoogleAuthService
             Surname = userInfoDictionary[SurnameField],
             Telegram = null
         };
+    }
+
+    public async Task<Result<bool, string>> GetUserGoogleIdByAccessToken(string accessToken)
+    {
+        var userInfoDictionary = await GetUserInfoByAccessToken(accessToken);
+        return userInfoDictionary.TryGetValue(GoogleUserIdField, out var value) ? value : false;
     }
 
     private async Task<AuthTokens> GetUserAuthTokens(string authCode)

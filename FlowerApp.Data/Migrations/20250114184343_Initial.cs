@@ -6,7 +6,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace FlowerApp.Data.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -20,7 +20,7 @@ namespace FlowerApp.Data.Migrations
                     ScientificName = table.Column<string>(type: "varchar(50)", nullable: false),
                     AppearanceDescription = table.Column<string>(type: "varchar(300)", nullable: false),
                     CareDescription = table.Column<string>(type: "varchar(300)", nullable: false),
-                    PhotoUrl = table.Column<string>(type: "varchar(200)", nullable: false),
+                    PhotoBase64 = table.Column<string>(type: "text", nullable: false),
                     Size = table.Column<float>(type: "real", nullable: false),
                     WateringFrequency = table.Column<int>(type: "integer", nullable: false),
                     Soil = table.Column<int>(type: "integer", nullable: false),
@@ -31,6 +31,21 @@ namespace FlowerApp.Data.Migrations
                 {
                     table.PrimaryKey("PK_Flowers", x => x.Id);
                     table.CheckConstraint("CK_Size", "\"Size\" >= 0");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SurveyQuestions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Text = table.Column<string>(type: "varchar(300)", nullable: false),
+                    QuestionType = table.Column<int>(type: "integer", nullable: false),
+                    Variants = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SurveyQuestions", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -59,13 +74,45 @@ namespace FlowerApp.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_SurveyFlowers", x => x.Id);
-                    table.UniqueConstraint("AK_SurveyFlowers_SurveyQuestionId", x => x.SurveyQuestionId);
                     table.ForeignKey(
                         name: "FK_SurveyFlowers_Flowers_FlowerId",
                         column: x => x.FlowerId,
                         principalTable: "Flowers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_SurveyFlowers_SurveyQuestions_SurveyQuestionId",
+                        column: x => x.SurveyQuestionId,
+                        principalTable: "SurveyQuestions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SurveyAnswers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    QuestionsMask = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
+                    QuestionId = table.Column<int>(type: "integer", nullable: false),
+                    SurveyId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SurveyAnswers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SurveyAnswers_SurveyQuestions_QuestionId",
+                        column: x => x.QuestionId,
+                        principalTable: "SurveyQuestions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_SurveyAnswers_Surveys_SurveyId",
+                        column: x => x.SurveyId,
+                        principalTable: "Surveys",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -88,27 +135,6 @@ namespace FlowerApp.Data.Migrations
                         principalTable: "Surveys",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Questions",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false),
-                    Text = table.Column<string>(type: "varchar(300)", nullable: false),
-                    QuestionType = table.Column<int>(type: "integer", nullable: false),
-                    Variants = table.Column<string>(type: "text", nullable: false),
-                    SurveyFlowerId = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Questions", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Questions_SurveyFlowers_Id",
-                        column: x => x.Id,
-                        principalTable: "SurveyFlowers",
-                        principalColumn: "SurveyQuestionId",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -138,33 +164,6 @@ namespace FlowerApp.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "SurveyAnswers",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    QuestionsMask = table.Column<string>(type: "character varying(30)", maxLength: 30, nullable: false),
-                    QuestionId = table.Column<int>(type: "integer", nullable: false),
-                    SurveyId = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SurveyAnswers", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_SurveyAnswers_Questions_QuestionId",
-                        column: x => x.QuestionId,
-                        principalTable: "Questions",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_SurveyAnswers_Surveys_SurveyId",
-                        column: x => x.SurveyId,
-                        principalTable: "Surveys",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_SurveyAnswers_QuestionId",
                 table: "SurveyAnswers",
@@ -179,6 +178,11 @@ namespace FlowerApp.Data.Migrations
                 name: "IX_SurveyFlowers_FlowerId",
                 table: "SurveyFlowers",
                 column: "FlowerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SurveyFlowers_SurveyQuestionId",
+                table: "SurveyFlowers",
+                column: "SurveyQuestionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Trades_UserId",
@@ -198,22 +202,22 @@ namespace FlowerApp.Data.Migrations
                 name: "SurveyAnswers");
 
             migrationBuilder.DropTable(
+                name: "SurveyFlowers");
+
+            migrationBuilder.DropTable(
                 name: "Trades");
 
             migrationBuilder.DropTable(
-                name: "Questions");
+                name: "Flowers");
+
+            migrationBuilder.DropTable(
+                name: "SurveyQuestions");
 
             migrationBuilder.DropTable(
                 name: "Users");
 
             migrationBuilder.DropTable(
-                name: "SurveyFlowers");
-
-            migrationBuilder.DropTable(
                 name: "Surveys");
-
-            migrationBuilder.DropTable(
-                name: "Flowers");
         }
     }
 }

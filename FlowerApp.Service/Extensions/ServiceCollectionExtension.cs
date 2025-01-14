@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using FlowerApp.DTOs.Common;
+using FlowerApp.Service.Clients;
 using FlowerApp.Service.Common.Mappers;
 using FlowerApp.Service.Common.Validators;
 using FlowerApp.Service.Configuration;
@@ -7,6 +8,7 @@ using FlowerApp.Service.Database;
 using FlowerApp.Service.Handlers;
 using FlowerApp.Service.Services;
 using FlowerApp.Service.Storages;
+using FlowerApp.Service.Storages.SurveyStorages;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.OpenApi.Models;
@@ -21,13 +23,9 @@ public static class ServiceCollectionExtension
             .AddConfiguration<ApiSettings>()
             .AddConfiguration<ApiSecretSettings>()
             .AddScoped<IGoogleAuthService, GoogleAuthService>()
-            // .AddScoped<IFlowersService, FlowersService>()
-            // .AddScoped<IRecommendationService, RecommendationService>()
-            // .AddScoped<IQuestionsStorage, QuestionsStorage>()
-            // .AddScoped<IUserAnswersStorage, UserAnswersStorage>()
-            // .AddScoped<IUserStorage, UsersStorage>()
-            // .AddScoped<IRecommendationSystemClient, PythonRecommendationSystemClient>()
-            // .AddScoped<IUserService, UserService>()
+            .AddScoped<IAuthorizationContext, AuthorizationContext>()
+            .AddScoped<IRecommendationService, RecommendationService>()
+            .AddScoped<IRecommendationSystemClient, PythonRecommendationSystemClient>()
             .AddScoped<ITradeService, TradeService>()
             .AddStorages()
             .AddHandlers()
@@ -64,9 +62,10 @@ public static class ServiceCollectionExtension
     {
         return serviceCollection
             .AddAutoMapper(typeof(PageResponseProfile))
-        .AddAutoMapper(typeof(UserProfile))
-        .AddAutoMapper(typeof(TradeProfile));
-        // serviceCollection.AddAutoMapper(typeof(QuestionProfile));
+            .AddAutoMapper(typeof(UserProfile))
+            .AddAutoMapper(typeof(TradeProfile))
+            .AddAutoMapper(typeof(SurveyProfile))
+            .AddAutoMapper(typeof(QuestionProfile));
     }
 
     private static IServiceCollection AddValidators(this IServiceCollection serviceCollection)
@@ -82,15 +81,18 @@ public static class ServiceCollectionExtension
         return serviceCollection
             .AddScoped<IFlowersStorage, FlowersStorage>()
             .AddScoped<IUserStorage, UsersStorage>()
-            .AddScoped<ITradeStorage, TradeStorage>();
+            .AddScoped<ITradeStorage, TradeStorage>()
+            .AddScoped<ISurveyStorage, SurveyStorage>()
+            .AddScoped<ISurveyAnswerStorage, SurveyAnswerStorage>()
+            .AddScoped<ISurveyQuestionsStorage, SurveyQuestionsStorage>();
     }
-    
+
     private static IServiceCollection AddHandlers(this IServiceCollection serviceCollection)
     {
         return serviceCollection
             .AddScoped<IAuthorizationHandler, GoogleAuthorizationHandler>();
     }
-    
+
     private static IServiceCollection AddConfiguration<TConfig>(this IServiceCollection serviceCollection)
         where TConfig : class, new()
     {

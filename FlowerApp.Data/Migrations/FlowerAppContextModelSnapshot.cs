@@ -139,18 +139,20 @@ namespace FlowerApp.Data.Migrations
 
                     b.HasIndex("FlowerId");
 
+                    b.HasIndex("SurveyQuestionId");
+
                     b.ToTable("SurveyFlowers");
                 });
 
             modelBuilder.Entity("FlowerApp.Data.DbModels.Surveys.SurveyQuestion", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("QuestionType")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("SurveyFlowerId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Text")
@@ -163,7 +165,7 @@ namespace FlowerApp.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Questions");
+                    b.ToTable("SurveyQuestions");
                 });
 
             modelBuilder.Entity("FlowerApp.Data.DbModels.Trades.Trade", b =>
@@ -280,19 +282,15 @@ namespace FlowerApp.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Flower");
-                });
-
-            modelBuilder.Entity("FlowerApp.Data.DbModels.Surveys.SurveyQuestion", b =>
-                {
-                    b.HasOne("FlowerApp.Data.DbModels.Surveys.SurveyFlower", "SurveyFlower")
-                        .WithOne("SurveyQuestion")
-                        .HasForeignKey("FlowerApp.Data.DbModels.Surveys.SurveyQuestion", "Id")
-                        .HasPrincipalKey("FlowerApp.Data.DbModels.Surveys.SurveyFlower", "SurveyQuestionId")
+                    b.HasOne("FlowerApp.Data.DbModels.Surveys.SurveyQuestion", "SurveyQuestion")
+                        .WithMany("SurveyFlowers")
+                        .HasForeignKey("SurveyQuestionId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("SurveyFlower");
+                    b.Navigation("Flower");
+
+                    b.Navigation("SurveyQuestion");
                 });
 
             modelBuilder.Entity("FlowerApp.Data.DbModels.Trades.Trade", b =>
@@ -328,15 +326,11 @@ namespace FlowerApp.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("FlowerApp.Data.DbModels.Surveys.SurveyFlower", b =>
-                {
-                    b.Navigation("SurveyQuestion")
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("FlowerApp.Data.DbModels.Surveys.SurveyQuestion", b =>
                 {
                     b.Navigation("Answers");
+
+                    b.Navigation("SurveyFlowers");
                 });
 
             modelBuilder.Entity("FlowerApp.Data.DbModels.Users.User", b =>

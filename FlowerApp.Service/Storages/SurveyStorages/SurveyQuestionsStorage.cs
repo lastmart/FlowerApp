@@ -1,10 +1,10 @@
-using AutoMapper;
+﻿using AutoMapper;
 using FlowerApp.Data;
 using Microsoft.EntityFrameworkCore;
 using DbQuestion = FlowerApp.Data.DbModels.Surveys.SurveyQuestion;
 using AppQuestion = FlowerApp.Domain.Models.RecommendationModels.SurveyQuestion;
 
-namespace FlowerApp.Service.Storages;
+namespace FlowerApp.Service.Storages.SurveyStorages;
 
 public class SurveyQuestionsStorage : ISurveyQuestionsStorage
 {
@@ -19,13 +19,20 @@ public class SurveyQuestionsStorage : ISurveyQuestionsStorage
 
     public async Task<AppQuestion?> Get(int id)
     {
-        return mapper.Map<AppQuestion>(await dbContext.Questions.FirstOrDefaultAsync(q => q.Id == id));
+        return mapper.Map<AppQuestion>(await dbContext.SurveyQuestions.FirstOrDefaultAsync(q => q.Id == id));
     }
 
     public async Task<IList<AppQuestion>> Get(int[] ids)
     {
-        return await dbContext.Questions
+        return await dbContext.SurveyQuestions
             .Where(q => ids.Contains(q.Id))
+            .Select(q => mapper.Map<AppQuestion>(q))
+            .ToListAsync();
+    }
+
+    public async Task<IList<AppQuestion>> GetAll()
+    {
+        return await dbContext.SurveyQuestions
             .Select(q => mapper.Map<AppQuestion>(q))
             .ToListAsync();
     }
@@ -36,7 +43,7 @@ public class SurveyQuestionsStorage : ISurveyQuestionsStorage
         try
         {
             var dbModel = mapper.Map<DbQuestion>(model);
-            await dbContext.Questions.AddAsync(dbModel);
+            await dbContext.SurveyQuestions.AddAsync(dbModel);
             var result = await dbContext.SaveChangesAsync() > 0;
             await transaction.CommitAsync();
             return result;
@@ -54,7 +61,7 @@ public class SurveyQuestionsStorage : ISurveyQuestionsStorage
         try
         {
             var dbModel = mapper.Map<DbQuestion>(model);
-            dbContext.Questions.Update(dbModel);
+            dbContext.SurveyQuestions.Update(dbModel);
             var result = await dbContext.SaveChangesAsync() > 0;
             await transaction.CommitAsync();
             return result;
@@ -71,9 +78,9 @@ public class SurveyQuestionsStorage : ISurveyQuestionsStorage
         await using var transaction = await dbContext.Database.BeginTransactionAsync();
         try
         {
-            var question = await dbContext.Questions.FindAsync(id);
+            var question = await dbContext.SurveyQuestions.FindAsync(id);
             if (question == null) return true;
-            dbContext.Questions.Remove(question);
+            dbContext.SurveyQuestions.Remove(question);
             var result = await dbContext.SaveChangesAsync() > 0;
             await transaction.CommitAsync();
             return result;
@@ -83,12 +90,5 @@ public class SurveyQuestionsStorage : ISurveyQuestionsStorage
             await transaction.RollbackAsync();
             return false;
         }
-    }
-
-    public async Task<IList<AppQuestion>> GetAll()
-    {
-        return await dbContext.Questions
-            .Select(q => mapper.Map<AppQuestion>(q))
-            .ToListAsync();
     }
 }

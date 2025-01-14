@@ -161,7 +161,7 @@ public class DataSeeder
                 },
                 new SurveyAnswer()
                 {
-                    Id = 1,
+                    Id = 4,
                     QuestionId = 4,
                     SurveyId = 2,
                     QuestionsMask = "0;0;0;1;0;0;0"
@@ -347,35 +347,35 @@ public class DataSeeder
                 },
                 new SurveyFlower()
                 {
-                    Id = 1,
+                    Id = 2,
                     FlowerId = 1,
                     SurveyQuestionId = 2,
                     RelevantVariantsProbabilities = "1;0.2;0"
                 },
                 new SurveyFlower()
                 {
-                    Id = 1,
+                    Id = 3,
                     FlowerId = 1,
                     SurveyQuestionId = 3,
                     RelevantVariantsProbabilities = "1;1"
                 },
                 new SurveyFlower()
                 {
-                    Id = 1,
+                    Id = 4,
                     FlowerId = 1,
                     SurveyQuestionId = 4,
                     RelevantVariantsProbabilities = "0.7;0.5;1;0.5;1;0.5;0.5"
                 },
                 new SurveyFlower()
                 {
-                    Id = 1,
+                    Id = 5,
                     FlowerId = 1,
                     SurveyQuestionId = 5,
                     RelevantVariantsProbabilities = "0.6;0.8;0.2"
                 },
                 new SurveyFlower()
                 {
-                    Id = 1,
+                    Id = 6,
                     FlowerId = 1,
                     SurveyQuestionId = 6,
                     RelevantVariantsProbabilities = "0.7;0.9;0.1"
@@ -383,387 +383,387 @@ public class DataSeeder
 
                 new SurveyFlower()
                 {
-                    Id = 2,
-                    FlowerId = 1,
+                    Id = 7,
+                    FlowerId = 2,
                     SurveyQuestionId = 1,
                     RelevantVariantsProbabilities = "0;1"
                 },
                 new SurveyFlower()
                 {
-                    Id = 2,
-                    FlowerId = 1,
+                    Id = 8,
+                    FlowerId = 2,
                     SurveyQuestionId = 2,
                     RelevantVariantsProbabilities = "1;0.2;0"
                 },
                 new SurveyFlower()
                 {
-                    Id = 2,
-                    FlowerId = 1,
+                    Id = 9,
+                    FlowerId = 2,
                     SurveyQuestionId = 3,
                     RelevantVariantsProbabilities = "0;1"
                 },
                 new SurveyFlower()
                 {
-                    Id = 2,
-                    FlowerId = 1,
+                    Id = 10,
+                    FlowerId = 2,
                     SurveyQuestionId = 4,
                     RelevantVariantsProbabilities = "0;0.5;1;0.5;1;0.5;0.5"
                 },
                 new SurveyFlower()
                 {
-                    Id = 2,
-                    FlowerId = 1,
+                    Id = 11,
+                    FlowerId = 2,
                     SurveyQuestionId = 5,
                     RelevantVariantsProbabilities = "0.3;0.7;1"
                 },
                 new SurveyFlower()
                 {
-                    Id = 2,
-                    FlowerId = 1,
+                    Id = 12,
+                    FlowerId = 2,
                     SurveyQuestionId = 6,
                     RelevantVariantsProbabilities = "0.7;0.9;0.1"
                 },
                 
                 new SurveyFlower()
                 {
-                    Id = 3,
-                    FlowerId = 1,
+                    Id = 13,
+                    FlowerId = 3,
                     SurveyQuestionId = 1,
                     RelevantVariantsProbabilities = "0;1"
                 },
                 new SurveyFlower()
                 {
-                    Id = 3,
-                    FlowerId = 1,
+                    Id = 14,
+                    FlowerId = 3,
                     SurveyQuestionId = 2,
                     RelevantVariantsProbabilities = "1;0.2;0"
                 },
                 new SurveyFlower()
                 {
-                    Id = 3,
-                    FlowerId = 1,
+                    Id = 15,
+                    FlowerId = 3,
                     SurveyQuestionId = 3,
                     RelevantVariantsProbabilities = "0;1"
                 },
                 new SurveyFlower()
                 {
-                    Id = 3,
-                    FlowerId = 1,
+                    Id = 16,
+                    FlowerId = 3,
                     SurveyQuestionId = 4,
                     RelevantVariantsProbabilities = "0;0.5;1;0.5;1;0.5;0.5"
                 },
                 new SurveyFlower()
                 {
-                    Id = 3,
-                    FlowerId = 1,
+                    Id = 17,
+                    FlowerId = 3,
                     SurveyQuestionId = 5,
                     RelevantVariantsProbabilities = "0.5;1;0.2"
                 },
                 new SurveyFlower()
                 {
-                    Id = 3,
-                    FlowerId = 1,
+                    Id = 18,
+                    FlowerId = 3,
                     SurveyQuestionId = 6,
                     RelevantVariantsProbabilities = "0.3;0.9;0.2"
                 },
                 
                 new SurveyFlower()
                 {
-                    Id = 4,
-                    FlowerId = 1,
+                    Id = 19,
+                    FlowerId = 4,
                     SurveyQuestionId = 1,
                     RelevantVariantsProbabilities = "1;1"
                 },
                 new SurveyFlower()
                 {
-                    Id = 4,
-                    FlowerId = 1,
+                    Id = 20,
+                    FlowerId = 4,
                     SurveyQuestionId = 2,
                     RelevantVariantsProbabilities = "1;0.2;0"
                 },
                 new SurveyFlower()
                 {
-                    Id = 4,
-                    FlowerId = 1,
+                    Id = 21,
+                    FlowerId = 4,
                     SurveyQuestionId = 3,
                     RelevantVariantsProbabilities = "1;1"
                 },
                 new SurveyFlower()
                 {
-                    Id = 4,
-                    FlowerId = 1,
+                    Id = 22,
+                    FlowerId = 4,
                     SurveyQuestionId = 4,
                     RelevantVariantsProbabilities = "0.7;0.5;1;0.5;1;0.5;0.5"
                 },
                 new SurveyFlower()
                 {
-                    Id = 4,
-                    FlowerId = 1,
+                    Id = 23,
+                    FlowerId = 4,
                     SurveyQuestionId = 5,
                     RelevantVariantsProbabilities = "1;0.3;0"
                 },
                 new SurveyFlower()
                 {
-                    Id = 4,
-                    FlowerId = 1,
+                    Id = 24,
+                    FlowerId = 4,
                     SurveyQuestionId = 6,
                     RelevantVariantsProbabilities = "1;0.5;0"
                 },
 
                 new SurveyFlower()
                 {
-                    Id = 5,
-                    FlowerId = 1,
+                    Id = 25,
+                    FlowerId = 5,
                     SurveyQuestionId = 1,
                     RelevantVariantsProbabilities = "1;1"
                 },
                 new SurveyFlower()
                 {
-                    Id = 5,
-                    FlowerId = 1,
+                    Id = 26,
+                    FlowerId = 5,
                     SurveyQuestionId = 2,
                     RelevantVariantsProbabilities = "0;0.7;1"
                 },
                 new SurveyFlower()
                 {
-                    Id = 5,
-                    FlowerId = 1,
+                    Id = 27,
+                    FlowerId = 5,
                     SurveyQuestionId = 3,
                     RelevantVariantsProbabilities = "1;1"
                 },
                 new SurveyFlower()
                 {
-                    Id = 5,
-                    FlowerId = 1,
+                    Id = 28,
+                    FlowerId = 5,
                     SurveyQuestionId = 4,
                     RelevantVariantsProbabilities = "0.7;0.5;1;0.5;1;0.5;0.5"
                 },
                 new SurveyFlower()
                 {
-                    Id = 5,
-                    FlowerId = 1,
+                    Id = 29,
+                    FlowerId = 5,
                     SurveyQuestionId = 5,
                     RelevantVariantsProbabilities = "0.2;1;0.7"
                 },
                 new SurveyFlower()
                 {
-                    Id = 5,
-                    FlowerId = 1,
+                    Id = 30,
+                    FlowerId = 5,
                     SurveyQuestionId = 6,
                     RelevantVariantsProbabilities = "0.1;0.6;0.8"
                 },
                 
                 new SurveyFlower()
                 {
-                    Id = 6,
-                    FlowerId = 1,
+                    Id = 31,
+                    FlowerId = 6,
                     SurveyQuestionId = 1,
                     RelevantVariantsProbabilities = "0;1"
                 },
                 new SurveyFlower()
                 {
-                    Id = 6,
-                    FlowerId = 1,
+                    Id = 32,
+                    FlowerId = 6,
                     SurveyQuestionId = 2,
                     RelevantVariantsProbabilities = "1;0.2;0"
                 },
                 new SurveyFlower()
                 {
-                    Id = 6,
-                    FlowerId = 1,
+                    Id = 33,
+                    FlowerId = 6,
                     SurveyQuestionId = 3,
                     RelevantVariantsProbabilities = "0;1"
                 },
                 new SurveyFlower()
                 {
-                    Id = 6,
-                    FlowerId = 1,
+                    Id = 34,
+                    FlowerId = 6,
                     SurveyQuestionId = 4,
                     RelevantVariantsProbabilities = "0.7;0.5;1;0.5;1;0.5;0.5"
                 },
                 new SurveyFlower()
                 {
-                    Id = 6,
-                    FlowerId = 1,
+                    Id = 35,
+                    FlowerId = 6,
                     SurveyQuestionId = 5,
                     RelevantVariantsProbabilities = "0.5;1;0.2"
                 },
                 new SurveyFlower()
                 {
-                    Id = 6,
-                    FlowerId = 1,
+                    Id = 36,
+                    FlowerId = 6,
                     SurveyQuestionId = 6,
                     RelevantVariantsProbabilities = "0.3;0.9;0.2"
                 },
                 
                 new SurveyFlower()
                 {
-                    Id = 7,
-                    FlowerId = 1,
+                    Id = 37,
+                    FlowerId = 7,
                     SurveyQuestionId = 1,
                     RelevantVariantsProbabilities = "0;1"
                 },
                 new SurveyFlower()
                 {
-                    Id = 7,
-                    FlowerId = 1,
+                    Id = 38,
+                    FlowerId = 7,
                     SurveyQuestionId = 2,
                     RelevantVariantsProbabilities = "0.3;1;0.2"
                 },
                 new SurveyFlower()
                 {
-                    Id = 7,
-                    FlowerId = 1,
+                    Id = 39,
+                    FlowerId = 7,
                     SurveyQuestionId = 3,
                     RelevantVariantsProbabilities = "0;1"
                 },
                 new SurveyFlower()
                 {
-                    Id = 7,
-                    FlowerId = 1,
+                    Id = 40,
+                    FlowerId = 7,
                     SurveyQuestionId = 4,
                     RelevantVariantsProbabilities = "0.7;0.5;1;0.5;1;0.5;0.5"
                 },
                 new SurveyFlower()
                 {
-                    Id = 7,
-                    FlowerId = 1,
+                    Id = 41,
+                    FlowerId = 7,
                     SurveyQuestionId = 5,
                     RelevantVariantsProbabilities = "0.7;1;0.1"
                 },
                 new SurveyFlower()
                 {
-                    Id = 7,
-                    FlowerId = 1,
+                    Id = 42,
+                    FlowerId = 7,
                     SurveyQuestionId = 6,
                     RelevantVariantsProbabilities = "0.3;0.9;0.2"
                 },
                 
                 new SurveyFlower()
                 {
-                    Id = 8,
-                    FlowerId = 1,
+                    Id = 43,
+                    FlowerId = 8,
                     SurveyQuestionId = 1,
                     RelevantVariantsProbabilities = "0;1"
                 },
                 new SurveyFlower()
                 {
-                    Id = 8,
-                    FlowerId = 1,
+                    Id = 44,
+                    FlowerId = 8,
                     SurveyQuestionId = 2,
                     RelevantVariantsProbabilities = "0.3;1;0.2"
                 },
                 new SurveyFlower()
                 {
-                    Id = 8,
-                    FlowerId = 1,
+                    Id = 45,
+                    FlowerId = 8,
                     SurveyQuestionId = 3,
                     RelevantVariantsProbabilities = "0;1"
                 },
                 new SurveyFlower()
                 {
-                    Id = 8,
-                    FlowerId = 1,
+                    Id = 46,
+                    FlowerId = 8,
                     SurveyQuestionId = 4,
                     RelevantVariantsProbabilities = "0.7;0.5;1;0.5;1;0.5;0.5"
                 },
                 new SurveyFlower()
                 {
-                    Id = 8,
-                    FlowerId = 1,
+                    Id = 47,
+                    FlowerId = 8,
                     SurveyQuestionId = 5,
                     RelevantVariantsProbabilities = "0.7;1;0.1"
                 },
                 new SurveyFlower()
                 {
-                    Id = 8,
-                    FlowerId = 1,
+                    Id = 48,
+                    FlowerId = 8,
                     SurveyQuestionId = 6,
                     RelevantVariantsProbabilities = "1;0.5;0"
                 },
                 
                 new SurveyFlower()
                 {
-                    Id = 9,
-                    FlowerId = 1,
+                    Id = 49,
+                    FlowerId = 9,
                     SurveyQuestionId = 1,
                     RelevantVariantsProbabilities = "1;1"
                 },
                 new SurveyFlower()
                 {
-                    Id = 9,
-                    FlowerId = 1,
+                    Id = 50,
+                    FlowerId = 9,
                     SurveyQuestionId = 2,
                     RelevantVariantsProbabilities = "0.3;1;0.2"
                 },
                 new SurveyFlower()
                 {
-                    Id = 9,
-                    FlowerId = 1,
+                    Id = 51,
+                    FlowerId = 9,
                     SurveyQuestionId = 3,
                     RelevantVariantsProbabilities = "1;1"
                 },
                 new SurveyFlower()
                 {
-                    Id = 9,
-                    FlowerId = 1,
+                    Id = 52,
+                    FlowerId = 9,
                     SurveyQuestionId = 4,
                     RelevantVariantsProbabilities = "0.7;0.5;1;0.5;1;0.5;0.5"
                 },
                 new SurveyFlower()
                 {
-                    Id = 9,
-                    FlowerId = 1,
+                    Id = 53,
+                    FlowerId = 9,
                     SurveyQuestionId = 5,
                     RelevantVariantsProbabilities = "1;0.4;0"
                 },
                 new SurveyFlower()
                 {
-                    Id = 9,
-                    FlowerId = 1,
+                    Id = 54,
+                    FlowerId = 9,
                     SurveyQuestionId = 6,
                     RelevantVariantsProbabilities = "0;0.3;0.9"
                 },
                 
                 new SurveyFlower()
                 {
-                    Id = 10,
-                    FlowerId = 1,
+                    Id = 55,
+                    FlowerId = 10,
                     SurveyQuestionId = 1,
                     RelevantVariantsProbabilities = "1;1"
                 },
                 new SurveyFlower()
                 {
-                    Id = 10,
-                    FlowerId = 1,
+                    Id = 56,
+                    FlowerId = 10,
                     SurveyQuestionId = 2,
                     RelevantVariantsProbabilities = "0;0.7;1"
                 },
                 new SurveyFlower()
                 {
-                    Id = 10,
-                    FlowerId = 1,
+                    Id = 57,
+                    FlowerId = 10,
                     SurveyQuestionId = 3,
                     RelevantVariantsProbabilities = "0;1"
                 },
                 new SurveyFlower()
                 {
-                    Id = 10,
-                    FlowerId = 1,
+                    Id = 58,
+                    FlowerId = 10,
                     SurveyQuestionId = 4,
                     RelevantVariantsProbabilities = "0.7;0.5;1;0.5;1;0.5;0.5"
                 },
                 new SurveyFlower()
                 {
-                    Id = 10,
-                    FlowerId = 1,
+                    Id = 59,
+                    FlowerId = 10,
                     SurveyQuestionId = 5,
                     RelevantVariantsProbabilities = "1;0.4;0"
                 },
                 new SurveyFlower()
                 {
-                    Id = 10,
-                    FlowerId = 1,
+                    Id = 60,
+                    FlowerId = 10,
                     SurveyQuestionId = 6,
                     RelevantVariantsProbabilities = "0;0.2;0.9"
                 }

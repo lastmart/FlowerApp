@@ -85,7 +85,7 @@ public class DataSeeder
                     Text = "Есть ли у вас домашние животные?",
                     Variants = string.Join(";", new List<string> { "Да", "Нет" }),
                     QuestionType = QuestionType.SingleAnswer
-                },,
+                },
                 new()
                 {
                     Id = 4,
@@ -336,49 +336,49 @@ public class DataSeeder
 
         if (!context.SurveyFlowers.Any())
         {
-            var surveyFlowers = new List<SurveyFlowers>()
+            var surveyFlowers = new List<SurveyFlower>()
             {
                 new SurveyFlower()
                 {
                     Id = 1,
                     FlowerId = 1,
                     SurveyQuestionId = 1,
-                    RelevantVariantsProbabilities = "1;1";
+                    RelevantVariantsProbabilities = "1;1"
                 },
                 new SurveyFlower()
                 {
                     Id = 1,
                     FlowerId = 1,
                     SurveyQuestionId = 2,
-                    RelevantVariantsProbabilities = "1;0.2;0";
+                    RelevantVariantsProbabilities = "1;0.2;0"
                 },
                 new SurveyFlower()
                 {
                     Id = 1,
                     FlowerId = 1,
                     SurveyQuestionId = 3,
-                    RelevantVariantsProbabilities = "1;1";
+                    RelevantVariantsProbabilities = "1;1"
                 },
                 new SurveyFlower()
                 {
                     Id = 1,
                     FlowerId = 1,
                     SurveyQuestionId = 4,
-                    RelevantVariantsProbabilities = "0.7;0.5;1;0.5;1;0.5;0.5";
+                    RelevantVariantsProbabilities = "0.7;0.5;1;0.5;1;0.5;0.5"
                 },
                 new SurveyFlower()
                 {
                     Id = 1,
                     FlowerId = 1,
                     SurveyQuestionId = 5,
-                    RelevantVariantsProbabilities = "0.6;0.8;0.2";
+                    RelevantVariantsProbabilities = "0.6;0.8;0.2"
                 },
                 new SurveyFlower()
                 {
                     Id = 1,
                     FlowerId = 1,
                     SurveyQuestionId = 6,
-                    RelevantVariantsProbabilities = "0.7;0.9;0.1";
+                    RelevantVariantsProbabilities = "0.7;0.9;0.1"
                 },
 
                 new SurveyFlower()
@@ -386,42 +386,42 @@ public class DataSeeder
                     Id = 2,
                     FlowerId = 1,
                     SurveyQuestionId = 1,
-                    RelevantVariantsProbabilities = "0;1";
+                    RelevantVariantsProbabilities = "0;1"
                 },
                 new SurveyFlower()
                 {
                     Id = 2,
                     FlowerId = 1,
                     SurveyQuestionId = 2,
-                    RelevantVariantsProbabilities = "1;0.2;0";
+                    RelevantVariantsProbabilities = "1;0.2;0"
                 },
                 new SurveyFlower()
                 {
                     Id = 2,
                     FlowerId = 1,
                     SurveyQuestionId = 3,
-                    RelevantVariantsProbabilities = "0;1";
+                    RelevantVariantsProbabilities = "0;1"
                 },
                 new SurveyFlower()
                 {
                     Id = 2,
                     FlowerId = 1,
                     SurveyQuestionId = 4,
-                    RelevantVariantsProbabilities = "0;0.5;1;0.5;1;0.5;0.5";
+                    RelevantVariantsProbabilities = "0;0.5;1;0.5;1;0.5;0.5"
                 },
                 new SurveyFlower()
                 {
                     Id = 2,
                     FlowerId = 1,
                     SurveyQuestionId = 5,
-                    RelevantVariantsProbabilities = "0.3;0.7;1";
+                    RelevantVariantsProbabilities = "0.3;0.7;1"
                 },
                 new SurveyFlower()
                 {
                     Id = 2,
                     FlowerId = 1,
                     SurveyQuestionId = 6,
-                    RelevantVariantsProbabilities = "0.7;0.9;0.1";
+                    RelevantVariantsProbabilities = "0.7;0.9;0.1"
                 },
                 
                 new SurveyFlower()
@@ -429,42 +429,42 @@ public class DataSeeder
                     Id = 3,
                     FlowerId = 1,
                     SurveyQuestionId = 1,
-                    RelevantVariantsProbabilities = "0;1";
+                    RelevantVariantsProbabilities = "0;1"
                 },
                 new SurveyFlower()
                 {
                     Id = 3,
                     FlowerId = 1,
                     SurveyQuestionId = 2,
-                    RelevantVariantsProbabilities = "1;0.2;0";
+                    RelevantVariantsProbabilities = "1;0.2;0"
                 },
                 new SurveyFlower()
                 {
                     Id = 3,
                     FlowerId = 1,
                     SurveyQuestionId = 3,
-                    RelevantVariantsProbabilities = "0;1";
+                    RelevantVariantsProbabilities = "0;1"
                 },
                 new SurveyFlower()
                 {
                     Id = 3,
                     FlowerId = 1,
                     SurveyQuestionId = 4,
-                    RelevantVariantsProbabilities = "0;0.5;1;0.5;1;0.5;0.5";
+                    RelevantVariantsProbabilities = "0;0.5;1;0.5;1;0.5;0.5"
                 },
                 new SurveyFlower()
                 {
                     Id = 3,
                     FlowerId = 1,
                     SurveyQuestionId = 5,
-                    RelevantVariantsProbabilities = "0.5;1;0.2";
+                    RelevantVariantsProbabilities = "0.5;1;0.2"
                 },
                 new SurveyFlower()
                 {
                     Id = 3,
                     FlowerId = 1,
                     SurveyQuestionId = 6,
-                    RelevantVariantsProbabilities = "0.3;0.9;0.2";
+                    RelevantVariantsProbabilities = "0.3;0.9;0.2"
                 },
                 
                 new SurveyFlower()
@@ -472,42 +472,42 @@ public class DataSeeder
                     Id = 4,
                     FlowerId = 1,
                     SurveyQuestionId = 1,
-                    RelevantVariantsProbabilities = "1;1";
+                    RelevantVariantsProbabilities = "1;1"
                 },
                 new SurveyFlower()
                 {
                     Id = 4,
                     FlowerId = 1,
                     SurveyQuestionId = 2,
-                    RelevantVariantsProbabilities = "1;0.2;0";
+                    RelevantVariantsProbabilities = "1;0.2;0"
                 },
                 new SurveyFlower()
                 {
                     Id = 4,
                     FlowerId = 1,
                     SurveyQuestionId = 3,
-                    RelevantVariantsProbabilities = "1;1";
+                    RelevantVariantsProbabilities = "1;1"
                 },
                 new SurveyFlower()
                 {
                     Id = 4,
                     FlowerId = 1,
                     SurveyQuestionId = 4,
-                    RelevantVariantsProbabilities = "0.7;0.5;1;0.5;1;0.5;0.5";
+                    RelevantVariantsProbabilities = "0.7;0.5;1;0.5;1;0.5;0.5"
                 },
                 new SurveyFlower()
                 {
                     Id = 4,
                     FlowerId = 1,
                     SurveyQuestionId = 5,
-                    RelevantVariantsProbabilities = "1;0.3;0";
+                    RelevantVariantsProbabilities = "1;0.3;0"
                 },
                 new SurveyFlower()
                 {
                     Id = 4,
                     FlowerId = 1,
                     SurveyQuestionId = 6,
-                    RelevantVariantsProbabilities = "1;0.5;0";
+                    RelevantVariantsProbabilities = "1;0.5;0"
                 },
 
                 new SurveyFlower()
@@ -515,42 +515,42 @@ public class DataSeeder
                     Id = 5,
                     FlowerId = 1,
                     SurveyQuestionId = 1,
-                    RelevantVariantsProbabilities = "1;1";
+                    RelevantVariantsProbabilities = "1;1"
                 },
                 new SurveyFlower()
                 {
                     Id = 5,
                     FlowerId = 1,
                     SurveyQuestionId = 2,
-                    RelevantVariantsProbabilities = "0;0.7;1";
+                    RelevantVariantsProbabilities = "0;0.7;1"
                 },
                 new SurveyFlower()
                 {
                     Id = 5,
                     FlowerId = 1,
                     SurveyQuestionId = 3,
-                    RelevantVariantsProbabilities = "1;1";
+                    RelevantVariantsProbabilities = "1;1"
                 },
                 new SurveyFlower()
                 {
                     Id = 5,
                     FlowerId = 1,
                     SurveyQuestionId = 4,
-                    RelevantVariantsProbabilities = "0.7;0.5;1;0.5;1;0.5;0.5";
+                    RelevantVariantsProbabilities = "0.7;0.5;1;0.5;1;0.5;0.5"
                 },
                 new SurveyFlower()
                 {
                     Id = 5,
                     FlowerId = 1,
                     SurveyQuestionId = 5,
-                    RelevantVariantsProbabilities = "0.2;1;0.7";
+                    RelevantVariantsProbabilities = "0.2;1;0.7"
                 },
                 new SurveyFlower()
                 {
                     Id = 5,
                     FlowerId = 1,
                     SurveyQuestionId = 6,
-                    RelevantVariantsProbabilities = "0.1;0.6;0.8";
+                    RelevantVariantsProbabilities = "0.1;0.6;0.8"
                 },
                 
                 new SurveyFlower()
@@ -558,42 +558,42 @@ public class DataSeeder
                     Id = 6,
                     FlowerId = 1,
                     SurveyQuestionId = 1,
-                    RelevantVariantsProbabilities = "0;1";
+                    RelevantVariantsProbabilities = "0;1"
                 },
                 new SurveyFlower()
                 {
                     Id = 6,
                     FlowerId = 1,
                     SurveyQuestionId = 2,
-                    RelevantVariantsProbabilities = "1;0.2;0";
+                    RelevantVariantsProbabilities = "1;0.2;0"
                 },
                 new SurveyFlower()
                 {
                     Id = 6,
                     FlowerId = 1,
                     SurveyQuestionId = 3,
-                    RelevantVariantsProbabilities = "0;1";
+                    RelevantVariantsProbabilities = "0;1"
                 },
                 new SurveyFlower()
                 {
                     Id = 6,
                     FlowerId = 1,
                     SurveyQuestionId = 4,
-                    RelevantVariantsProbabilities = "0.7;0.5;1;0.5;1;0.5;0.5";
+                    RelevantVariantsProbabilities = "0.7;0.5;1;0.5;1;0.5;0.5"
                 },
                 new SurveyFlower()
                 {
                     Id = 6,
                     FlowerId = 1,
                     SurveyQuestionId = 5,
-                    RelevantVariantsProbabilities = "0.5;1;0.2";
+                    RelevantVariantsProbabilities = "0.5;1;0.2"
                 },
                 new SurveyFlower()
                 {
                     Id = 6,
                     FlowerId = 1,
                     SurveyQuestionId = 6,
-                    RelevantVariantsProbabilities = "0.3;0.9;0.2";
+                    RelevantVariantsProbabilities = "0.3;0.9;0.2"
                 },
                 
                 new SurveyFlower()
@@ -601,42 +601,42 @@ public class DataSeeder
                     Id = 7,
                     FlowerId = 1,
                     SurveyQuestionId = 1,
-                    RelevantVariantsProbabilities = "0;1";
+                    RelevantVariantsProbabilities = "0;1"
                 },
                 new SurveyFlower()
                 {
                     Id = 7,
                     FlowerId = 1,
                     SurveyQuestionId = 2,
-                    RelevantVariantsProbabilities = "0.3;1;0.2";
+                    RelevantVariantsProbabilities = "0.3;1;0.2"
                 },
                 new SurveyFlower()
                 {
                     Id = 7,
                     FlowerId = 1,
                     SurveyQuestionId = 3,
-                    RelevantVariantsProbabilities = "0;1";
+                    RelevantVariantsProbabilities = "0;1"
                 },
                 new SurveyFlower()
                 {
                     Id = 7,
                     FlowerId = 1,
                     SurveyQuestionId = 4,
-                    RelevantVariantsProbabilities = "0.7;0.5;1;0.5;1;0.5;0.5";
+                    RelevantVariantsProbabilities = "0.7;0.5;1;0.5;1;0.5;0.5"
                 },
                 new SurveyFlower()
                 {
                     Id = 7,
                     FlowerId = 1,
                     SurveyQuestionId = 5,
-                    RelevantVariantsProbabilities = "0.7;1;0.1";
+                    RelevantVariantsProbabilities = "0.7;1;0.1"
                 },
                 new SurveyFlower()
                 {
                     Id = 7,
                     FlowerId = 1,
                     SurveyQuestionId = 6,
-                    RelevantVariantsProbabilities = "0.3;0.9;0.2";
+                    RelevantVariantsProbabilities = "0.3;0.9;0.2"
                 },
                 
                 new SurveyFlower()
@@ -644,42 +644,42 @@ public class DataSeeder
                     Id = 8,
                     FlowerId = 1,
                     SurveyQuestionId = 1,
-                    RelevantVariantsProbabilities = "0;1";
+                    RelevantVariantsProbabilities = "0;1"
                 },
                 new SurveyFlower()
                 {
                     Id = 8,
                     FlowerId = 1,
                     SurveyQuestionId = 2,
-                    RelevantVariantsProbabilities = "0.3;1;0.2";
+                    RelevantVariantsProbabilities = "0.3;1;0.2"
                 },
                 new SurveyFlower()
                 {
                     Id = 8,
                     FlowerId = 1,
                     SurveyQuestionId = 3,
-                    RelevantVariantsProbabilities = "0;1";
+                    RelevantVariantsProbabilities = "0;1"
                 },
                 new SurveyFlower()
                 {
                     Id = 8,
                     FlowerId = 1,
                     SurveyQuestionId = 4,
-                    RelevantVariantsProbabilities = "0.7;0.5;1;0.5;1;0.5;0.5";
+                    RelevantVariantsProbabilities = "0.7;0.5;1;0.5;1;0.5;0.5"
                 },
                 new SurveyFlower()
                 {
                     Id = 8,
                     FlowerId = 1,
                     SurveyQuestionId = 5,
-                    RelevantVariantsProbabilities = "0.7;1;0.1";
+                    RelevantVariantsProbabilities = "0.7;1;0.1"
                 },
                 new SurveyFlower()
                 {
                     Id = 8,
                     FlowerId = 1,
                     SurveyQuestionId = 6,
-                    RelevantVariantsProbabilities = "1;0.5;0";
+                    RelevantVariantsProbabilities = "1;0.5;0"
                 },
                 
                 new SurveyFlower()
@@ -687,42 +687,42 @@ public class DataSeeder
                     Id = 9,
                     FlowerId = 1,
                     SurveyQuestionId = 1,
-                    RelevantVariantsProbabilities = "1;1";
+                    RelevantVariantsProbabilities = "1;1"
                 },
                 new SurveyFlower()
                 {
                     Id = 9,
                     FlowerId = 1,
                     SurveyQuestionId = 2,
-                    RelevantVariantsProbabilities = "0.3;1;0.2";
+                    RelevantVariantsProbabilities = "0.3;1;0.2"
                 },
                 new SurveyFlower()
                 {
                     Id = 9,
                     FlowerId = 1,
                     SurveyQuestionId = 3,
-                    RelevantVariantsProbabilities = "1;1";
+                    RelevantVariantsProbabilities = "1;1"
                 },
                 new SurveyFlower()
                 {
                     Id = 9,
                     FlowerId = 1,
                     SurveyQuestionId = 4,
-                    RelevantVariantsProbabilities = "0.7;0.5;1;0.5;1;0.5;0.5";
+                    RelevantVariantsProbabilities = "0.7;0.5;1;0.5;1;0.5;0.5"
                 },
                 new SurveyFlower()
                 {
                     Id = 9,
                     FlowerId = 1,
                     SurveyQuestionId = 5,
-                    RelevantVariantsProbabilities = "1;0.4;0";
+                    RelevantVariantsProbabilities = "1;0.4;0"
                 },
                 new SurveyFlower()
                 {
                     Id = 9,
                     FlowerId = 1,
                     SurveyQuestionId = 6,
-                    RelevantVariantsProbabilities = "0;0.3;0.9";
+                    RelevantVariantsProbabilities = "0;0.3;0.9"
                 },
                 
                 new SurveyFlower()
@@ -730,42 +730,42 @@ public class DataSeeder
                     Id = 10,
                     FlowerId = 1,
                     SurveyQuestionId = 1,
-                    RelevantVariantsProbabilities = "1;1";
+                    RelevantVariantsProbabilities = "1;1"
                 },
                 new SurveyFlower()
                 {
                     Id = 10,
                     FlowerId = 1,
                     SurveyQuestionId = 2,
-                    RelevantVariantsProbabilities = "0;0.7;1";
+                    RelevantVariantsProbabilities = "0;0.7;1"
                 },
                 new SurveyFlower()
                 {
                     Id = 10,
                     FlowerId = 1,
                     SurveyQuestionId = 3,
-                    RelevantVariantsProbabilities = "0;1";
+                    RelevantVariantsProbabilities = "0;1"
                 },
                 new SurveyFlower()
                 {
                     Id = 10,
                     FlowerId = 1,
                     SurveyQuestionId = 4,
-                    RelevantVariantsProbabilities = "0.7;0.5;1;0.5;1;0.5;0.5";
+                    RelevantVariantsProbabilities = "0.7;0.5;1;0.5;1;0.5;0.5"
                 },
                 new SurveyFlower()
                 {
                     Id = 10,
                     FlowerId = 1,
                     SurveyQuestionId = 5,
-                    RelevantVariantsProbabilities = "1;0.4;0";
+                    RelevantVariantsProbabilities = "1;0.4;0"
                 },
                 new SurveyFlower()
                 {
                     Id = 10,
                     FlowerId = 1,
                     SurveyQuestionId = 6,
-                    RelevantVariantsProbabilities = "0;0.2;0.9";
+                    RelevantVariantsProbabilities = "0;0.2;0.9"
                 }
             };
             

@@ -15,6 +15,14 @@ jobs:
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
 
+    - name: Replace secrets in appsettings.json
+      run: |
+        sed -i "s|\"GoogleClientId\": \"\"|\"GoogleClientId\": \"${{ secrets.GOOGLECLIENTID }}\"|g" ./FlowerApp.Service/appsettings.json
+        sed -i "s|\"GoogleClientSecret\": \"\"|\"GoogleClientSecret\": \"${{ secrets.GOOGLECLIENTSECRET }}\"|g" ./FlowerApp.Service/appsettings.json
+
+    - name: Print appsettings.json
+      run: cat FlowerApp.Service/appsettings.json
+
     - name: Build Docker image
       run: docker build -t flowerapp-service -f ./FlowerApp.Service/Dockerfile .
     
@@ -61,4 +69,4 @@ jobs:
           if [ "$(docker ps -a -q -f name=flowerapp-container)" ]; then
             docker rm flowerapp-container
           fi
-          docker run -d -p 8888:80 --name flowerapp-container -e DefaultConnection="${{ secrets.DefaultConnection }}" flowerapp-service
+          docker run -d -p 8888:80 --name flowerapp-container -e DefaultConnection="${{ secrets.DefaultConnection }}" -e GoogleClientId="${{ secrets.GOOGLECLIENTID }}" -e GoogleClientSecret="${{ secrets.GOOGLECLIENTSECRET }}" flowerapp-service

@@ -82,10 +82,12 @@ public class GoogleAuthService : IGoogleAuthService
 
     private async Task<AuthTokens> GetUserAuthTokens(string authCode)
     {
+        var clientId = Environment.GetEnvironmentVariable("GoogleClientId") ?? apiSecretSettings.GoogleClientId;
+        var clientSecret = Environment.GetEnvironmentVariable("GoogleClientSecret") ?? apiSecretSettings.GoogleClientSecret;
         var tokenRequest = new AuthorizationCodeTokenRequest
         {
-            ClientId = apiSecretSettings.GoogleClientId,
-            ClientSecret = apiSecretSettings.GoogleClientSecret,
+            ClientId = clientId,
+            ClientSecret = clientSecret,
             Code = authCode,
             RedirectUri = apiSettings.RedirectedUrl
         };

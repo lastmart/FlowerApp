@@ -3,7 +3,7 @@
 public record Trade
 {
     public int Id { get; set; }
-    public int UserIdentifier { get; set; }
+    public int UserId { get; set; }
     public string FlowerName { get; set; }
     public string PreferredTrade { get; set; }
     public string Location { get; set; }

@@ -32,13 +32,13 @@ public class TradeStorage : ITradeStorage
             .ToListAsync();
     }
 
-    public async Task<IEnumerable<AppTrade>> GetOtherUsersTrades(
+    public async Task<IList<AppTrade>> GetOtherUsersTrades(
         Pagination pagination, 
         string? location, 
-        int? userId)
+        int? excludeUserId)
     {
         var query = dbContext.Trades
-            .Where(t => t.IsActive && t.UserId != userId);
+            .Where(t => t.IsActive && t.UserId != excludeUserId);
 
         if (!string.IsNullOrEmpty(location))
         {
@@ -52,7 +52,7 @@ public class TradeStorage : ITradeStorage
             .ToListAsync();
     }
 
-    public async Task<IEnumerable<AppTrade>> GetUserTrades(
+    public async Task<IList<AppTrade>> GetUserTrades(
         Pagination pagination, 
         string? location, 
         int userId)

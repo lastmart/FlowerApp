@@ -1,4 +1,5 @@
 using AutoMapper;
+using FlowerApp.Domain.Models.Operation;
 using FlowerApp.DTOs.Common;
 using FlowerApp.DTOs.Response.Trades;
 using FlowerApp.Service.Services;
@@ -48,12 +49,13 @@ public class TradesController : ControllerBase
     public async Task<IActionResult> Create([FromBody] DTOTrade trade)
     {
         var result = await tradeService.Create(mapper.Map<ApplicationTrade>(trade));
-        if (!result)
+        return result switch
         {
-            return BadRequest("Failed to create trade");
-        }
-
-        return Ok();
+            OperationResult.Success => Ok(),
+            OperationResult.NotFound => NotFound("User not found"),
+            OperationResult.InvalidData => BadRequest("User must have either email or telegram specified"),
+            _ => StatusCode(500, "An unexpected error occurred")
+        };
     }
 
     /// <summary>
@@ -65,12 +67,12 @@ public class TradesController : ControllerBase
     public async Task<IActionResult> DeactivateTrade(int id)
     {
         var result = await tradeService.DeactivateTrade(id);
-        if (!result)
+        return result switch
         {
-            return NotFound("Trade not found or already deactivated");
-        }
-
-        return Ok("Trade deactivated successfully");
+            OperationResult.Success => Ok(),
+            OperationResult.NotFound => NotFound("Trade not found"),
+            _ => StatusCode(500, "An unexpected error occurred")
+        };
     }
 
     /// <summary>
@@ -83,12 +85,13 @@ public class TradesController : ControllerBase
     public async Task<IActionResult> Update([FromBody] DTOTrade trade)
     {
         var result = await tradeService.Update(mapper.Map<ApplicationTrade>(trade));
-        if (!result)
+        
+        return result switch
         {
-            return NotFound("Trade not found or update failed");
-        }
-
-        return Ok(result);
+            OperationResult.Success => Ok("Trade deactivated successfully"),
+            OperationResult.NotFound => NotFound("Trade not found"),
+            _ => StatusCode(500, "An unexpected error occurred")
+        };
     }
     
     /// <summary>

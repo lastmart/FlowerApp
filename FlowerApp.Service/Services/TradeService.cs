@@ -1,3 +1,4 @@
+using FlowerApp.Domain.Models.Operation;
 using FlowerApp.Domain.Models.TradeModels;
 using FlowerApp.DTOs.Common;
 using FlowerApp.Service.Storages;
@@ -33,41 +34,44 @@ public class TradeService : ITradeService
             return new GetTradesResponse(trades.Count, trades);
         }
         
-        public async Task<bool> Create(Trade trade)
+        public async Task<OperationResult> Create(Trade trade)
         {
-            var user = await userStorage.Get(trade.UserIdentifier);
+            var user = await userStorage.Get(trade.UserId);
             if (user == null)
             {
-                throw new InvalidOperationException("User not found");
+                return OperationResult.NotFound;
             }
             
             if (string.IsNullOrEmpty(user.Email) && string.IsNullOrEmpty(user.Telegram))
             {
-                throw new InvalidOperationException("User must have either email or telegram specified");
+                return OperationResult.InvalidData;
             }
 
-            return await tradeStorage.Create(trade);
+            var isSuccess = await tradeStorage.Create(trade);
+            return isSuccess ? OperationResult.Success : OperationResult.Conflict;
         }
         
-        public async Task<bool> Update(Trade trade)
+        public async Task<OperationResult> Update(Trade trade)
         {
             var dbTrade = await tradeStorage.Get(trade.Id);
             if (dbTrade == null)
             {
-                return false;
+                return OperationResult.NotFound;
             }
             
-            return await tradeStorage.Update(trade);
+            var isSuccess = await tradeStorage.Update(trade);
+            return isSuccess ? OperationResult.Success : OperationResult.Conflict;
         }
         
-        public async Task<bool> DeactivateTrade(int id)
+        public async Task<OperationResult> DeactivateTrade(int id)
         {
             var trade = await tradeStorage.Get(id);
             if (trade == null)
             {
-                return false;
+                return OperationResult.NotFound;
             }
             
-            return await tradeStorage.DeactivateTrade(id);
+            var isSuccess = await tradeStorage.DeactivateTrade(id);
+            return isSuccess ? OperationResult.Success : OperationResult.Conflict;
         }
     }

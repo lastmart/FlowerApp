@@ -94,4 +94,10 @@ public class TradeService : ITradeService
             var isSuccess = await tradeStorage.DeactivateTrade(id);
             return isSuccess ? OperationResult.Success : OperationResult.Conflict;
         }
+        
+        public async Task<TradeResponse> GetAllTrades(Pagination pagination, string? location = null)
+        {
+            var trades = (await tradeStorage.GetAllTrades(pagination, location)).ToList();
+            return new TradeResponse(OperationResult.Success, "Trades fetched successfully", new GetTradesResponse(trades.Count, trades));
+        }
     }

@@ -1,5 +1,6 @@
 using FlowerApp.Domain.Models.Operation;
 using FlowerApp.Domain.Models.TradeModels;
+using FlowerApp.Domain.Models.UserModels;
 using FlowerApp.DTOs.Common;
 
 namespace FlowerApp.Service.Services;
@@ -12,4 +13,5 @@ public interface ITradeService
     Task<OperationResult> Create(Trade trade);
     Task<OperationResult> Update(Trade trade);
     Task<OperationResult> DeactivateTrade(int id);
+    Task<TradeResponse> GetAllTrades(Pagination pagination, string? location = null);
 }

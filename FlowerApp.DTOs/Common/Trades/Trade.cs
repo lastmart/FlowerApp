@@ -1,9 +1,10 @@
-﻿namespace FlowerApp.DTOs.Common.Trades;
+﻿using FlowerApp.DTOs.Common.Users;
+
+namespace FlowerApp.DTOs.Common.Trades;
 
 public record Trade
 {
     public int Id { get; set; }
-    public string UserId { get; set; }
     public string FlowerName { get; set; }
     public string PreferredTrade { get; set; }
     public string Location { get; set; }

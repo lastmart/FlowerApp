@@ -151,4 +151,21 @@ public class TradeStorage : ITradeStorage
             return false;
         }
     }
+    
+    public async Task<IList<AppTrade>> GetAllTrades(Pagination pagination, string? location = null)
+    {
+        var query = dbContext.Trades
+            .Where(t => t.IsActive);
+        
+        if (!string.IsNullOrEmpty(location))
+        {
+            query = query.Where(t => t.Location.Contains(location));
+        }
+
+        return await query
+            .Skip(pagination.Skip)
+            .Take(pagination.Take)
+            .Select(trade => mapper.Map<AppTrade>(trade))
+            .ToListAsync();
+    }
 }

@@ -1,4 +1,4 @@
-﻿namespace FlowerApp.Domain.Models.RecommendationModels;
+﻿namespace FlowerApp.DTOs.Common.Surveys;
 
 public class Survey
 {

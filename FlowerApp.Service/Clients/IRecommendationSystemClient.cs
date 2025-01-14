@@ -2,5 +2,5 @@
 
 public interface IRecommendationSystemClient
 {
-    Task<List<int>> GetRecommendations(Guid userId, int take);
+    Task<List<int>> GetRecommendations(string userId, int take);
 }

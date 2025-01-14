@@ -1,6 +1,5 @@
 ﻿using System.Net.Http.Headers;
 using System.Security.Authentication;
-using System.Web;
 using FlowerApp.Domain.Models.AuthModels;
 using FlowerApp.Domain.Models.UserModels;
 using FlowerApp.Service.Configuration;

@@ -19,10 +19,6 @@ public class QuestionConfiguration : IEntityTypeConfiguration<SurveyQuestion>
             .IsRequired();
 
         builder
-            .Property(question => question.SurveyFlowerId)
-            .IsRequired();
-
-        builder
             .Property(question => question.Text)
             .IsRequired()
             .HasColumnType("varchar(300)");

@@ -21,6 +21,7 @@ public static class ServiceCollectionExtension
             .AddConfiguration<ApiSettings>()
             .AddConfiguration<ApiSecretSettings>()
             .AddScoped<IGoogleAuthService, GoogleAuthService>()
+            .AddScoped<IAuthorizationContext, AuthorizationContext>()
             // .AddScoped<IFlowersService, FlowersService>()
             // .AddScoped<IRecommendationService, RecommendationService>()
             // .AddScoped<IQuestionsStorage, QuestionsStorage>()

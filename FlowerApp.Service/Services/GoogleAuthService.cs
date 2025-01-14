@@ -60,7 +60,7 @@ public class GoogleAuthService : IGoogleAuthService
     {
         var userInfoDictionary = await GetUserInfoByAccessToken(accessToken);
         var googleUserId = userInfoDictionary[GoogleUserIdField];
-        if (await userStorage.GetByGoogleId(googleUserId) == null)
+        if (await userStorage.GetByGoogleId(googleUserId) != null)
         {
             return false;
         }

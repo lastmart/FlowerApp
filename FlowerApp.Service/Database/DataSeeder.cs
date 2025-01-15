@@ -172,7 +172,7 @@ public class DataSeeder
         //     await context.SaveChangesAsync();
         // }
 
-        if (!context.Questions.Any())
+        // if (!context.Questions.Any())
         {
             // var questions = new List<SurveyQuestion>
             // {

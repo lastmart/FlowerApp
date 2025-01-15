@@ -1,6 +1,5 @@
 using AutoMapper;
 using FlowerApp.Data;
-using FlowerApp.Domain.Models.AuthModels;
 using Microsoft.EntityFrameworkCore;
 using AppUser = FlowerApp.Domain.Models.UserModels.User;
 using DbUser = FlowerApp.Data.DbModels.Users.User;
@@ -65,8 +64,6 @@ public class UsersStorage : IUserStorage
                 return false;
 
             CopyUser(dbUser, model);
-            var dbModel = mapper.Map<DbUser>(model);
-            dbContext.Users.Update(dbModel);
             var result = await dbContext.SaveChangesAsync() > 0;
             await transaction.CommitAsync();
             return result;

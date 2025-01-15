@@ -50,7 +50,7 @@ public class TradesController : ControllerBase
             Data = mapper.Map<DTOTrade>(trade)
         });
     }
-    
+
 
     /// <summary>
     ///     Создание нового трейда
@@ -178,7 +178,7 @@ public class TradesController : ControllerBase
                     Message = "Invalid or missing access token"
                 });
             }
-        
+            
             var existingTrade = await tradeService.Get(trade.Id);
             if (existingTrade == null)
             {

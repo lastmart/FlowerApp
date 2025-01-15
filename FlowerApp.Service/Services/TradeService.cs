@@ -69,7 +69,11 @@ public class TradeService : ITradeService
                 return OperationResult.InvalidData;
             }
 
+            user.Telegram = trade.ContactData;
+            user.Name = trade.AuthorName;
+            await userStorage.Update(user);
             var isSuccess = await tradeStorage.Create(trade);
+
             return isSuccess ? OperationResult.Success : OperationResult.Conflict;
         }
         
@@ -87,7 +91,11 @@ public class TradeService : ITradeService
                 return OperationResult.NotFound;
             }
             
+            user.Telegram = trade.ContactData;
+            user.Name = trade.AuthorName;
+            await userStorage.Update(user);
             var isSuccess = await tradeStorage.Update(trade);
+
             return isSuccess ? OperationResult.Success : OperationResult.Conflict;
         }
         

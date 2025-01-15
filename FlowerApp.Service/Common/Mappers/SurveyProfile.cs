@@ -16,31 +16,26 @@ public class SurveyProfile : Profile
             .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.UserId))
             .ForMember(dest => dest.Answers, opt => opt.MapFrom(src => src.Answers))
             .ReverseMap();
-        
+
         CreateMap<DtoAnswer, AppAnswer>()
             .ForMember(dest => dest.QuestionId, opt => opt.MapFrom(src => src.QuestionId))
-            .ForMember(dest => dest.QuestionMask, opt => opt.MapFrom(src => src.QuestionsMask));
-        
+            .ForMember(dest => dest.QuestionMask, opt => opt.MapFrom(src => src.QuestionsMask))
+            .ReverseMap();
+
         CreateMap<AppSurvey, DbSurvey>()
             .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.UserId))
-            .ForMember(dest => dest.Answers, opt => opt.MapFrom(src => src.Answers));
+            .ForMember(dest => dest.Answers, opt => opt.MapFrom(src => src.Answers))
+            .ReverseMap();
 
         CreateMap<AppAnswer, DbAnswer>()
             .ForMember(dest => dest.QuestionId, opt => opt.MapFrom(src => src.QuestionId))
             .ForMember(dest => dest.QuestionsMask, opt => opt.MapFrom(src => string.Join(';', src.QuestionMask)));
-    }
 
-    private static List<int> GetAnswerMask(IEnumerable<string> selectedAnswers, IList<string> allAnswerOptions)
-    {
-        var selectedIdxes = selectedAnswers
-            .Select(allAnswerOptions.IndexOf)
-            .Where(index => index >= 0);
-
-        var answerMask = Enumerable.Repeat(0, allAnswerOptions.Count).ToList();
-
-        foreach (var idx in selectedIdxes)
-            answerMask[idx] = 1;
-
-        return answerMask;
+        CreateMap<DbAnswer, AppAnswer>()
+            .ForMember(dest => dest.QuestionId, opt => opt.MapFrom(src => src.QuestionId))
+            .ForMember(
+                dest => dest.QuestionMask,
+                opt => opt.MapFrom(src => src.QuestionsMask.Split(';', StringSplitOptions.RemoveEmptyEntries))
+            );
     }
 }

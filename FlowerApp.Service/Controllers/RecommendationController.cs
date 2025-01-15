@@ -12,11 +12,17 @@ namespace FlowerApp.Service.Controllers;
 public class RecommendationController : ControllerBase
 {
     private readonly IRecommendationService recommendationService;
+    private readonly IAuthorizationContext authorizationContext;
     private readonly IMapper mapper;
 
-    public RecommendationController(IRecommendationService recommendationService, IMapper mapper)
+    public RecommendationController(
+        IRecommendationService recommendationService,
+        IAuthorizationContext authorizationContext,
+        IMapper mapper
+    )
     {
         this.recommendationService = recommendationService;
+        this.authorizationContext = authorizationContext;
         this.mapper = mapper;
     }
 
@@ -36,7 +42,7 @@ public class RecommendationController : ControllerBase
     /// </summary>
     /// <param name="survey">Результаты опроса пользователя</param>
     /// <returns></returns>
-    [HttpPost]
+    [HttpPost("survey")]
     public async Task<IActionResult> StoreAnswers([FromBody] Survey survey)
     {
         await recommendationService.StoreUserAnswers(mapper.Map<AppSurvey>(survey));
@@ -49,15 +55,12 @@ public class RecommendationController : ControllerBase
     /// <remarks>
     /// Передайте answers для получения рекомендованных цветов.
     /// </remarks>
-    /// <param name="userId">Идентификатор пользователя</param>
     /// <param name="take">Количество рекомендаций</param>
     /// <returns>Список рекомендованных цветов</returns>
-    [HttpPost("{userId:int}")]
-    public async Task<ActionResult<List<DtoFlower>>> GetRecommendations(
-        string userId,
-        [FromQuery] int take
-    )
+    [HttpGet]
+    public async Task<ActionResult<List<DtoFlower>>> GetRecommendations([FromQuery] int take)
     {
+        var userId = await authorizationContext.GetGoogleIdFromAccessToken();
         var result = await recommendationService.GetRecommendations(userId, take);
 
         if (result.HasErrors)

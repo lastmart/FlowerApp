@@ -32,20 +32,20 @@ FROM "SurveyFlowers"
 ''')
         return self.__cursor.fetchone()[0]
     
-    def get_unique_flowers_count(self) -> int:
+    def get_unique_flowers(self) -> int:
         self.__cursor.execute(
 '''
-SELECT COUNT(DISTINCT "FlowerId")
+SELECT DISTINCT "FlowerId"
 FROM "SurveyFlowers"
 ''')
-        return self.__cursor.fetchone()[0]
+        return [element[0] for element in self.__cursor.fetchall()]
     
     def get_flowers_by_question_id(self, question_id: int) -> list:
         self.__cursor.execute(
 f'''
-SELECT "FlowerId", "SurveyQuestionId", "Variants", "RelevantVariants"
+SELECT "FlowerId", "SurveyQuestionId", "Variants", "RelevantVariantsProbabilities"
 FROM "SurveyFlowers"
-JOIN "Questions" ON "SurveyQuestionId" = "Questions"."Id"
+JOIN "SurveyQuestions" ON "SurveyQuestionId" = "SurveyQuestions"."Id"
 WHERE "SurveyQuestionId"={question_id}
 ''')
         return self.__cursor.fetchall()   
@@ -53,16 +53,15 @@ WHERE "SurveyQuestionId"={question_id}
     def iterate_flower_features_by_row_with_question_id(self, question_id: int) -> Generator[FlowerFeature, None, None]:
         for flower_row in self.get_flowers_by_question_id(question_id):
             yield self._parse_to_feature_flower(
-                flower_row['FlowerId'],
-                flower_row['SurveyQuestionId'],
-                flower_row['Variants'],
-                flower_row['RelevantVariants']
+                flower_row[0],
+                flower_row[1],
+                flower_row[2],
+                flower_row[3]
             )
 
     def _parse_to_feature_flower(self, flower_id: str, question_id: str, variants: str, relevant_variants: str):
-        sorted_variants = sorted(variants.split(';'))
         relevant_variants = relevant_variants.split(';')
-        feature = sum(1 << i for i, variant in enumerate(sorted_variants) if variant in relevant_variants)
+        feature = [float(variant) for variant in relevant_variants]
         return FlowerFeature(
             int(flower_id),
             int(question_id),

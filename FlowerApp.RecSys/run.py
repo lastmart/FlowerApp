@@ -8,4 +8,5 @@ recsys = RecSys()
 
 @app.get("/recsys/get/")
 async def get_recomendations(user_id: int, take: int = 5) -> RecomendationsResponse:
-    return recsys.get_recomendations_for_user(user_id, take)
+    answer = recsys.get_recomendations_for_user(user_id, take)
+    return RecomendationsResponse(len(answer), answer)

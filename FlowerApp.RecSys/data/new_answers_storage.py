@@ -35,10 +35,10 @@ FROM "Surveys"
     def get_unique_users(self) -> int:
         self.__cursor.execute(
 '''
-SELECT COUNT(DISTINCT "UserId")
+SELECT DISTINCT "UserId"
 FROM "Surveys"
 ''')
-        return self.__cursor.fetchall()
+        return [element[0] for element in self.__cursor.fetchall()]
     
     def get_questions_count(self) -> int:
         self.__cursor.execute(
@@ -54,20 +54,19 @@ FROM "SurveyAnswers"
 SELECT "UserId", "QuestionId", "QuestionsMask", "Variants"
 FROM "Surveys"
 JOIN "SurveyAnswers" ON "Surveys"."Id" = "SurveyAnswers"."SurveyId"
-JOIN "Questions" ON "SurveyAnswers"."QuestionId" = "Questions"."Id"
+JOIN "SurveyQuestions" ON "SurveyAnswers"."QuestionId" = "SurveyQuestions"."Id"
 ''')
         for answer_row in self.__cursor.fetchall():
             yield self._parse_to_answer(
-                answer_row['UserId'],
-                answer_row['QuestionId'],
-                answer_row['QuestionsMask'],
-                answer_row['Variants'])
+                answer_row[0],
+                answer_row[1],
+                answer_row[2],
+                answer_row[3])
 
     def _parse_to_answer(self, user_id: str, question_id: str, questions_mask: str, variants: str):
-        sorted_variants = sorted(variants.split(';'))
         questions_mask = questions_mask.split(';')
-        answer = sum(1 << i for i, variant in enumerate(sorted_variants) if variant in questions_mask)
+        answer = [int(variant) for variant in questions_mask]
         return Answer(user_id,
                       question_id,
-                      len(sorted_variants),
+                      len(questions_mask),
                       answer)

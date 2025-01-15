@@ -31,12 +31,8 @@ class RecSys:
             for flower_feature_row in\
                 self.__flower_features_storage.iterate_flower_features_by_row_with_question_id(
                     answer_row.question_id):
-                answer_array = self.__decode_mask(
-                    answer_row.answer,
-                    flower_feature_row.features_size)
-                flower_feature_array = self.__decode_mask(
-                    flower_feature_row.feature,
-                    flower_feature_row.features_size)
+                answer_array = answer_row.answer
+                flower_feature_array = flower_feature_row.feature
                 
                 if (answer_row.user_id not in user_ids):
                     user_ids.append(answer_row.user_id)
@@ -46,7 +42,8 @@ class RecSys:
                 answer_matrix[user_ids.index(answer_row.user_id) , flower_ids.index(flower_feature_row.flower_id)] = match_score
 
         self.__count_latent_component = min(self.__count_latent_component, answer_matrix.shape[1] - 1)
-        return self.__find_k_best_flower_for_user(user_id, take, answer_matrix)
+        self.__count_latent_component = min(self.__count_latent_component, min(answer_matrix.shape) - 1)
+        return self.__find_k_best_flower_for_user(str(user_id), take, answer_matrix)
 
     def __decode_mask(self, decimal, num_bits):
         return np.array([int(bit) for bit in f"{decimal:0{num_bits}b}"])

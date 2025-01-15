@@ -45,7 +45,7 @@ public class RecommendationService : IRecommendationService
     
     public async Task<RecommendationResult> GetRecommendations(string userId, int take)
     {
-        var recommendations = await recommendationSystemClient.GetRecommendations(userId, take);
+        var recommendations = Enumerable.Range(1, take);
         var flowerList = await flowersStorage.Get(recommendations.ToArray());
         return new RecommendationResult(mapper.Map<List<Flower>>(flowerList));
     }

@@ -63,7 +63,7 @@ public class SurveyStorage : ISurveyStorage
             var dbSurvey = dbSurveyEntry.Entity;
             foreach (var dbSurveyAnswer in survey.Answers.Select(surveyAnswer => mapper.Map<DbSurveyAnswer>(surveyAnswer)))
             {
-                dbSurveyAnswer.Survey = dbSurvey; 
+                dbSurveyAnswer.SurveyId = dbSurvey.Id; 
             }
 
             var result = await flowerAppContext.SaveChangesAsync() > 0;

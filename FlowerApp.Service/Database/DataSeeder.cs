@@ -16,58 +16,58 @@ public class DataSeeder
 
     public async Task SeedDataAsync()
     {
-        // if (!context.SurveyQuestions.Any())
-        // {
-        //     var questions = new List<SurveyQuestion>
-        //     {
-        //         new()
-        //         {
-        //             Id = 1,
-        //             Text = "Любите ли вы растения?",
-        //             Variants = string.Join(";", new List<string> { "Да", "Нет" }),
-        //             QuestionType = QuestionType.SingleAnswer
-        //         },
-        //         new()
-        //         {
-        //             Id = 2,
-        //             Text = "Сколько раз в неделю вы готовы поливать цветы?",
-        //             Variants = string.Join(";", new List<string> { "Меньше 3 раз", "Больше 3 раз", "Не готов" }),
-        //             QuestionType = QuestionType.SingleAnswer
-        //         },
-        //         new()
-        //         {
-        //             Id = 3,
-        //             Text = "Есть ли у вас домашние животные?",
-        //             Variants = string.Join(";", new List<string> { "Да", "Нет" }),
-        //             QuestionType = QuestionType.SingleAnswer
-        //         },
-        //         new()
-        //         {
-        //             Id = 4,
-        //             Text = "Есть ли у вас дети?",
-        //             Variants = string.Join(";",
-        //                 new List<string> { "Да", "Скорее да", "Не знаю", "Скорее нет", "Нет", "1", "2" }),
-        //             QuestionType = QuestionType.SingleAnswer
-        //         },
-        //         new()
-        //         {
-        //             Id = 5,
-        //             Text = "Готовы ли вы следить за освещением для цветка?",
-        //             Variants = string.Join(";", new List<string> { "Да", "Нет", "Специальное освещение" }),
-        //             QuestionType = QuestionType.SingleAnswer
-        //         },
-        //         new()
-        //         {
-        //             Id = 6,
-        //             Text = "Какого размера цветок вы бы хотели завести?",
-        //             Variants = string.Join(";", new List<string> { "Большой", "Средний", "Маленький" }),
-        //             QuestionType = QuestionType.SingleAnswer
-        //         }
-        //     };
-        //
-        //     context.SurveyQuestions.AddRange(questions);
-        //     await context.SaveChangesAsync();
-        // }
+        if (!context.SurveyQuestions.Any())
+        {
+            var questions = new List<SurveyQuestion>
+            {
+                new()
+                {
+                    Id = 1,
+                    Text = "Любите ли вы растения?",
+                    Variants = string.Join(";", new List<string> { "Да", "Нет" }),
+                    QuestionType = QuestionType.SingleAnswer
+                },
+                new()
+                {
+                    Id = 2,
+                    Text = "Сколько раз в неделю вы готовы поливать цветы?",
+                    Variants = string.Join(";", new List<string> { "Меньше 3 раз", "Больше 3 раз", "Не готов" }),
+                    QuestionType = QuestionType.SingleAnswer
+                },
+                new()
+                {
+                    Id = 3,
+                    Text = "Есть ли у вас домашние животные?",
+                    Variants = string.Join(";", new List<string> { "Да", "Нет" }),
+                    QuestionType = QuestionType.SingleAnswer
+                },
+                new()
+                {
+                    Id = 4,
+                    Text = "Есть ли у вас дети?",
+                    Variants = string.Join(";",
+                        new List<string> { "Да", "Скорее да", "Не знаю", "Скорее нет", "Нет", "1", "2" }),
+                    QuestionType = QuestionType.SingleAnswer
+                },
+                new()
+                {
+                    Id = 5,
+                    Text = "Готовы ли вы следить за освещением для цветка?",
+                    Variants = string.Join(";", new List<string> { "Да", "Нет", "Специальное освещение" }),
+                    QuestionType = QuestionType.SingleAnswer
+                },
+                new()
+                {
+                    Id = 6,
+                    Text = "Какого размера цветок вы бы хотели завести?",
+                    Variants = string.Join(";", new List<string> { "Большой", "Средний", "Маленький" }),
+                    QuestionType = QuestionType.SingleAnswer
+                }
+            };
+        
+            context.SurveyQuestions.AddRange(questions);
+            await context.SaveChangesAsync();
+        }
 
         // if (!context.Surveys.Any())
         // {

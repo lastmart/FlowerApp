@@ -15,11 +15,13 @@ public class TradesController : ControllerBase
 {
     private readonly IMapper mapper;
     private readonly ITradeService tradeService;
+    private readonly IAuthorizationContext authorizationContext;
 
-    public TradesController(ITradeService tradeService, IMapper mapper)
+    public TradesController(ITradeService tradeService, IMapper mapper, IAuthorizationContext authorizationContext)
     {
         this.tradeService = tradeService;
         this.mapper = mapper;
+        this.authorizationContext = authorizationContext;
     }
 
     /// <summary>
@@ -58,14 +60,42 @@ public class TradesController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] DTOTrade trade)
     {
-        var result = await tradeService.Create(mapper.Map<ApplicationTrade>(trade));
-        return result switch
+        try
         {
-            OperationResult.Success => Ok(new SuccessOperationStatus<object> { Code = "Ok", Message = "Trade created successfully"}),
-            OperationResult.NotFound => NotFound(new FailureOperationStatus { Code = "UserNotFound", Message = "User not found" }),
-            OperationResult.InvalidData => BadRequest(new FailureOperationStatus { Code = "InvalidData", Message = "User must have either email or telegram specified" }),
-            _ => StatusCode(500, new FailureOperationStatus { Code = "InternalServerError", Message = "An unexpected error occurred" })
-        };
+            var googleId = await authorizationContext.GetGoogleIdFromAccessToken();
+            if (string.IsNullOrEmpty(googleId))
+            {
+                return Unauthorized(new FailureOperationStatus
+                {
+                    Code = "Unauthorized",
+                    Message = "Invalid or missing access token"
+                });
+            }
+            
+            var applicationTrade = mapper.Map<ApplicationTrade>(trade);
+            applicationTrade.UserId = googleId;
+            var result = await tradeService.Create(applicationTrade);
+            return result switch
+            {
+                OperationResult.Success => Ok(new SuccessOperationStatus<object>
+                    { Code = "Ok", Message = "Trade created successfully" }),
+                OperationResult.NotFound => NotFound(new FailureOperationStatus
+                    { Code = "UserNotFound", Message = "User not found" }),
+                OperationResult.InvalidData => BadRequest(new FailureOperationStatus
+                    { Code = "InvalidData", Message = "User must have either email or telegram specified" }),
+                _ => StatusCode(500,
+                    new FailureOperationStatus
+                        { Code = "InternalServerError", Message = "An unexpected error occurred" })
+            };
+        }
+        catch(ArgumentNullException ex)
+        {
+            return StatusCode(500, new FailureOperationStatus
+            {
+                Code = "InternalServerError",
+                Message = ex.Message
+            });
+        }
     }
 
     /// <summary>
@@ -76,13 +106,57 @@ public class TradesController : ControllerBase
     [HttpPatch("{id}/deactivate")]
     public async Task<IActionResult> DeactivateTrade(int id)
     {
-        var result = await tradeService.DeactivateTrade(id);
-        return result switch
+        try
         {
-            OperationResult.Success => Ok(new SuccessOperationStatus<object> { Code = "Ok", Message = "Trade deactivated successfully" }),
-            OperationResult.NotFound => NotFound(new FailureOperationStatus { Code = "TradeNotFound", Message = "No exchange was found for this id" }),
-            _ => StatusCode(500, new FailureOperationStatus { Code = "InternalServerError", Message = "An unexpected error occurred" })
-        };
+            var googleId = await authorizationContext.GetGoogleIdFromAccessToken();
+            if (string.IsNullOrEmpty(googleId))
+            {
+                return Unauthorized(new FailureOperationStatus
+                {
+                    Code = "Unauthorized",
+                    Message = "Invalid or missing access token"
+                });
+            }
+
+            var trade = await tradeService.Get(id);
+            if (trade == null)
+            {
+                return NotFound(new FailureOperationStatus
+                {
+                    Code = "TradeNotFound",
+                    Message = "No trade found with the given ID"
+                });
+            }
+
+            if (trade.UserId != googleId)
+            {
+                return Unauthorized(new FailureOperationStatus
+                {
+                    Code = "Unauthorized",
+                    Message = "You do not have permission to deactivate this trade"
+                });
+            }
+
+            var result = await tradeService.DeactivateTrade(id);
+            return result switch
+            {
+                OperationResult.Success => Ok(new SuccessOperationStatus<object>
+                    { Code = "Ok", Message = "Trade deactivated successfully" }),
+                OperationResult.NotFound => NotFound(new FailureOperationStatus
+                    { Code = "TradeNotFound", Message = "No exchange was found for this id" }),
+                _ => StatusCode(500,
+                    new FailureOperationStatus
+                        { Code = "InternalServerError", Message = "An unexpected error occurred" })
+            };
+        }
+        catch(ArgumentNullException ex)
+        {
+            return StatusCode(500, new FailureOperationStatus
+            {
+                Code = "InternalServerError",
+                Message = ex.Message
+            });
+        }
     }
 
     /// <summary>
@@ -93,71 +167,81 @@ public class TradesController : ControllerBase
     [HttpPut]
     public async Task<IActionResult> Update([FromBody] DTOTrade trade)
     {
-        var result = await tradeService.Update(mapper.Map<ApplicationTrade>(trade));
-        
-        return result switch
+        try
         {
-            OperationResult.Success => Ok(new SuccessOperationStatus<object> { Code = "Ok", Message = "Trade updated successfully" }),
-            OperationResult.NotFound => NotFound(new FailureOperationStatus { Code = "TradeNotFound", Message = "Trade or associated user not found" }),
-            _ => StatusCode(500, new FailureOperationStatus { Code = "InternalServerError", Message = "An unexpected error occurred" })
-        };
-    }
-    
-    /// <summary>
-    ///     Получение всех трейдов конкретного пользователя
-    /// </summary>
-    /// <param name="googleId">Идентификатор пользователя</param>
-    /// <param name="pagination">Параметры пагинации</param>
-    /// <param name="location">Локация для фильтрации (опционально)</param>
-    /// <returns>Список трейдов пользователя с общим количеством</returns>
-    [HttpGet("user/{googleId}")]
-    public async Task<ActionResult<IRepositoryOperationStatus>> GetUserTrades(
-        string googleId,
-        [FromQuery] Pagination pagination,
-        [FromQuery] string? location = null
-    )
-    {
-        var response = await tradeService.GetUserTrades(pagination, location, googleId);
-        if (response.Result == OperationResult.NotFound )
-        {
-            return NotFound(new FailureOperationStatus
+            var googleId = await authorizationContext.GetGoogleIdFromAccessToken();
+            if (string.IsNullOrEmpty(googleId))
             {
-                Code = "UserNotFound",
-                Message = $"User with ID {googleId} not found."
+                return Unauthorized(new FailureOperationStatus
+                {
+                    Code = "Unauthorized",
+                    Message = "Invalid or missing access token"
+                });
+            }
+        
+            var existingTrade = await tradeService.Get(trade.Id);
+            if (existingTrade == null)
+            {
+                return NotFound(new FailureOperationStatus
+                {
+                    Code = "TradeNotFound",
+                    Message = "No trade found with the given ID"
+                });
+            }
+
+            if (existingTrade.UserId != googleId)
+            {
+                return Unauthorized(new FailureOperationStatus
+                {
+                    Code = "Unauthorized",
+                    Message = "You do not have permission to update this trade"
+                });
+            }
+        
+            var applicationTrade = mapper.Map<ApplicationTrade>(trade);
+            applicationTrade.UserId = googleId;
+            var result = await tradeService.Update(applicationTrade);
+
+            return result switch
+            {
+                OperationResult.Success => Ok(new SuccessOperationStatus<object> 
+                { 
+                    Code = "Ok", 
+                    Message = "Trade updated successfully" 
+                }),
+                OperationResult.NotFound => NotFound(new FailureOperationStatus 
+                { 
+                    Code = "TradeNotFound", 
+                    Message = "Trade or associated user not found" 
+                }),
+                _ => StatusCode(500, new FailureOperationStatus 
+                { 
+                    Code = "InternalServerError", 
+                    Message = "An unexpected error occurred" 
+                })
+            };
+        }
+        catch (ArgumentNullException ex)
+        {
+            return StatusCode(500, new FailureOperationStatus
+            {
+                Code = "InternalServerError",
+                Message = ex.Message
             });
         }
-        var trades = response.Data?.Trades.Select(t => mapper.Map<DTOTrade>(t));
-        return Ok(new SuccessOperationStatus<GetTradeResponse>
-        {
-            Code = "Ok",
-            Message = "",
-            Data = new GetTradeResponse(response.Data?.Count ?? 0, trades)
-        });
     }
     
     /// <summary>
-    ///     Получение всех трейдов, кроме трейдов указанного пользователя
+    ///     Получение всех трейдов
     /// </summary>
-    /// <param name="googleId">Идентификатор пользователя, чьи трейды нужно исключить</param>
     /// <param name="pagination">Параметры пагинации</param>
     /// <param name="location">Локация для фильтрации (опционально)</param>
-    /// <returns>Список трейдов других пользователей с общим количеством</returns>
-    [HttpGet("others")]
+    [HttpGet]
     public async Task<ActionResult<IRepositoryOperationStatus>> GetOtherUsersTrades(
         [FromQuery] Pagination pagination,
-        [FromQuery] string? googleId = null,
         [FromQuery] string? location = null)
     {
-        var response = await tradeService.GetOtherUsersTrades(pagination, location, googleId);
-        if (response.Result == OperationResult.NotFound)
-        {
-            return NotFound(new FailureOperationStatus
-            {
-                Code = "UserNotFound",
-                Message = $"User with ID {googleId} not found."
-            });
-        }
-        
+        var response = await tradeService.GetOtherUsersTrades(pagination, location, null);
         var trades = response.Data?.Trades.Select(t => mapper.Map<DTOTrade>(t));
         return new SuccessOperationStatus<GetTradeResponse>
         {

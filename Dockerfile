@@ -24,8 +24,6 @@ FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS runtime
 WORKDIR /app
 COPY --from=build /app/FlowerApp.Service/out ./
 
-# Устанавливаем порт для работы приложения
-#ENV ASPNETCORE_URLS=http://+:8888
 EXPOSE 8888
 
 ENV ASPNETCORE_ENVIRONMENT=Development
